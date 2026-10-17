@@ -43,6 +43,7 @@ backend-laravel/storage/framework/cache/data/*
 backend-laravel/storage/framework/sessions/*
 backend-laravel/storage/framework/views/*
 backend-laravel/storage/logs/*
+backend-laravel/bootstrap/cache/*.php
 
 # Python
 __pycache__/
