@@ -22,7 +22,18 @@ const shineX = ref(50)
 const shineY = ref(50)
 const isHovered = ref(false)
 
+// Mouse Parallax for Floating Background & Foreground Elements
+const mouseOffsetX = ref(0)
+const mouseOffsetY = ref(0)
+
 const handleMouseMove = (e) => {
+    const windowWidth = window.innerWidth
+    const windowHeight = window.innerHeight
+    
+    // Normalized -1 to 1 for global parallax
+    mouseOffsetX.value = ((e.clientX - windowWidth / 2) / (windowWidth / 2))
+    mouseOffsetY.value = ((e.clientY - windowHeight / 2) / (windowHeight / 2))
+
     if (!cardRef.value) return
     const rect = cardRef.value.getBoundingClientRect()
     const x = e.clientX - rect.left
@@ -30,7 +41,7 @@ const handleMouseMove = (e) => {
     const centerX = rect.width / 2
     const centerY = rect.height / 2
 
-    // Max 12 deg tilt for sophisticated, premium 3D feel
+    // Max 12 deg tilt for sophisticated 3D feel
     rotateX.value = -((y - centerY) / centerY) * 12
     rotateY.value = ((x - centerX) / centerX) * 12
 
@@ -61,9 +72,30 @@ const cardTransformStyle = computed(() => {
 
 const shineStyle = computed(() => {
     return {
-        background: `radial-gradient(circle 350px at ${shineX.value}% ${shineY.value}%, rgba(255, 255, 255, 0.18), transparent 70%)`,
+        background: `radial-gradient(circle 380px at ${shineX.value}% ${shineY.value}%, rgba(255, 255, 255, 0.2), transparent 70%)`,
     }
 })
+
+// Floating 3D Logos configuration (multi-layered depths and sizes)
+const floatingLogos = [
+    // Left Wing
+    { id: 'left-1', top: '12%', left: '3%', size: 'w-24 h-24 xl:w-28 xl:h-28', depth: 45, floatClass: 'anim-float-1', delay: '0s', opacity: 'opacity-90', glow: 'bg-amber-400/30' },
+    { id: 'left-2', top: '44%', left: '7%', size: 'w-16 h-16 xl:w-20 xl:h-20', depth: 30, floatClass: 'anim-float-2', delay: '1.8s', opacity: 'opacity-80', glow: 'bg-yellow-400/25' },
+    { id: 'left-3', top: '74%', left: '2%', size: 'w-20 h-20 xl:w-24 xl:h-24', depth: 40, floatClass: 'anim-float-3', delay: '3.2s', opacity: 'opacity-85', glow: 'bg-amber-500/30' },
+    { id: 'left-4', top: '28%', left: '14%', size: 'w-12 h-12 xl:w-14 xl:h-14', depth: 18, floatClass: 'anim-float-4', delay: '2.5s', opacity: 'opacity-55', glow: 'bg-blue-400/20' },
+
+    // Right Wing
+    { id: 'right-1', top: '10%', right: '4%', size: 'w-22 h-22 xl:w-26 xl:h-26', depth: 42, floatClass: 'anim-float-3', delay: '0.9s', opacity: 'opacity-90', glow: 'bg-amber-400/30' },
+    { id: 'right-2', top: '42%', right: '6%', size: 'w-24 h-24 xl:w-30 xl:h-30', depth: 50, floatClass: 'anim-float-1', delay: '2.4s', opacity: 'opacity-95', glow: 'bg-yellow-300/35' },
+    { id: 'right-3', top: '75%', right: '3%', size: 'w-18 h-18 xl:w-22 xl:h-22', depth: 28, floatClass: 'anim-float-2', delay: '1.2s', opacity: 'opacity-80', glow: 'bg-amber-500/25' },
+    { id: 'right-4', top: '26%', right: '14%', size: 'w-12 h-12 xl:w-14 xl:h-14', depth: 16, floatClass: 'anim-float-4', delay: '3.7s', opacity: 'opacity-55', glow: 'bg-indigo-400/20' },
+]
+
+const getParallaxTransform = (depth) => {
+    const px = (mouseOffsetX.value * depth * 0.75).toFixed(1)
+    const py = (mouseOffsetY.value * depth * 0.75).toFixed(1)
+    return `translate3d(${px}px, ${py}px, 0px)`
+}
 
 const submit = () => {
     form.post('/login', {
@@ -79,7 +111,7 @@ const submit = () => {
         class="min-h-screen flex items-center justify-center bg-slate-950 px-4 py-8 relative overflow-hidden font-sans select-none"
         @mousemove="handleMouseMove"
     >
-        <!-- 3D Background Space & Deep Horizon -->
+        <!-- 3D Space Horizon -->
         <div class="absolute inset-0 bg-radial-gradient pointer-events-none"></div>
 
         <!-- 3D Perspective Cyber Floor Grid -->
@@ -87,20 +119,62 @@ const submit = () => {
             <div class="perspective-grid"></div>
         </div>
 
-        <!-- Dynamic 3D Floating Orbs / Nebulas -->
-        <div class="absolute -top-32 -left-32 w-[30rem] h-[30rem] bg-blue-600/25 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
-        <div class="absolute -bottom-32 -right-32 w-[32rem] h-[32rem] bg-amber-500/15 rounded-full blur-[140px] pointer-events-none animate-pulse-slow delay-1000"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[45rem] h-[45rem] bg-indigo-600/10 rounded-full blur-[160px] pointer-events-none"></div>
+        <!-- Dynamic Ambient Glows -->
+        <div class="absolute -top-32 -left-32 w-[32rem] h-[32rem] bg-blue-600/20 rounded-full blur-[140px] pointer-events-none animate-pulse-slow"></div>
+        <div class="absolute -bottom-32 -right-32 w-[34rem] h-[34rem] bg-amber-500/15 rounded-full blur-[150px] pointer-events-none animate-pulse-slow delay-1000"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[48rem] h-[48rem] bg-indigo-600/10 rounded-full blur-[170px] pointer-events-none"></div>
 
         <!-- Floating 3D Geometric Accents -->
-        <div class="floating-cube cube-1 pointer-events-none hidden md:block"></div>
-        <div class="floating-cube cube-2 pointer-events-none hidden md:block"></div>
-        <div class="floating-cube cube-3 pointer-events-none hidden md:block"></div>
+        <div class="floating-cube cube-1 pointer-events-none hidden xl:block"></div>
+        <div class="floating-cube cube-2 pointer-events-none hidden xl:block"></div>
+        <div class="floating-cube cube-3 pointer-events-none hidden xl:block"></div>
 
-        <!-- 3D Perspective Card Wrapper -->
+        <!-- =================================================================== -->
+        <!-- FLOATING 3D EMBLEMS (RANDOM & ELEGANT ORBITING LOGOS)               -->
+        <!-- =================================================================== -->
+        <div
+            v-for="item in floatingLogos"
+            :key="item.id"
+            class="absolute pointer-events-none hidden md:block z-0 transition-transform duration-100 ease-out"
+            :style="{
+                top: item.top,
+                left: item.left,
+                right: item.right,
+                transform: getParallaxTransform(item.depth)
+            }"
+        >
+            <div :class="[item.floatClass, 'transform-gpu']" :style="{ animationDelay: item.delay }">
+                <div class="relative group/orbit">
+                    <!-- Holographic Aura -->
+                    <div :class="['absolute -inset-2.5 rounded-full blur-md opacity-80', item.glow, 'animate-pulse-slow']"></div>
+
+                    <!-- 3D Plaque -->
+                    <div
+                        :class="[
+                            item.size,
+                            item.opacity,
+                            'relative rounded-full p-1 bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 shadow-[0_15px_35px_rgba(0,0,0,0.7),0_0_25px_rgba(245,158,11,0.35)] backdrop-blur-sm'
+                        ]"
+                    >
+                        <img
+                            src="/images/logo.png"
+                            alt="Logo Yayasan Banua Insan Nusantara BASARA"
+                            class="w-full h-full rounded-full object-cover shadow-inner ring-1 ring-white/30"
+                        />
+                    </div>
+
+                    <!-- Floating Soft 3D Depth Ground Shadow -->
+                    <div class="w-3/4 h-2.5 bg-black/80 mx-auto rounded-full blur-sm mt-1.5 transform scale-x-90"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- MAIN 3D PERSPECTIVE LOGIN CARD                                      -->
+        <!-- =================================================================== -->
         <div class="w-full max-w-md relative z-10 perspective-container">
             <!-- Animated 3D Glow Border Backing -->
-            <div class="absolute -inset-1 bg-gradient-to-r from-blue-500/40 via-amber-400/40 to-indigo-500/40 rounded-[2.5rem] blur-xl opacity-70 group-hover:opacity-100 transition duration-500 animate-border-glow"></div>
+            <div class="absolute -inset-1 bg-gradient-to-r from-blue-500/40 via-amber-400/40 to-indigo-500/40 rounded-[2.5rem] blur-xl opacity-75 group-hover:opacity-100 transition duration-500 animate-border-glow"></div>
 
             <!-- Main Interactive 3D Card -->
             <div
@@ -108,7 +182,7 @@ const submit = () => {
                 :style="cardTransformStyle"
                 @mouseenter="handleMouseEnter"
                 @mouseleave="handleMouseLeave"
-                class="relative w-full bg-slate-900/70 backdrop-blur-3xl border border-white/20 p-8 sm:p-10 rounded-[2.25rem] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),0_0_40px_rgba(59,130,246,0.15)] text-white preserve-3d overflow-hidden"
+                class="relative w-full bg-slate-900/75 backdrop-blur-3xl border border-white/20 p-8 sm:p-10 rounded-[2.25rem] shadow-[0_30px_70px_-15px_rgba(0,0,0,0.85),0_0_45px_rgba(59,130,246,0.18)] text-white preserve-3d overflow-hidden"
             >
                 <!-- Specular Dynamic Glare Overlay -->
                 <div
@@ -116,17 +190,17 @@ const submit = () => {
                     :style="shineStyle"
                 ></div>
 
-                <!-- Subtle Top Edge Light Reflection -->
+                <!-- Top Edge Light Reflection -->
                 <div class="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-white/50 to-transparent pointer-events-none"></div>
 
-                <!-- 3D Layer: Logo & Official Seal -->
+                <!-- 3D Layer: Central Floating Official Emblem -->
                 <div class="text-center mb-6 transform-layer-logo">
                     <div class="relative inline-block mb-3 group">
                         <!-- Holographic 3D Halo -->
-                        <div class="absolute -inset-2 bg-gradient-to-tr from-amber-400/60 via-yellow-300/40 to-blue-500/60 rounded-full blur-lg opacity-80 group-hover:opacity-100 animate-spin-slow pointer-events-none"></div>
+                        <div class="absolute -inset-2.5 bg-gradient-to-tr from-amber-400/70 via-yellow-300/50 to-blue-500/70 rounded-full blur-lg opacity-85 group-hover:opacity-100 animate-spin-slow pointer-events-none"></div>
 
-                        <!-- 3D Floating Plaque / Seal -->
-                        <div class="relative w-28 h-28 sm:w-32 sm:h-32 mx-auto rounded-full p-1 bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 shadow-[0_15px_30px_rgba(0,0,0,0.6),0_0_20px_rgba(245,158,11,0.3)]">
+                        <!-- 3D Floating Plaque -->
+                        <div class="relative w-28 h-28 sm:w-32 sm:h-32 mx-auto rounded-full p-1.5 bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 shadow-[0_20px_40px_rgba(0,0,0,0.7),0_0_30px_rgba(245,158,11,0.4)]">
                             <img
                                 src="/images/logo.png"
                                 alt="Logo Yayasan Banua Insan Nusantara - BASARA"
@@ -135,7 +209,7 @@ const submit = () => {
                         </div>
 
                         <!-- Floating 3D Depth Shadow under Logo -->
-                        <div class="w-20 h-3 bg-black/70 mx-auto rounded-full blur-sm mt-1 transform translate-z-[-10px]"></div>
+                        <div class="w-24 h-3 bg-black/80 mx-auto rounded-full blur-sm mt-1 transform translate-z-[-10px]"></div>
                     </div>
 
                     <!-- Institution Headers -->
@@ -250,14 +324,14 @@ const submit = () => {
                     </div>
                 </form>
 
-                <!-- 3D Footer System Diagnostics -->
+                <!-- 3D Footer Diagnostics -->
                 <div class="mt-8 pt-5 border-t border-white/10 flex items-center justify-between text-[11px] text-blue-300/70 transform-layer-footer">
                     <div class="flex items-center gap-2">
                         <span class="relative flex h-2 w-2">
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                         </span>
-                        <span>Laravel 11 UI Engine</span>
+                        <span>Laravel 11 Engine</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="relative flex h-2 w-2">
@@ -369,14 +443,14 @@ const submit = () => {
 
 .cube-1 {
     top: 15%;
-    left: 10%;
+    left: 18%;
     transform: rotate(25deg) skew(-10deg);
     animation: float1 8s ease-in-out infinite;
 }
 
 .cube-2 {
-    bottom: 20%;
-    left: 8%;
+    bottom: 18%;
+    left: 14%;
     width: 45px;
     height: 45px;
     border-color: rgba(245, 158, 11, 0.3);
@@ -385,13 +459,66 @@ const submit = () => {
 }
 
 .cube-3 {
-    top: 25%;
-    right: 12%;
-    width: 75px;
-    height: 75px;
+    top: 20%;
+    right: 18%;
+    width: 70px;
+    height: 70px;
     border-color: rgba(99, 102, 241, 0.35);
     transform: rotate(45deg);
     animation: float3 10s ease-in-out infinite 2s;
+}
+
+/* 4 Distinct Floating Physics Animations for Multiple Logos */
+.anim-float-1 {
+    animation: floatPath1 7s ease-in-out infinite;
+}
+
+.anim-float-2 {
+    animation: floatPath2 9s ease-in-out infinite;
+}
+
+.anim-float-3 {
+    animation: floatPath3 8.5s ease-in-out infinite;
+}
+
+.anim-float-4 {
+    animation: floatPath4 11s ease-in-out infinite;
+}
+
+@keyframes floatPath1 {
+    0%, 100% {
+        transform: translateY(0px) rotate(-6deg) scale(1);
+    }
+    50% {
+        transform: translateY(-22px) rotate(4deg) scale(1.04);
+    }
+}
+
+@keyframes floatPath2 {
+    0%, 100% {
+        transform: translateY(0px) rotate(8deg) scale(0.98);
+    }
+    50% {
+        transform: translateY(-18px) rotate(-4deg) scale(1.02);
+    }
+}
+
+@keyframes floatPath3 {
+    0%, 100% {
+        transform: translateY(0px) rotate(-10deg) scale(1.02);
+    }
+    50% {
+        transform: translateY(-26px) rotate(6deg) scale(0.99);
+    }
+}
+
+@keyframes floatPath4 {
+    0%, 100% {
+        transform: translateY(0px) rotate(5deg) scale(0.95);
+    }
+    50% {
+        transform: translateY(-15px) rotate(-8deg) scale(1.03);
+    }
 }
 
 @keyframes float1 {
