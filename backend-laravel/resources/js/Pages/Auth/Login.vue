@@ -1,63 +1,15 @@
 <script setup>
-import { ref } from 'vue'
 import { Head, useForm } from '@inertiajs/vue3'
 
 defineProps({
     status: String,
 })
 
-const selectedRole = ref('admin')
-
 const form = useForm({
-    email: 'admin@pkbm.sch.id',
-    password: 'password',
+    email: '',
+    password: '',
     remember: false,
 })
-
-const demoAccounts = [
-    {
-        id: 'admin',
-        title: 'Admin Utama',
-        email: 'admin@pkbm.sch.id',
-        password: 'password',
-        icon: '👑',
-        desc: 'Akses penuh ke seluruh sistem & pengaturan',
-        color: 'from-amber-600 to-amber-700',
-    },
-    {
-        id: 'staf',
-        title: 'Staf Admin',
-        email: 'staf.admin@pkbm.sch.id',
-        password: 'password',
-        icon: '🛡️',
-        desc: 'Admin operasional di bawah Admin Utama',
-        color: 'from-blue-600 to-indigo-600',
-    },
-    {
-        id: 'tutor',
-        title: 'Tutor / Guru',
-        email: 'tutor@pkbm.sch.id',
-        password: 'password',
-        icon: '👨‍🏫',
-        desc: 'Input nilai, absensi kelas & materi',
-        color: 'from-emerald-600 to-teal-600',
-    },
-    {
-        id: 'siswa',
-        title: 'Siswa / WB',
-        email: 'siswa@pkbm.sch.id',
-        password: 'password',
-        icon: '👨‍🎓',
-        desc: 'Cek jadwal, nilai, absensi & raport',
-        color: 'from-purple-600 to-pink-600',
-    },
-]
-
-const setDemoAccount = (acc) => {
-    selectedRole.value = acc.id
-    form.email = acc.email
-    form.password = acc.password
-}
 
 const submit = () => {
     form.post('/login', {
@@ -74,7 +26,7 @@ const submit = () => {
         <div class="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div class="max-w-xl w-full bg-white/10 backdrop-blur-2xl border border-white/20 p-8 sm:p-10 rounded-3xl shadow-2xl text-white relative z-10 transition-all duration-300">
+        <div class="max-w-md w-full bg-white/10 backdrop-blur-2xl border border-white/20 p-8 sm:p-10 rounded-3xl shadow-2xl text-white relative z-10 transition-all duration-300">
             <!-- Header Brand -->
             <div class="text-center mb-8">
                 <div class="inline-flex p-4 bg-gradient-to-tr from-blue-500/20 to-indigo-500/20 rounded-2xl mb-3 border border-white/20 shadow-inner">
@@ -88,39 +40,6 @@ const submit = () => {
                     <span class="px-2.5 py-0.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300">Paket A (SD)</span>
                     <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300">Paket B (SMP)</span>
                     <span class="px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/30 text-amber-300">Paket C (SMA)</span>
-                </div>
-            </div>
-
-            <!-- Role Selector Pills for Demo Helpers (Fills input form, still requires authentication) -->
-            <div class="mb-6">
-                <div class="flex items-center justify-between mb-2.5">
-                    <label class="text-xs font-semibold uppercase tracking-wider text-blue-200/80">
-                        🔑 Akun Demo (Klik untuk Isi Form Otomatis):
-                    </label>
-                </div>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                    <button
-                        type="button"
-                        v-for="acc in demoAccounts"
-                        :key="acc.id"
-                        @click="setDemoAccount(acc)"
-                        :class="[
-                            'p-3 rounded-xl border transition-all duration-200 flex flex-col justify-between text-left group',
-                            selectedRole === acc.id
-                                ? 'bg-blue-600/30 border-blue-400 ring-2 ring-blue-400/30'
-                                : 'bg-white/10 border-white/15 hover:bg-white/20 hover:border-blue-400'
-                        ]"
-                        :title="`Pilih akun ${acc.title}`"
-                    >
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-xl">{{ acc.icon }}</span>
-                            <span class="text-[9px] px-1.5 py-0.5 rounded bg-blue-500/30 text-blue-200 font-bold">PILIH</span>
-                        </div>
-                        <div>
-                            <div class="font-bold text-xs leading-tight text-white group-hover:text-blue-300">{{ acc.title }}</div>
-                            <div class="text-[10px] text-blue-200/70 truncate">{{ acc.email }}</div>
-                        </div>
-                    </button>
                 </div>
             </div>
 
@@ -149,6 +68,7 @@ const submit = () => {
                         v-model="form.email"
                         required
                         autofocus
+                        autocomplete="email"
                         class="w-full px-4 py-3 rounded-xl bg-slate-900/40 border border-white/20 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30 text-white placeholder-gray-400 outline-none transition"
                         placeholder="contoh@pkbm.sch.id"
                     />
@@ -161,8 +81,9 @@ const submit = () => {
                         type="password"
                         v-model="form.password"
                         required
+                        autocomplete="current-password"
                         class="w-full px-4 py-3 rounded-xl bg-slate-900/40 border border-white/20 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30 text-white placeholder-gray-400 outline-none transition"
-                        placeholder="••••••••"
+                        placeholder="Masukkan password akun Anda"
                     />
                     <p v-if="form.errors.password" class="text-rose-400 text-xs mt-1.5">{{ form.errors.password }}</p>
                 </div>
@@ -172,7 +93,6 @@ const submit = () => {
                         <input type="checkbox" v-model="form.remember" class="rounded bg-white/10 border-white/30 text-blue-500 focus:ring-0" />
                         <span class="text-blue-200">Ingat sesi saya</span>
                     </label>
-                    <span class="text-blue-300/80">Default password: <span class="font-mono text-white">password</span></span>
                 </div>
 
                 <button
