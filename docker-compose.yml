@@ -1,0 +1,177 @@
+version: '3.8'
+
+services:
+  # =========================================
+  # NGINX - Reverse Proxy
+  # =========================================
+  nginx:
+    image: nginx:alpine
+    container_name: pkbm_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./backend-laravel:/var/www/laravel:ro
+      - ./storage/ssl:/etc/ssl/certs:ro
+    depends_on:
+      - laravel
+      - fastapi
+    networks:
+      - pkbm_network
+    restart: unless-stopped
+
+  # =========================================
+  # PHP-FPM - Laravel Backend
+  # =========================================
+  laravel:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    container_name: pkbm_laravel
+    volumes:
+      - ./backend-laravel:/var/www/laravel
+      - ./storage/app:/var/www/laravel/storage/app
+      - ./storage/logs/laravel:/var/www/laravel/storage/logs
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_HOST=mysql
+      - DB_DATABASE=pkbm_db
+      - DB_USERNAME=pkbm_user
+      - DB_PASSWORD=pkbm_secret
+      - REDIS_HOST=redis
+      - PYTHON_API_URL=http://fastapi:8000
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - pkbm_network
+    restart: unless-stopped
+
+  # =========================================
+  # Python FastAPI - Microservice
+  # =========================================
+  fastapi:
+    build:
+      context: ./backend-python
+      dockerfile: Dockerfile
+    container_name: pkbm_fastapi
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend-python:/app
+      - ./storage/raport:/app/storage/raport
+      - ./storage/sertifikat:/app/storage/sertifikat
+    environment:
+      - DATABASE_URL=mysql+pymysql://pkbm_user:pkbm_secret@mysql:3306/pkbm_db
+      - REDIS_URL=redis://redis:6379
+      - SECRET_KEY=pkbm-super-secret-key-2024
+      - ENVIRONMENT=development
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - pkbm_network
+    restart: unless-stopped
+
+  # =========================================
+  # MySQL 8.0 - Database Utama
+  # =========================================
+  mysql:
+    image: mysql:8.0
+    container_name: pkbm_mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_secret
+      MYSQL_DATABASE: pkbm_db
+      MYSQL_USER: pkbm_user
+      MYSQL_PASSWORD: pkbm_secret
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+    networks:
+      - pkbm_network
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
+
+  # =========================================
+  # Redis - Cache & Queue
+  # =========================================
+  redis:
+    image: redis:7-alpine
+    container_name: pkbm_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+      - ./docker/redis/redis.conf:/etc/redis/redis.conf:ro
+    command: redis-server /etc/redis/redis.conf
+    networks:
+      - pkbm_network
+    restart: unless-stopped
+
+  # =========================================
+  # MinIO - Object Storage (Foto, Dokumen)
+  # =========================================
+  minio:
+    image: minio/minio:latest
+    container_name: pkbm_minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: pkbm_minio
+      MINIO_ROOT_PASSWORD: minio_secret_2024
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - pkbm_network
+    restart: unless-stopped
+
+  # =========================================
+  # phpMyAdmin - Database Management
+  # =========================================
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: pkbm_phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root_secret
+    depends_on:
+      - mysql
+    networks:
+      - pkbm_network
+    restart: unless-stopped
+
+  # =========================================
+  # Mailpit - Email Testing (Dev)
+  # =========================================
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: pkbm_mailpit
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - pkbm_network
+    restart: unless-stopped
+
+networks:
+  pkbm_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+  minio_data:
+    driver: local

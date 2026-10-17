@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: pkbm-nusantara-banua
+    runtime: docker
+    plan: free
+    region: singapore
+    branch: master
+    dockerfilePath: Dockerfile
+    envVars:
+      - key: APP_NAME
+        value: "Sistem Informasi PKBM"
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        value: base64:q2r6l12l8Kz4qj2E0Z4D21HwP3u7y6X1Y8Z9a0b1c2d=
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: SESSION_DRIVER
+        value: file
+      - key: PYTHON_API_URL
+        value: http://127.0.0.1:8000

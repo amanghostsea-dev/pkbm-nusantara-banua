@@ -1,0 +1,66 @@
+# System & IDE
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+
+# Binaries & Executables
+cloudflared.exe
+*.exe
+meta
+meta.bat
+.meta-panel-trigger
+
+# Node & Frontend
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+public/hot
+public/storage
+
+# PHP / Composer
+vendor/
+composer.phar
+.phpunit.result.cache
+
+# Laravel Environment & Cache
+.env
+.env.backup
+.env.production
+backend-laravel/.env
+backend-laravel/vendor/
+backend-laravel/node_modules/
+backend-laravel/public/storage
+backend-laravel/storage/*.key
+backend-laravel/storage/framework/cache/data/*
+backend-laravel/storage/framework/sessions/*
+backend-laravel/storage/framework/views/*
+backend-laravel/storage/logs/*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+backend-python/venv/
+backend-python/.env
+backend-python/__pycache__/
+backend-python/*/__pycache__/
+backend-python/*/*/__pycache__/
+backend-python/build/
+backend-python/dist/
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# Scratch & Temporary
+scratch/
