@@ -1,17 +1,13 @@
 #!/bin/bash
 set -e
 
-PORT=${PORT:-8080}
+export PORT=${PORT:-8080}
 echo "[ENTRYPOINT] Starting PKBM Nusantara Banua on port $PORT..."
 
-# Update Nginx listening port dynamically for Cloud Platforms (Railway, Render, etc.)
-sed -i "s/listen 8080/listen $PORT/g" /etc/nginx/sites-available/default
-sed -i "s/listen \[::\]:8080/listen \[::\]:$PORT/g" /etc/nginx/sites-available/default
-
-# Clean stale bootstrap caches from dev environment
+# Clean stale caches
 rm -f /var/www/laravel/bootstrap/cache/*.php
 
-# Permissions for Laravel storage & SQLite database
+# Permissions for storage & database
 mkdir -p /var/www/laravel/storage/framework/{sessions,views,cache} /var/www/laravel/storage/logs
 mkdir -p /var/www/laravel/database
 touch /var/www/laravel/storage/logs/laravel.log
@@ -22,9 +18,7 @@ if [ ! -f /var/www/laravel/database/database.sqlite ]; then
 fi
 
 chmod -R 777 /var/www/laravel/storage /var/www/laravel/bootstrap/cache /var/www/laravel/database
-chown -R www-data:www-data /var/www/laravel/storage /var/www/laravel/bootstrap/cache /var/www/laravel/database
 
-# Run Laravel optimizations
 cd /var/www/laravel
 php artisan package:discover --ansi || true
 php artisan storage:link || true
@@ -33,7 +27,6 @@ php artisan route:clear || true
 php artisan view:clear || true
 
 chmod -R 777 /var/www/laravel/storage /var/www/laravel/bootstrap/cache /var/www/laravel/database
-chown -R www-data:www-data /var/www/laravel/storage /var/www/laravel/bootstrap/cache /var/www/laravel/database
 
-echo "[ENTRYPOINT] Initialization complete. Starting Supervisor..."
+echo "[ENTRYPOINT] Starting Supervisor on port $PORT..."
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
