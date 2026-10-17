@@ -23,7 +23,7 @@ aiohttp==3.10.10
 
 # PDF Generation
 reportlab==4.2.5
-Pillow==11.0.0
+Pillow>=10.4.0,<11.0.0
 jinja2==3.1.4
 weasyprint==63.0
 
@@ -56,7 +56,4 @@ xlsxwriter==3.2.0
 python-dateutil==2.9.0
 pytz==2024.2
 
-# Testing
-pytest==8.3.3
-pytest-asyncio==0.24.0
-httpx==0.27.2
+
