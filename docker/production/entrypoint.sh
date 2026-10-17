@@ -4,7 +4,11 @@ set -e
 export PORT=${PORT:-8080}
 echo "[ENTRYPOINT] Starting PKBM Nusantara Banua on port $PORT..."
 
-# Clean stale caches
+# Update Nginx listening port dynamically for Railway / Cloud ($PORT)
+sed -i "s/listen 8080/listen $PORT/g" /etc/nginx/sites-available/default
+sed -i "s/listen \[::\]:8080/listen \[::\]:$PORT/g" /etc/nginx/sites-available/default
+
+# Clean stale bootstrap cache from development
 rm -f /var/www/laravel/bootstrap/cache/*.php
 
 # Permissions for storage & database
@@ -18,6 +22,7 @@ if [ ! -f /var/www/laravel/database/database.sqlite ]; then
 fi
 
 chmod -R 777 /var/www/laravel/storage /var/www/laravel/bootstrap/cache /var/www/laravel/database
+chown -R www-data:www-data /var/www/laravel/storage /var/www/laravel/bootstrap/cache /var/www/laravel/database
 
 cd /var/www/laravel
 php artisan package:discover --ansi || true
@@ -27,6 +32,7 @@ php artisan route:clear || true
 php artisan view:clear || true
 
 chmod -R 777 /var/www/laravel/storage /var/www/laravel/bootstrap/cache /var/www/laravel/database
+chown -R www-data:www-data /var/www/laravel/storage /var/www/laravel/bootstrap/cache /var/www/laravel/database
 
-echo "[ENTRYPOINT] Starting Supervisor on port $PORT..."
+echo "[ENTRYPOINT] Starting Supervisor..."
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
