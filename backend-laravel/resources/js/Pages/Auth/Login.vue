@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { Head, useForm } from '@inertiajs/vue3'
 
 defineProps({
@@ -29,7 +29,7 @@ const mouseOffsetY = ref(0)
 const handleMouseMove = (e) => {
     const windowWidth = window.innerWidth
     const windowHeight = window.innerHeight
-    
+
     // Normalized -1 to 1 for global parallax
     mouseOffsetX.value = ((e.clientX - windowWidth / 2) / (windowWidth / 2))
     mouseOffsetY.value = ((e.clientY - windowHeight / 2) / (windowHeight / 2))
@@ -76,19 +76,82 @@ const shineStyle = computed(() => {
     }
 })
 
-// Floating 3D Logos configuration (multi-layered depths and sizes)
+// ===================================================================
+// DYNAMIC 20-SECOND ANIMATION CYCLE FOR FLOATING EMBLEMS
+// ===================================================================
+const currentModeIndex = ref(0)
+const timerProgress = ref(0)
+let cycleInterval = null
+let progressInterval = null
+
+const animationModes = [
+    {
+        id: 'cosmic',
+        name: 'Orbit Kosmik 3D',
+        icon: '🪐',
+        desc: 'Melayang anggun dengan rotasi ruang angkasa',
+        containerClass: 'mode-cosmic',
+        glowColor: 'from-amber-400/50 via-yellow-300/30 to-blue-500/50',
+    },
+    {
+        id: 'pulse',
+        name: 'Cyber Pulse Neon',
+        icon: '⚡',
+        desc: 'Denyut energi teknologi dengan gelombang cahaya',
+        containerClass: 'mode-pulse',
+        glowColor: 'from-cyan-400/50 via-blue-500/30 to-amber-400/50',
+    },
+    {
+        id: 'antigravity',
+        name: 'Anti-Gravitasi Murni',
+        icon: '✨',
+        desc: 'Melayang bebas tanpa bobot dengan ayunan halus',
+        containerClass: 'mode-antigravity',
+        glowColor: 'from-emerald-400/40 via-amber-300/40 to-indigo-500/40',
+    },
+    {
+        id: 'shimmer',
+        name: 'Kemilau Intan Banjar',
+        icon: '💎',
+        desc: 'Kilauan kristal memantulkan kemewahan emblem',
+        containerClass: 'mode-shimmer',
+        glowColor: 'from-amber-300/60 via-yellow-200/50 to-amber-500/60',
+    },
+]
+
+const currentMode = computed(() => animationModes[currentModeIndex.value])
+
+onMounted(() => {
+    // Mode switcher every 20 seconds (20,000 ms)
+    cycleInterval = setInterval(() => {
+        currentModeIndex.value = (currentModeIndex.value + 1) % animationModes.length
+        timerProgress.value = 0
+    }, 20000)
+
+    // Smooth visual progress indicator (updated every 100ms)
+    progressInterval = setInterval(() => {
+        timerProgress.value = Math.min(100, timerProgress.value + (100 / 200))
+    }, 100)
+})
+
+onUnmounted(() => {
+    if (cycleInterval) clearInterval(cycleInterval)
+    if (progressInterval) clearInterval(progressInterval)
+})
+
+// Precisely Scaled & Positioned Floating Emblems (Fixed pixel bounds to prevent any blowout)
 const floatingLogos = [
     // Left Wing
-    { id: 'left-1', top: '12%', left: '3%', size: 'w-24 h-24 xl:w-28 xl:h-28', depth: 45, floatClass: 'anim-float-1', delay: '0s', opacity: 'opacity-90', glow: 'bg-amber-400/30' },
-    { id: 'left-2', top: '44%', left: '7%', size: 'w-16 h-16 xl:w-20 xl:h-20', depth: 30, floatClass: 'anim-float-2', delay: '1.8s', opacity: 'opacity-80', glow: 'bg-yellow-400/25' },
-    { id: 'left-3', top: '74%', left: '2%', size: 'w-20 h-20 xl:w-24 xl:h-24', depth: 40, floatClass: 'anim-float-3', delay: '3.2s', opacity: 'opacity-85', glow: 'bg-amber-500/30' },
-    { id: 'left-4', top: '28%', left: '14%', size: 'w-12 h-12 xl:w-14 xl:h-14', depth: 18, floatClass: 'anim-float-4', delay: '2.5s', opacity: 'opacity-55', glow: 'bg-blue-400/20' },
+    { id: 'left-1', top: '10%', left: '3%', sizePx: 84, depth: 45, delay: '0s', opacity: 'opacity-90', tilt: -10 },
+    { id: 'left-2', top: '36%', left: '8%', sizePx: 64, depth: 28, delay: '1.5s', opacity: 'opacity-80', tilt: 8 },
+    { id: 'left-3', top: '64%', left: '4%', sizePx: 78, depth: 38, delay: '3.2s', opacity: 'opacity-85', tilt: -6 },
+    { id: 'left-4', top: '86%', left: '11%', sizePx: 54, depth: 18, delay: '2.1s', opacity: 'opacity-65', tilt: 14 },
 
     // Right Wing
-    { id: 'right-1', top: '10%', right: '4%', size: 'w-22 h-22 xl:w-26 xl:h-26', depth: 42, floatClass: 'anim-float-3', delay: '0.9s', opacity: 'opacity-90', glow: 'bg-amber-400/30' },
-    { id: 'right-2', top: '42%', right: '6%', size: 'w-24 h-24 xl:w-30 xl:h-30', depth: 50, floatClass: 'anim-float-1', delay: '2.4s', opacity: 'opacity-95', glow: 'bg-yellow-300/35' },
-    { id: 'right-3', top: '75%', right: '3%', size: 'w-18 h-18 xl:w-22 xl:h-22', depth: 28, floatClass: 'anim-float-2', delay: '1.2s', opacity: 'opacity-80', glow: 'bg-amber-500/25' },
-    { id: 'right-4', top: '26%', right: '14%', size: 'w-12 h-12 xl:w-14 xl:h-14', depth: 16, floatClass: 'anim-float-4', delay: '3.7s', opacity: 'opacity-55', glow: 'bg-indigo-400/20' },
+    { id: 'right-1', top: '12%', right: '3%', sizePx: 80, depth: 42, delay: '0.8s', opacity: 'opacity-90', tilt: 12 },
+    { id: 'right-2', top: '38%', right: '8%', sizePx: 68, depth: 32, delay: '2.4s', opacity: 'opacity-85', tilt: -9 },
+    { id: 'right-3', top: '66%', right: '4%', sizePx: 82, depth: 48, delay: '1.2s', opacity: 'opacity-90', tilt: 7 },
+    { id: 'right-4', top: '88%', right: '10%', sizePx: 56, depth: 20, delay: '3.6s', opacity: 'opacity-65', tilt: -15 },
 ]
 
 const getParallaxTransform = (depth) => {
@@ -125,12 +188,12 @@ const submit = () => {
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[48rem] h-[48rem] bg-indigo-600/10 rounded-full blur-[170px] pointer-events-none"></div>
 
         <!-- Floating 3D Geometric Accents -->
-        <div class="floating-cube cube-1 pointer-events-none hidden xl:block"></div>
-        <div class="floating-cube cube-2 pointer-events-none hidden xl:block"></div>
-        <div class="floating-cube cube-3 pointer-events-none hidden xl:block"></div>
+        <div class="floating-cube cube-1 pointer-events-none hidden 2xl:block"></div>
+        <div class="floating-cube cube-2 pointer-events-none hidden 2xl:block"></div>
+        <div class="floating-cube cube-3 pointer-events-none hidden 2xl:block"></div>
 
         <!-- =================================================================== -->
-        <!-- FLOATING 3D EMBLEMS (RANDOM & ELEGANT ORBITING LOGOS)               -->
+        <!-- FLOATING 3D EMBLEMS (CYCLIC ANIMATIONS EVERY 20 SECONDS)           -->
         <!-- =================================================================== -->
         <div
             v-for="item in floatingLogos"
@@ -143,28 +206,65 @@ const submit = () => {
                 transform: getParallaxTransform(item.depth)
             }"
         >
-            <div :class="[item.floatClass, 'transform-gpu']" :style="{ animationDelay: item.delay }">
-                <div class="relative group/orbit">
-                    <!-- Holographic Aura -->
-                    <div :class="['absolute -inset-2.5 rounded-full blur-md opacity-80', item.glow, 'animate-pulse-slow']"></div>
-
-                    <!-- 3D Plaque -->
+            <div
+                :class="[currentMode.containerClass, 'transition-all duration-1000 transform-gpu']"
+                :style="{ animationDelay: item.delay }"
+            >
+                <div
+                    class="relative group/orbit transition-all duration-700"
+                    :style="{
+                        width: `${item.sizePx}px`,
+                        height: `${item.sizePx}px`,
+                        transform: `rotate(${item.tilt}deg)`
+                    }"
+                >
+                    <!-- Morphing Holographic Glow (Changes with 20s mode) -->
                     <div
                         :class="[
-                            item.size,
+                            'absolute -inset-2 rounded-full blur-md opacity-80 bg-gradient-to-tr transition-all duration-1000',
+                            currentMode.glowColor
+                        ]"
+                    ></div>
+
+                    <!-- 3D Beveled Plaque Container -->
+                    <div
+                        :class="[
                             item.opacity,
-                            'relative rounded-full p-1 bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 shadow-[0_15px_35px_rgba(0,0,0,0.7),0_0_25px_rgba(245,158,11,0.35)] backdrop-blur-sm'
+                            'relative w-full h-full rounded-full p-1 bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 shadow-[0_12px_30px_rgba(0,0,0,0.7),0_0_20px_rgba(245,158,11,0.35)] backdrop-blur-sm overflow-hidden border border-amber-200/50'
                         ]"
                     >
                         <img
                             src="/images/logo.png"
                             alt="Logo Yayasan Banua Insan Nusantara BASARA"
-                            class="w-full h-full rounded-full object-cover shadow-inner ring-1 ring-white/30"
+                            class="w-full h-full rounded-full object-cover shadow-inner"
                         />
+                        <!-- Dynamic Shimmer Reflection Bar (Activated in shimmer mode) -->
+                        <div class="shimmer-sweep"></div>
                     </div>
 
-                    <!-- Floating Soft 3D Depth Ground Shadow -->
-                    <div class="w-3/4 h-2.5 bg-black/80 mx-auto rounded-full blur-sm mt-1.5 transform scale-x-90"></div>
+                    <!-- Floating Soft 3D Ground Shadow -->
+                    <div class="w-3/4 h-2 bg-black/80 mx-auto rounded-full blur-sm mt-1.5 transform scale-x-90"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- 20-SECOND ANIMATION MODE STATUS BADGE                               -->
+        <!-- =================================================================== -->
+        <div class="fixed bottom-4 left-4 z-20 hidden sm:flex items-center gap-3 px-3.5 py-2 rounded-2xl bg-slate-900/80 backdrop-blur-xl border border-white/15 shadow-xl text-xs text-white pointer-events-none transition-all duration-500">
+            <span class="text-base animate-bounce">{{ currentMode.icon }}</span>
+            <div>
+                <div class="flex items-center gap-2">
+                    <span class="font-bold text-amber-300">{{ currentMode.name }}</span>
+                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-200 border border-blue-400/30 font-mono">20s Mode</span>
+                </div>
+                <div class="text-[10px] text-gray-400">{{ currentMode.desc }}</div>
+                <!-- 20-Second Progress Bar -->
+                <div class="w-full h-1 bg-slate-800 rounded-full mt-1.5 overflow-hidden">
+                    <div
+                        class="h-full bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 transition-all duration-100 ease-linear rounded-full"
+                        :style="{ width: `${timerProgress}%` }"
+                    ></div>
                 </div>
             </div>
         </div>
@@ -182,7 +282,7 @@ const submit = () => {
                 :style="cardTransformStyle"
                 @mouseenter="handleMouseEnter"
                 @mouseleave="handleMouseLeave"
-                class="relative w-full bg-slate-900/75 backdrop-blur-3xl border border-white/20 p-8 sm:p-10 rounded-[2.25rem] shadow-[0_30px_70px_-15px_rgba(0,0,0,0.85),0_0_45px_rgba(59,130,246,0.18)] text-white preserve-3d overflow-hidden"
+                class="relative w-full bg-slate-900/80 backdrop-blur-3xl border border-white/20 p-8 sm:p-10 rounded-[2.25rem] shadow-[0_30px_70px_-15px_rgba(0,0,0,0.85),0_0_45px_rgba(59,130,246,0.18)] text-white preserve-3d overflow-hidden"
             >
                 <!-- Specular Dynamic Glare Overlay -->
                 <div
@@ -429,6 +529,98 @@ const submit = () => {
     animation: pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+/* =================================================================== */
+/* 4 CYCLIC 20-SECOND ANIMATION MODES FOR FLOATING LOGOS               */
+/* =================================================================== */
+
+/* Mode 1: Cosmic Orbit (Elliptical swaying & smooth tilt) */
+.mode-cosmic {
+    animation: animCosmic 7s ease-in-out infinite alternate;
+}
+
+@keyframes animCosmic {
+    0% {
+        transform: translate3d(0, 0, 0) rotate(-6deg) scale(1);
+    }
+    50% {
+        transform: translate3d(8px, -24px, 15px) rotate(8deg) scale(1.05);
+    }
+    100% {
+        transform: translate3d(-8px, -12px, -10px) rotate(-4deg) scale(0.97);
+    }
+}
+
+/* Mode 2: Cyber Pulse (Neon energy pulse with rhythmic scaling) */
+.mode-pulse {
+    animation: animPulse 4s ease-in-out infinite;
+}
+
+@keyframes animPulse {
+    0%, 100% {
+        transform: scale(1) translateY(0px);
+        filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.4));
+    }
+    50% {
+        transform: scale(1.1) translateY(-16px);
+        filter: drop-shadow(0 0 25px rgba(245, 158, 11, 0.7));
+    }
+}
+
+/* Mode 3: Anti-Gravity Float (Smooth weightless floating with slow drift) */
+.mode-antigravity {
+    animation: animAntiGravity 8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+@keyframes animAntiGravity {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    33% {
+        transform: translateY(-28px) rotate(-12deg);
+    }
+    66% {
+        transform: translateY(-10px) rotate(10deg);
+    }
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+}
+
+/* Mode 4: Diamond Shimmer (Gleaming diamond crystal light sweeps) */
+.mode-shimmer {
+    animation: animShimmer 6s ease-in-out infinite;
+}
+
+@keyframes animShimmer {
+    0%, 100% {
+        transform: translateY(0px) rotate(-4deg) scale(1);
+        filter: brightness(1) drop-shadow(0 0 12px rgba(251, 191, 36, 0.4));
+    }
+    50% {
+        transform: translateY(-20px) rotate(6deg) scale(1.06);
+        filter: brightness(1.3) drop-shadow(0 0 30px rgba(251, 191, 36, 0.9));
+    }
+}
+
+/* Shimmer Sweep Effect */
+.shimmer-sweep {
+    position: absolute;
+    inset: -100%;
+    background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.6) 50%, transparent 65%);
+    transform: rotate(25deg);
+    animation: shimmerSlide 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes shimmerSlide {
+    0% {
+        transform: translateX(-150%) rotate(25deg);
+    }
+    40%, 100% {
+        transform: translateX(150%) rotate(25deg);
+    }
+}
+
 /* Floating 3D Geometric Accents */
 .floating-cube {
     position: absolute;
@@ -466,59 +658,6 @@ const submit = () => {
     border-color: rgba(99, 102, 241, 0.35);
     transform: rotate(45deg);
     animation: float3 10s ease-in-out infinite 2s;
-}
-
-/* 4 Distinct Floating Physics Animations for Multiple Logos */
-.anim-float-1 {
-    animation: floatPath1 7s ease-in-out infinite;
-}
-
-.anim-float-2 {
-    animation: floatPath2 9s ease-in-out infinite;
-}
-
-.anim-float-3 {
-    animation: floatPath3 8.5s ease-in-out infinite;
-}
-
-.anim-float-4 {
-    animation: floatPath4 11s ease-in-out infinite;
-}
-
-@keyframes floatPath1 {
-    0%, 100% {
-        transform: translateY(0px) rotate(-6deg) scale(1);
-    }
-    50% {
-        transform: translateY(-22px) rotate(4deg) scale(1.04);
-    }
-}
-
-@keyframes floatPath2 {
-    0%, 100% {
-        transform: translateY(0px) rotate(8deg) scale(0.98);
-    }
-    50% {
-        transform: translateY(-18px) rotate(-4deg) scale(1.02);
-    }
-}
-
-@keyframes floatPath3 {
-    0%, 100% {
-        transform: translateY(0px) rotate(-10deg) scale(1.02);
-    }
-    50% {
-        transform: translateY(-26px) rotate(6deg) scale(0.99);
-    }
-}
-
-@keyframes floatPath4 {
-    0%, 100% {
-        transform: translateY(0px) rotate(5deg) scale(0.95);
-    }
-    50% {
-        transform: translateY(-15px) rotate(-8deg) scale(1.03);
-    }
 }
 
 @keyframes float1 {
