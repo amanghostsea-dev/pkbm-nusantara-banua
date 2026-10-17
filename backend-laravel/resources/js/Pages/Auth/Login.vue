@@ -28,14 +28,22 @@ const submit = () => {
 
         <div class="max-w-md w-full bg-white/10 backdrop-blur-2xl border border-white/20 p-8 sm:p-10 rounded-3xl shadow-2xl text-white relative z-10 transition-all duration-300">
             <!-- Header Brand -->
-            <div class="text-center mb-8">
-                <div class="inline-flex p-4 bg-gradient-to-tr from-blue-500/20 to-indigo-500/20 rounded-2xl mb-3 border border-white/20 shadow-inner">
-                    <span class="text-4xl">🏫</span>
+            <div class="text-center mb-7">
+                <div class="relative inline-block mb-3 group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 rounded-full blur-md opacity-70 group-hover:opacity-100 transition duration-300"></div>
+                    <img
+                        src="/images/logo.png"
+                        alt="Logo Yayasan Banua Insan Nusantara"
+                        class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-2 border-amber-300/80 shadow-2xl mx-auto ring-4 ring-black/40 transform transition group-hover:scale-105 duration-300"
+                    />
                 </div>
-                <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-blue-100 to-indigo-200 bg-clip-text text-transparent">
-                    Sistem Informasi PKBM
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-amber-100 to-blue-200 bg-clip-text text-transparent">
+                    PKBM BASARA
                 </h1>
-                <p class="text-blue-200/90 text-sm mt-1.5 font-medium">Pusat Kegiatan Belajar Masyarakat Terpadu</p>
+                <p class="text-amber-200/90 text-xs sm:text-sm font-semibold tracking-wide uppercase mt-1">
+                    Yayasan Banua Insan Nusantara
+                </p>
+                <p class="text-blue-200/80 text-xs font-medium">Kalimantan Selatan</p>
                 <div class="flex items-center justify-center gap-2 mt-3 text-xs">
                     <span class="px-2.5 py-0.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300">Paket A (SD)</span>
                     <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300">Paket B (SMP)</span>
