@@ -23,9 +23,8 @@ aiohttp==3.10.10
 
 # PDF Generation
 reportlab==4.2.5
-Pillow>=10.4.0,<11.0.0
+Pillow>=10.4.0
 jinja2==3.1.4
-weasyprint==63.0
 
 # Data Processing & Analytics
 pandas==2.2.3

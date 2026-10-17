@@ -12,7 +12,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV PORT=8080
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-# 1. Install system dependencies, Nginx, Python 3, Supervisor & Pango
+# 1. Install system dependencies, Nginx, Python 3, Supervisor
 RUN apt-get update && apt-get install -y --no-install-recommends \
     nginx \
     supervisor \
@@ -29,12 +29,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     python3-pip \
     python3-venv \
-    python3-dev \
-    build-essential \
-    libpango-1.0-0 \
-    libharfbuzz0b \
-    libpangoft2-1.0-0 \
-    libpangocairo-1.0-0 \
     fonts-dejavu-core \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) pdo_mysql gd zip bcmath opcache \
