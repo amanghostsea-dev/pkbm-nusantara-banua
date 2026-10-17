@@ -56,12 +56,14 @@ RUN mkdir -p storage/raport storage/sertifikat storage/temp
 WORKDIR /var/www/laravel
 COPY backend-laravel ./
 
-# Prepare environment before composer
-RUN if [ ! -f .env ]; then cp .env.example .env 2>/dev/null || touch .env; fi
+# Prepare environment
+RUN cp .env.example .env
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 RUN composer dump-autoload --optimize --no-dev
 
+ENV APP_KEY=base64:q2r6l12l8Kz4qj2E0Z4D21HwP3u7y6X1Y8Z9a0b1c2d=
 ENV DB_CONNECTION=sqlite
+ENV DB_DATABASE=/var/www/laravel/database/database.sqlite
 ENV APP_ENV=production
 ENV APP_DEBUG=false
 
