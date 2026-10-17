@@ -22,6 +22,10 @@ chown -R www-data:www-data /var/www/laravel/storage /var/www/laravel/bootstrap/c
 
 # Run Laravel optimizations
 cd /var/www/laravel
+if [ -z "$APP_KEY" ]; then
+    php artisan key:generate --force || true
+fi
+php artisan package:discover --ansi || true
 php artisan storage:link || true
 php artisan config:clear || true
 php artisan route:clear || true

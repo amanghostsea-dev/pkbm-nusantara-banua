@@ -16,7 +16,6 @@ cryptography==43.0.3
 
 # Redis & Cache
 redis==5.2.0
-aioredis==2.0.1
 
 # HTTP Client (komunikasi ke Laravel)
 httpx==0.27.2
