@@ -49,6 +49,7 @@ RUN mkdir -p storage/raport storage/sertifikat storage/temp
 # 4. Setup Laravel Backend
 WORKDIR /var/www/laravel
 COPY backend-laravel ./
+RUN mkdir -p bootstrap/cache storage/framework/{sessions,views,cache} storage/logs database
 
 # Prepare environment
 RUN cp .env.example .env

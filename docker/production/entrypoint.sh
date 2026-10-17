@@ -18,7 +18,8 @@ ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 # Verify Nginx configuration syntax
 nginx -t
 
-# Clean stale bootstrap cache from development
+# Clean stale bootstrap cache from development and ensure cache folder exists
+mkdir -p /var/www/laravel/bootstrap/cache
 rm -f /var/www/laravel/bootstrap/cache/*.php
 
 # Permissions for storage & database
@@ -31,8 +32,8 @@ if [ ! -f /var/www/laravel/database/database.sqlite ]; then
     cd /var/www/laravel && php artisan migrate --force --seed || true
 fi
 
-chmod -R 777 /var/www/laravel/storage /var/www/laravel/bootstrap/cache /var/www/laravel/database
-chown -R www-data:www-data /var/www/laravel/storage /var/www/laravel/bootstrap/cache /var/www/laravel/database
+chmod -R 777 /var/www/laravel/storage /var/www/laravel/bootstrap/cache /var/www/laravel/database || true
+chown -R www-data:www-data /var/www/laravel/storage /var/www/laravel/bootstrap/cache /var/www/laravel/database || true
 
 cd /var/www/laravel
 php artisan package:discover --ansi || true
@@ -41,8 +42,8 @@ php artisan config:clear || true
 php artisan route:clear || true
 php artisan view:clear || true
 
-chmod -R 777 /var/www/laravel/storage /var/www/laravel/bootstrap/cache /var/www/laravel/database
-chown -R www-data:www-data /var/www/laravel/storage /var/www/laravel/bootstrap/cache /var/www/laravel/database
+chmod -R 777 /var/www/laravel/storage /var/www/laravel/bootstrap/cache /var/www/laravel/database || true
+chown -R www-data:www-data /var/www/laravel/storage /var/www/laravel/bootstrap/cache /var/www/laravel/database || true
 
 echo "[ENTRYPOINT] Starting Supervisor on port $PORT..."
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
