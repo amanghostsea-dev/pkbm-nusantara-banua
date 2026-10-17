@@ -89,31 +89,31 @@ const animationModes = [
         id: 'cosmic',
         name: 'Orbit Kosmik 3D',
         icon: '🪐',
-        desc: 'Melayang anggun dengan rotasi ruang angkasa',
+        desc: 'Menjelajah orbit luas melintasi ruang angkasa',
         containerClass: 'mode-cosmic',
         glowColor: 'from-amber-400/50 via-yellow-300/30 to-blue-500/50',
     },
     {
         id: 'pulse',
-        name: 'Cyber Pulse Neon',
+        name: 'Cyber Wave Drift',
         icon: '⚡',
-        desc: 'Denyut energi teknologi dengan gelombang cahaya',
+        desc: 'Bergerak meliuk angka 8 dengan gelombang neon',
         containerClass: 'mode-pulse',
         glowColor: 'from-cyan-400/50 via-blue-500/30 to-amber-400/50',
     },
     {
         id: 'antigravity',
-        name: 'Anti-Gravitasi Murni',
+        name: 'Anti-Gravitasi Bebas',
         icon: '✨',
-        desc: 'Melayang bebas tanpa bobot dengan ayunan halus',
+        desc: 'Melayang mengapung bebas tanpa bobot kesana kemari',
         containerClass: 'mode-antigravity',
         glowColor: 'from-emerald-400/40 via-amber-300/40 to-indigo-500/40',
     },
     {
         id: 'shimmer',
-        name: 'Kemilau Intan Banjar',
+        name: 'Vortex Spiral & Intan',
         icon: '💎',
-        desc: 'Kilauan kristal memantulkan kemewahan emblem',
+        desc: 'Pusaran spiral dinamis dengan kemilau intan Banjar',
         containerClass: 'mode-shimmer',
         glowColor: 'from-amber-300/60 via-yellow-200/50 to-amber-500/60',
     },
@@ -121,11 +121,15 @@ const animationModes = [
 
 const currentMode = computed(() => animationModes[currentModeIndex.value])
 
+const nextModeManually = () => {
+    currentModeIndex.value = (currentModeIndex.value + 1) % animationModes.length
+    timerProgress.value = 0
+}
+
 onMounted(() => {
     // Mode switcher every 20 seconds (20,000 ms)
     cycleInterval = setInterval(() => {
-        currentModeIndex.value = (currentModeIndex.value + 1) % animationModes.length
-        timerProgress.value = 0
+        nextModeManually()
     }, 20000)
 
     // Smooth visual progress indicator (updated every 100ms)
@@ -139,19 +143,19 @@ onUnmounted(() => {
     if (progressInterval) clearInterval(progressInterval)
 })
 
-// Precisely Scaled & Positioned Floating Emblems (Fixed pixel bounds to prevent any blowout)
+// Precisely Scaled & Positioned Floating Emblems with Dynamic Wandering Tracks
 const floatingLogos = [
-    // Left Wing
-    { id: 'left-1', top: '10%', left: '3%', sizePx: 84, depth: 45, delay: '0s', opacity: 'opacity-90', tilt: -10 },
-    { id: 'left-2', top: '36%', left: '8%', sizePx: 64, depth: 28, delay: '1.5s', opacity: 'opacity-80', tilt: 8 },
-    { id: 'left-3', top: '64%', left: '4%', sizePx: 78, depth: 38, delay: '3.2s', opacity: 'opacity-85', tilt: -6 },
-    { id: 'left-4', top: '86%', left: '11%', sizePx: 54, depth: 18, delay: '2.1s', opacity: 'opacity-65', tilt: 14 },
+    // Left Wing (Wide roving orbits on left side)
+    { id: 'left-1', top: '10%', left: '3%', sizePx: 84, depth: 45, delay: '0s', opacity: 'opacity-95', tilt: -10, track: 'track-a' },
+    { id: 'left-2', top: '34%', left: '6%', sizePx: 64, depth: 28, delay: '1.2s', opacity: 'opacity-85', tilt: 8, track: 'track-b' },
+    { id: 'left-3', top: '62%', left: '3%', sizePx: 78, depth: 38, delay: '2.5s', opacity: 'opacity-90', tilt: -6, track: 'track-c' },
+    { id: 'left-4', top: '84%', left: '8%', sizePx: 56, depth: 20, delay: '1.8s', opacity: 'opacity-75', tilt: 14, track: 'track-d' },
 
-    // Right Wing
-    { id: 'right-1', top: '12%', right: '3%', sizePx: 80, depth: 42, delay: '0.8s', opacity: 'opacity-90', tilt: 12 },
-    { id: 'right-2', top: '38%', right: '8%', sizePx: 68, depth: 32, delay: '2.4s', opacity: 'opacity-85', tilt: -9 },
-    { id: 'right-3', top: '66%', right: '4%', sizePx: 82, depth: 48, delay: '1.2s', opacity: 'opacity-90', tilt: 7 },
-    { id: 'right-4', top: '88%', right: '10%', sizePx: 56, depth: 20, delay: '3.6s', opacity: 'opacity-65', tilt: -15 },
+    // Right Wing (Wide roving orbits on right side)
+    { id: 'right-1', top: '12%', right: '3%', sizePx: 80, depth: 42, delay: '0.6s', opacity: 'opacity-95', tilt: 12, track: 'track-c' },
+    { id: 'right-2', top: '36%', right: '7%', sizePx: 68, depth: 32, delay: '2.1s', opacity: 'opacity-85', tilt: -9, track: 'track-d' },
+    { id: 'right-3', top: '64%', right: '4%', sizePx: 82, depth: 48, delay: '1.0s', opacity: 'opacity-90', tilt: 7, track: 'track-a' },
+    { id: 'right-4', top: '86%', right: '8%', sizePx: 58, depth: 22, delay: '3.0s', opacity: 'opacity-75', tilt: -15, track: 'track-b' },
 ]
 
 const getParallaxTransform = (depth) => {
@@ -193,7 +197,7 @@ const submit = () => {
         <div class="floating-cube cube-3 pointer-events-none hidden 2xl:block"></div>
 
         <!-- =================================================================== -->
-        <!-- FLOATING 3D EMBLEMS (CYCLIC ANIMATIONS EVERY 20 SECONDS)           -->
+        <!-- FLOATING 3D EMBLEMS (CYCLIC WANDERING ANIMATIONS EVERY 20 SECONDS) -->
         <!-- =================================================================== -->
         <div
             v-for="item in floatingLogos"
@@ -207,7 +211,7 @@ const submit = () => {
             }"
         >
             <div
-                :class="[currentMode.containerClass, 'transition-all duration-1000 transform-gpu']"
+                :class="[currentMode.containerClass, item.track, 'transition-all duration-1000 transform-gpu']"
                 :style="{ animationDelay: item.delay }"
             >
                 <div
@@ -251,12 +255,17 @@ const submit = () => {
         <!-- =================================================================== -->
         <!-- 20-SECOND ANIMATION MODE STATUS BADGE                               -->
         <!-- =================================================================== -->
-        <div class="fixed bottom-4 left-4 z-20 hidden sm:flex items-center gap-3 px-3.5 py-2 rounded-2xl bg-slate-900/80 backdrop-blur-xl border border-white/15 shadow-xl text-xs text-white pointer-events-none transition-all duration-500">
-            <span class="text-base animate-bounce">{{ currentMode.icon }}</span>
+        <div
+            class="fixed bottom-4 left-4 z-20 hidden sm:flex items-center gap-3 px-3.5 py-2.5 rounded-2xl bg-slate-900/85 backdrop-blur-xl border border-white/15 shadow-2xl text-xs text-white cursor-pointer hover:border-amber-400/50 hover:bg-slate-900 transition-all duration-300 group"
+            @click="nextModeManually"
+            title="Klik untuk langsung ganti mode animasi berikutnya"
+        >
+            <span class="text-base transition-transform duration-300 group-hover:scale-125">{{ currentMode.icon }}</span>
             <div>
                 <div class="flex items-center gap-2">
-                    <span class="font-bold text-amber-300">{{ currentMode.name }}</span>
-                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-200 border border-blue-400/30 font-mono">20s Mode</span>
+                    <span class="font-bold text-amber-300 group-hover:text-amber-200 transition-colors">{{ currentMode.name }}</span>
+                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-200 border border-blue-400/30 font-mono group-hover:bg-amber-500/20 group-hover:text-amber-300 group-hover:border-amber-400/40 transition-colors">20s Siklus</span>
+                    <span class="text-[10px] text-gray-500 group-hover:text-gray-300 transition-colors hidden md:inline">⇄ Klik ganti</span>
                 </div>
                 <div class="text-[10px] text-gray-400">{{ currentMode.desc }}</div>
                 <!-- 20-Second Progress Bar -->
@@ -530,75 +539,347 @@ const submit = () => {
 }
 
 /* =================================================================== */
-/* 4 CYCLIC 20-SECOND ANIMATION MODES FOR FLOATING LOGOS               */
+/* 4 CYCLIC 20-SECOND DYNAMIC WANDERING MODES (KESANA KEMARI)          */
 /* =================================================================== */
 
-/* Mode 1: Cosmic Orbit (Elliptical swaying & smooth tilt) */
-.mode-cosmic {
-    animation: animCosmic 7s ease-in-out infinite alternate;
+/* --- MODE 1: ORBIT KOSMIK 3D (Cosmic Planetary Orbiting) --- */
+.mode-cosmic.track-a {
+    animation: cosmicOrbitA 9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+.mode-cosmic.track-b {
+    animation: cosmicOrbitB 11s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+.mode-cosmic.track-c {
+    animation: cosmicOrbitC 10s ease-in-out infinite;
+}
+.mode-cosmic.track-d {
+    animation: cosmicOrbitD 8.5s ease-in-out infinite;
 }
 
-@keyframes animCosmic {
+@keyframes cosmicOrbitA {
     0% {
-        transform: translate3d(0, 0, 0) rotate(-6deg) scale(1);
+        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
+    }
+    25% {
+        transform: translate3d(45px, -50px, 20px) rotate(12deg) scale(1.06);
     }
     50% {
-        transform: translate3d(8px, -24px, 15px) rotate(8deg) scale(1.05);
+        transform: translate3d(60px, 25px, 35px) rotate(4deg) scale(1.08);
+    }
+    75% {
+        transform: translate3d(-35px, 45px, -10px) rotate(-10deg) scale(0.95);
     }
     100% {
-        transform: translate3d(-8px, -12px, -10px) rotate(-4deg) scale(0.97);
+        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
     }
 }
 
-/* Mode 2: Cyber Pulse (Neon energy pulse with rhythmic scaling) */
-.mode-pulse {
-    animation: animPulse 4s ease-in-out infinite;
-}
-
-@keyframes animPulse {
-    0%, 100% {
-        transform: scale(1) translateY(0px);
-        filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.4));
+@keyframes cosmicOrbitB {
+    0% {
+        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
+    }
+    25% {
+        transform: translate3d(-45px, 40px, -15px) rotate(-14deg) scale(0.94);
     }
     50% {
-        transform: scale(1.1) translateY(-16px);
-        filter: drop-shadow(0 0 25px rgba(245, 158, 11, 0.7));
+        transform: translate3d(-55px, -35px, 15px) rotate(6deg) scale(1.04);
     }
-}
-
-/* Mode 3: Anti-Gravity Float (Smooth weightless floating with slow drift) */
-.mode-antigravity {
-    animation: animAntiGravity 8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-}
-
-@keyframes animAntiGravity {
-    0% {
-        transform: translateY(0px) rotate(0deg);
-    }
-    33% {
-        transform: translateY(-28px) rotate(-12deg);
-    }
-    66% {
-        transform: translateY(-10px) rotate(10deg);
+    75% {
+        transform: translate3d(40px, -45px, 30px) rotate(15deg) scale(1.08);
     }
     100% {
-        transform: translateY(0px) rotate(0deg);
+        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
     }
 }
 
-/* Mode 4: Diamond Shimmer (Gleaming diamond crystal light sweeps) */
-.mode-shimmer {
-    animation: animShimmer 6s ease-in-out infinite;
+@keyframes cosmicOrbitC {
+    0% {
+        transform: translate3d(0px, 0px, 0px) rotate(-5deg) scale(0.98);
+    }
+    30% {
+        transform: translate3d(50px, 35px, 25px) rotate(10deg) scale(1.07);
+    }
+    70% {
+        transform: translate3d(-45px, -45px, -10px) rotate(-12deg) scale(0.95);
+    }
+    100% {
+        transform: translate3d(0px, 0px, 0px) rotate(-5deg) scale(0.98);
+    }
 }
 
-@keyframes animShimmer {
-    0%, 100% {
-        transform: translateY(0px) rotate(-4deg) scale(1);
-        filter: brightness(1) drop-shadow(0 0 12px rgba(251, 191, 36, 0.4));
+@keyframes cosmicOrbitD {
+    0% {
+        transform: translate3d(0px, 0px, 0px) rotate(8deg) scale(1);
+    }
+    40% {
+        transform: translate3d(-50px, 45px, 20px) rotate(-10deg) scale(1.05);
+    }
+    80% {
+        transform: translate3d(40px, -40px, -15px) rotate(14deg) scale(0.96);
+    }
+    100% {
+        transform: translate3d(0px, 0px, 0px) rotate(8deg) scale(1);
+    }
+}
+
+
+/* --- MODE 2: CYBER WAVE DRIFT (Fluid Figure-8 & Sinusoidal Wandering) --- */
+.mode-pulse.track-a {
+    animation: cyberWaveA 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.mode-pulse.track-b {
+    animation: cyberWaveB 8.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.mode-pulse.track-c {
+    animation: cyberWaveC 6.5s ease-in-out infinite;
+}
+.mode-pulse.track-d {
+    animation: cyberWaveD 7.5s ease-in-out infinite;
+}
+
+@keyframes cyberWaveA {
+    0% {
+        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
+        filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.4));
+    }
+    20% {
+        transform: translate3d(55px, -35px, 15px) rotate(15deg) scale(1.08);
+        filter: drop-shadow(0 0 25px rgba(56, 189, 248, 0.8));
+    }
+    40% {
+        transform: translate3d(20px, 45px, -10px) rotate(-8deg) scale(0.96);
+        filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5));
+    }
+    60% {
+        transform: translate3d(-50px, -30px, 20px) rotate(-16deg) scale(1.06);
+        filter: drop-shadow(0 0 28px rgba(56, 189, 248, 0.9));
+    }
+    80% {
+        transform: translate3d(-25px, 40px, -5px) rotate(8deg) scale(0.98);
+        filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.6));
+    }
+    100% {
+        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
+        filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.4));
+    }
+}
+
+@keyframes cyberWaveB {
+    0% {
+        transform: translate3d(0px, 0px, 0px) rotate(-8deg) scale(0.96);
+    }
+    25% {
+        transform: translate3d(-60px, 30px, 20px) rotate(14deg) scale(1.08);
     }
     50% {
-        transform: translateY(-20px) rotate(6deg) scale(1.06);
-        filter: brightness(1.3) drop-shadow(0 0 30px rgba(251, 191, 36, 0.9));
+        transform: translate3d(15px, -55px, -15px) rotate(-12deg) scale(0.94);
+    }
+    75% {
+        transform: translate3d(60px, 25px, 25px) rotate(10deg) scale(1.06);
+    }
+    100% {
+        transform: translate3d(0px, 0px, 0px) rotate(-8deg) scale(0.96);
+    }
+}
+
+@keyframes cyberWaveC {
+    0% {
+        transform: translate3d(0px, 0px, 0px) rotate(5deg);
+    }
+    30% {
+        transform: translate3d(45px, 55px, 15px) rotate(-12deg) scale(1.07);
+    }
+    60% {
+        transform: translate3d(-45px, -50px, -10px) rotate(16deg) scale(0.95);
+    }
+    100% {
+        transform: translate3d(0px, 0px, 0px) rotate(5deg);
+    }
+}
+
+@keyframes cyberWaveD {
+    0% {
+        transform: translate3d(0px, 0px, 0px) rotate(-10deg);
+    }
+    35% {
+        transform: translate3d(-55px, -45px, 25px) rotate(15deg) scale(1.1);
+    }
+    70% {
+        transform: translate3d(50px, 40px, -20px) rotate(-8deg) scale(0.93);
+    }
+    100% {
+        transform: translate3d(0px, 0px, 0px) rotate(-10deg);
+    }
+}
+
+
+/* --- MODE 3: ANTI-GRAVITASI BEBAS (Weightless Free-Floating Drift) --- */
+.mode-antigravity.track-a {
+    animation: antigravityFloatA 10s cubic-bezier(0.35, 0.1, 0.25, 1) infinite;
+}
+.mode-antigravity.track-b {
+    animation: antigravityFloatB 12s cubic-bezier(0.35, 0.1, 0.25, 1) infinite;
+}
+.mode-antigravity.track-c {
+    animation: antigravityFloatC 11s ease-in-out infinite;
+}
+.mode-antigravity.track-d {
+    animation: antigravityFloatD 9.5s ease-in-out infinite;
+}
+
+@keyframes antigravityFloatA {
+    0% {
+        transform: translate3d(0px, 0px, 0px) rotate(0deg);
+    }
+    30% {
+        transform: translate3d(40px, -70px, 30px) rotate(-15deg) scale(1.06);
+    }
+    60% {
+        transform: translate3d(-40px, -20px, 10px) rotate(12deg) scale(1.02);
+    }
+    85% {
+        transform: translate3d(20px, 35px, -15px) rotate(-6deg) scale(0.95);
+    }
+    100% {
+        transform: translate3d(0px, 0px, 0px) rotate(0deg);
+    }
+}
+
+@keyframes antigravityFloatB {
+    0% {
+        transform: translate3d(0px, 0px, 0px) rotate(8deg);
+    }
+    25% {
+        transform: translate3d(-45px, 50px, -20px) rotate(-14deg) scale(0.94);
+    }
+    55% {
+        transform: translate3d(50px, -65px, 35px) rotate(18deg) scale(1.08);
+    }
+    80% {
+        transform: translate3d(-20px, -15px, 15px) rotate(-5deg) scale(1.01);
+    }
+    100% {
+        transform: translate3d(0px, 0px, 0px) rotate(8deg);
+    }
+}
+
+@keyframes antigravityFloatC {
+    0% {
+        transform: translate3d(0px, 0px, 0px) rotate(-12deg);
+    }
+    40% {
+        transform: translate3d(-55px, -60px, 25px) rotate(16deg) scale(1.07);
+    }
+    75% {
+        transform: translate3d(45px, 45px, -10px) rotate(-8deg) scale(0.96);
+    }
+    100% {
+        transform: translate3d(0px, 0px, 0px) rotate(-12deg);
+    }
+}
+
+@keyframes antigravityFloatD {
+    0% {
+        transform: translate3d(0px, 0px, 0px) rotate(10deg);
+    }
+    35% {
+        transform: translate3d(55px, 40px, -15px) rotate(-12deg) scale(0.95);
+    }
+    70% {
+        transform: translate3d(-40px, -60px, 30px) rotate(14deg) scale(1.09);
+    }
+    100% {
+        transform: translate3d(0px, 0px, 0px) rotate(10deg);
+    }
+}
+
+
+/* --- MODE 4: VORTEX SPIRAL & INTAN (Vortex Roaming & Diamond Glints) --- */
+.mode-shimmer.track-a {
+    animation: vortexSpiralA 8s ease-in-out infinite;
+}
+.mode-shimmer.track-b {
+    animation: vortexSpiralB 9.5s ease-in-out infinite;
+}
+.mode-shimmer.track-c {
+    animation: vortexSpiralC 7.5s ease-in-out infinite;
+}
+.mode-shimmer.track-d {
+    animation: vortexSpiralD 8.5s ease-in-out infinite;
+}
+
+@keyframes vortexSpiralA {
+    0% {
+        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
+        filter: drop-shadow(0 0 14px rgba(251, 191, 36, 0.4));
+    }
+    25% {
+        transform: translate3d(45px, 20px, 15px) rotate(35deg) scale(1.05);
+        filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.7));
+    }
+    50% {
+        transform: translate3d(15px, -55px, 30px) rotate(70deg) scale(1.12);
+        filter: brightness(1.25) drop-shadow(0 0 35px rgba(251, 191, 36, 1));
+    }
+    75% {
+        transform: translate3d(-45px, -20px, -10px) rotate(35deg) scale(0.96);
+        filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.5));
+    }
+    100% {
+        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
+        filter: drop-shadow(0 0 14px rgba(251, 191, 36, 0.4));
+    }
+}
+
+@keyframes vortexSpiralB {
+    0% {
+        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
+    }
+    25% {
+        transform: translate3d(-40px, -35px, 20px) rotate(-40deg) scale(1.08);
+        filter: brightness(1.2) drop-shadow(0 0 30px rgba(251, 191, 36, 0.9));
+    }
+    50% {
+        transform: translate3d(45px, -45px, -15px) rotate(-75deg) scale(0.95);
+    }
+    75% {
+        transform: translate3d(35px, 45px, 25px) rotate(-35deg) scale(1.06);
+        filter: brightness(1.15) drop-shadow(0 0 25px rgba(251, 191, 36, 0.8));
+    }
+    100% {
+        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
+    }
+}
+
+@keyframes vortexSpiralC {
+    0% {
+        transform: translate3d(0px, 0px, 0px) rotate(-15deg);
+    }
+    35% {
+        transform: translate3d(50px, -50px, 30px) rotate(35deg) scale(1.1);
+        filter: brightness(1.3) drop-shadow(0 0 32px rgba(251, 191, 36, 0.95));
+    }
+    70% {
+        transform: translate3d(-45px, 35px, -10px) rotate(-25deg) scale(0.94);
+    }
+    100% {
+        transform: translate3d(0px, 0px, 0px) rotate(-15deg);
+    }
+}
+
+@keyframes vortexSpiralD {
+    0% {
+        transform: translate3d(0px, 0px, 0px) rotate(15deg);
+    }
+    35% {
+        transform: translate3d(-45px, 45px, 25px) rotate(-30deg) scale(1.09);
+        filter: brightness(1.25) drop-shadow(0 0 28px rgba(251, 191, 36, 0.85));
+    }
+    70% {
+        transform: translate3d(40px, -40px, -15px) rotate(20deg) scale(0.95);
+    }
+    100% {
+        transform: translate3d(0px, 0px, 0px) rotate(15deg);
     }
 }
 
