@@ -39,6 +39,7 @@ const navItems = [
     { name: 'Modul Belajar', href: '/tutor/materi', icon: '📖' },
     { name: 'Tugas & Evaluasi', href: '/tutor/tugas', icon: '📝' },
     { name: 'Presensi Siswa', href: '/tutor/absensi', icon: '✅' },
+    { name: 'Profil & Sandi', href: '/profile', icon: '👤' },
 ]
 
 const toggleMobileDrawer = () => {
@@ -92,10 +93,27 @@ const closeMobileDrawer = () => {
                 <!-- Right Action Buttons -->
                 <div class="flex items-center gap-2 sm:gap-3">
                     <!-- User Profile (Tablet & Desktop) -->
-                    <div class="text-right hidden sm:block">
-                        <div class="text-xs font-bold text-gray-800 truncate max-w-[150px]">{{ user?.name || 'Tutor Pengajar' }}</div>
-                        <div class="text-[10px] text-emerald-600 font-semibold">Tutor Pengajar</div>
-                    </div>
+                    <Link
+                        href="/profile"
+                        class="text-right hidden sm:block group hover:opacity-80 transition cursor-pointer"
+                        title="Buka Pengaturan Profil & Ganti Kata Sandi"
+                    >
+                        <div class="text-xs font-bold text-gray-800 truncate max-w-[150px] group-hover:text-emerald-700 transition">{{ user?.name || 'Tutor Pengajar' }}</div>
+                        <div class="text-[10px] text-emerald-600 font-semibold flex items-center justify-end gap-1">
+                            <span>Tutor Pengajar</span>
+                            <span class="text-[9px]">⚙️</span>
+                        </div>
+                    </Link>
+
+                    <!-- Profile Quick Button -->
+                    <Link
+                        href="/profile"
+                        class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-xs font-bold text-emerald-700 transition"
+                        title="Profil & Ganti Kata Sandi Mandiri"
+                    >
+                        <span>👤</span>
+                        <span>Profil</span>
+                    </Link>
 
                     <!-- Logout Button (Desktop) -->
                     <Link
@@ -168,6 +186,21 @@ const closeMobileDrawer = () => {
 
             <!-- Drawer Navigation Items -->
             <div class="flex-1 overflow-y-auto p-4 space-y-1.5">
+                <!-- User Profile Quick Card -->
+                <Link
+                    href="/profile"
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200/60 mb-3 group hover:border-emerald-300 transition"
+                    @click="closeMobileDrawer"
+                >
+                    <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">
+                        👤
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-xs font-bold text-slate-800 truncate">{{ user?.name || 'Tutor' }}</div>
+                        <div class="text-[10px] text-emerald-700 font-semibold">Ubah Profil & Sandi Mandiri →</div>
+                    </div>
+                </Link>
+
                 <div class="text-[11px] font-bold uppercase tracking-wider text-gray-400 px-3 py-1">Menu Akademik Tutor</div>
                 <Link
                     v-for="item in navItems"

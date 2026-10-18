@@ -110,6 +110,7 @@ const navGroups = [
             { name: 'Manajemen Pengguna', href: '/admin/users', icon: '👥', route: 'admin.users.*', superAdminOnly: true },
             { name: 'Pembayaran', href: '/admin/pembayarans', icon: '💰', route: 'admin.pembayarans.*' },
             { name: 'Laporan', href: '/admin/laporan', icon: '📈', route: 'admin.laporan.*' },
+            { name: 'Profil & Akun Saya', href: '/profile', icon: '👤', route: 'profile.*' },
             { name: 'Pengaturan', href: '/admin/settings', icon: '⚙️', route: 'admin.settings.*', superAdminOnly: true },
         ],
     },
@@ -199,16 +200,32 @@ function isActive(routePattern) {
 
             <!-- User Profile & Logout -->
             <div class="sidebar-user">
-                <div class="user-avatar">
-                    {{ user?.name?.charAt(0)?.toUpperCase() }}
-                </div>
-                <div v-if="sidebarOpen || isMobile" class="user-info">
-                    <p class="user-name">{{ user?.name }}</p>
-                    <p class="user-role flex items-center gap-1">
-                        <span v-if="user?.is_super_admin" class="text-amber-300 font-bold">👑 Admin Utama</span>
-                        <span v-else class="text-blue-200 font-semibold">🛡️ Staf Admin</span>
-                    </p>
-                </div>
+                <Link
+                    href="/profile"
+                    class="flex items-center gap-3 flex-1 min-w-0 group hover:opacity-90 transition cursor-pointer"
+                    title="Buka Pengaturan Profil & Kata Sandi Mandiri"
+                    @click="closeSidebarOnMobile"
+                >
+                    <div class="user-avatar group-hover:ring-2 group-hover:ring-indigo-400 transition">
+                        {{ user?.name?.charAt(0)?.toUpperCase() }}
+                    </div>
+                    <div v-if="sidebarOpen || isMobile" class="user-info">
+                        <p class="user-name group-hover:text-indigo-200 transition truncate">{{ user?.name }}</p>
+                        <p class="user-role flex items-center gap-1">
+                            <span v-if="user?.is_super_admin" class="text-amber-300 font-bold">👑 Admin Utama</span>
+                            <span v-else class="text-blue-200 font-semibold">🛡️ Staf Admin</span>
+                        </p>
+                    </div>
+                </Link>
+                <Link
+                    v-if="sidebarOpen || isMobile"
+                    href="/profile"
+                    class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 text-xs transition"
+                    title="Ubah Profil & Kata Sandi Mandiri"
+                    @click="closeSidebarOnMobile"
+                >
+                    ⚙️
+                </Link>
                 <Link
                     v-if="sidebarOpen || isMobile"
                     href="/logout"
@@ -254,6 +271,16 @@ function isActive(routePattern) {
                         <span>🔍</span>
                         <span class="hidden md:inline">Verifikasi Ijazah</span>
                     </a>
+
+                    <!-- Link Cepat Profil & Sandi Mandiri -->
+                    <Link
+                        href="/profile"
+                        class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold transition flex items-center gap-1.5"
+                        title="Profil & Ganti Kata Sandi Mandiri"
+                    >
+                        <span>👤</span>
+                        <span class="hidden sm:inline">Profil & Sandi</span>
+                    </Link>
 
                     <!-- Notifikasi -->
                     <button class="notif-btn" title="Notifikasi" aria-label="Notifikasi">

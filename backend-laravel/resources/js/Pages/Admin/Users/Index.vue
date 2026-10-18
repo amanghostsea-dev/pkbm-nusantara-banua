@@ -252,13 +252,23 @@ function getAvatarInitials(name) {
                         Kelola akun hierarki sistem: <strong>Admin Utama</strong>, <strong>Staf Admin (Sub-Admin)</strong>, <strong>Tutor</strong>, dan <strong>Siswa</strong>.
                     </p>
                 </div>
-                <button
-                    @click="openCreateModal"
-                    class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-xs shadow-lg shadow-blue-500/25 transition-all transform active:scale-95"
-                >
-                    <span>➕</span>
-                    <span>Tambah Pengguna Baru</span>
-                </button>
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <Link
+                        href="/profile"
+                        class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs border border-slate-200 transition-all active:scale-95"
+                        title="Ubah Profil dan Kata Sandi Akun Anda Sendiri Secara Mandiri"
+                    >
+                        <span>👤</span>
+                        <span>Profil & Sandi Saya</span>
+                    </Link>
+                    <button
+                        @click="openCreateModal"
+                        class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-xs shadow-lg shadow-blue-500/25 transition-all transform active:scale-95"
+                    >
+                        <span>➕</span>
+                        <span>Tambah Pengguna Baru</span>
+                    </button>
+                </div>
             </div>
 
             <!-- Stats Overview Grid -->
@@ -474,6 +484,16 @@ function getAvatarInitials(name) {
                                 <!-- Actions -->
                                 <td class="py-4 px-6 text-right">
                                     <div class="inline-flex items-center gap-1.5">
+                                        <!-- Self Profile & Password Link -->
+                                        <Link
+                                            v-if="user.id === currentUserId"
+                                            href="/profile"
+                                            class="p-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 transition"
+                                            title="Ubah Profil & Kata Sandi Mandiri Anda"
+                                        >
+                                            ⚙️
+                                        </Link>
+
                                         <!-- Edit Button -->
                                         <button
                                             @click="openEditModal(user)"

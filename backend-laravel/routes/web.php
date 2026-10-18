@@ -37,6 +37,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('dashboard');
     Route::get('/admin/dashboard', fn() => redirect()->route('dashboard'));
 
+    // =======================================
+    // PROFILE & PENGATURAN AKUN MANDIRI (SEMUA ROLE: ADMIN, TUTOR, SISWA)
+    // =======================================
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'edit'])
+        ->name('profile.edit');
+    Route::patch('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])
+        ->name('profile.update');
+    Route::put('/profile/password', [\App\Http\Controllers\ProfileController::class, 'updatePassword'])
+        ->name('profile.password.update');
+
+    // Route alias untuk navigasi setiap portal
+    Route::get('/admin/profile', fn() => redirect()->route('profile.edit'));
+    Route::get('/tutor/profile', fn() => redirect()->route('profile.edit'));
+    Route::get('/siswa-portal/profile', fn() => redirect()->route('profile.edit'));
+
     // Python Analytics proxy for Dashboard
     Route::get('/api/analytics/dashboard', function(\App\Services\PythonApiService $pythonApi) {
         return response()->json($pythonApi->getDashboardAnalitik());

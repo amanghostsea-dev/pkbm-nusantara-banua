@@ -58,6 +58,14 @@ const upcomingSessions = [
                         <span>📄</span>
                         <span>Lihat Raport</span>
                     </Link>
+                    <Link
+                        href="/profile"
+                        class="flex-1 sm:flex-initial px-4 py-2.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white rounded-xl font-bold text-xs sm:text-sm transition flex items-center justify-center gap-2"
+                        title="Pengaturan Profil & Ganti Kata Sandi Mandiri"
+                    >
+                        <span>👤</span>
+                        <span>Profil & Sandi</span>
+                    </Link>
                 </div>
             </div>
 

@@ -35,9 +35,17 @@ const recentAbsensi = [
                         Kelola absensi kelas, pantau kehadiran warga belajar, dan input nilai raport dengan mudah dan terintegrasi.
                     </p>
                 </div>
-                <div class="flex gap-3 w-full sm:w-auto">
-                    <Link href="/tutor/kelas" class="w-full sm:w-auto text-center px-5 py-2.5 bg-white text-emerald-700 hover:bg-emerald-50 active:scale-95 rounded-xl font-bold text-xs sm:text-sm shadow-lg transition">
+                <div class="flex flex-wrap gap-2.5 w-full sm:w-auto">
+                    <Link href="/tutor/kelas" class="flex-1 sm:flex-initial text-center px-4 py-2.5 bg-white text-emerald-700 hover:bg-emerald-50 active:scale-95 rounded-xl font-bold text-xs sm:text-sm shadow-lg transition">
                         + Akses Kelas Binaan
+                    </Link>
+                    <Link
+                        href="/profile"
+                        class="flex-1 sm:flex-initial text-center px-4 py-2.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white rounded-xl font-bold text-xs sm:text-sm transition flex items-center justify-center gap-1.5"
+                        title="Pengaturan Profil & Ganti Kata Sandi Mandiri"
+                    >
+                        <span>👤</span>
+                        <span>Profil & Sandi</span>
                     </Link>
                 </div>
             </div>

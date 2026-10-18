@@ -42,6 +42,7 @@ const navItems = [
     { name: 'Presensi QR', href: '/siswa-portal/absensi', icon: '📲', highlight: false },
     { name: 'Pembayaran SPP', href: '/siswa-portal/pembayaran', icon: '💰', highlight: false },
     { name: 'Raport Siswa', href: '/siswa-portal/raport', icon: '📄', highlight: false },
+    { name: 'Profil & Sandi', href: '/profile', icon: '👤', highlight: false },
 ]
 
 const toggleMobileDrawer = () => {
@@ -95,10 +96,27 @@ const closeMobileDrawer = () => {
                 <!-- Right Action Buttons -->
                 <div class="flex items-center gap-2 sm:gap-3">
                     <!-- User Profile Card (Tablet & Desktop) -->
-                    <div class="text-right hidden sm:block">
-                        <div class="text-xs font-bold text-gray-800 truncate max-w-[150px]">{{ user?.name || 'Warga Belajar' }}</div>
-                        <div class="text-[10px] text-indigo-600 font-semibold">Paket Kesetaraan</div>
-                    </div>
+                    <Link
+                        href="/profile"
+                        class="text-right hidden sm:block group hover:opacity-80 transition cursor-pointer"
+                        title="Buka Pengaturan Profil & Ganti Kata Sandi"
+                    >
+                        <div class="text-xs font-bold text-gray-800 truncate max-w-[150px] group-hover:text-indigo-600 transition">{{ user?.name || 'Warga Belajar' }}</div>
+                        <div class="text-[10px] text-indigo-600 font-semibold flex items-center justify-end gap-1">
+                            <span>Paket Kesetaraan</span>
+                            <span class="text-[9px]">⚙️</span>
+                        </div>
+                    </Link>
+
+                    <!-- Profile Quick Button -->
+                    <Link
+                        href="/profile"
+                        class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-xs font-bold text-indigo-700 transition"
+                        title="Profil & Ganti Kata Sandi Mandiri"
+                    >
+                        <span>👤</span>
+                        <span>Profil</span>
+                    </Link>
 
                     <!-- Direct QR Scan Shortcut on mobile -->
                     <Link
@@ -180,6 +198,21 @@ const closeMobileDrawer = () => {
 
             <!-- Drawer Navigation Items -->
             <div class="flex-1 overflow-y-auto p-4 space-y-1.5">
+                <!-- User Profile Quick Card -->
+                <Link
+                    href="/profile"
+                    class="flex items-center gap-3 p-3 rounded-2xl bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200/60 mb-3 group hover:border-indigo-300 transition"
+                    @click="closeMobileDrawer"
+                >
+                    <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">
+                        👤
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-xs font-bold text-slate-800 truncate">{{ user?.name || 'Warga Belajar' }}</div>
+                        <div class="text-[10px] text-indigo-700 font-semibold">Ubah Profil & Sandi Mandiri →</div>
+                    </div>
+                </Link>
+
                 <div class="text-[11px] font-bold uppercase tracking-wider text-gray-400 px-3 py-1">Menu Utama Belajar</div>
                 <Link
                     v-for="item in navItems"
