@@ -167,6 +167,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->name('laporan.index');
         Route::post('laporan/generate', [\App\Http\Controllers\Admin\LaporanController::class, 'generate'])
             ->name('laporan.generate');
+        Route::get('laporan/export', [\App\Http\Controllers\Admin\LaporanController::class, 'export'])
+            ->name('laporan.export');
+        Route::get('laporan/cetak', [\App\Http\Controllers\Admin\LaporanController::class, 'cetak'])
+            ->name('laporan.cetak');
+        Route::get('laporan/download/{filename}', [\App\Http\Controllers\Admin\LaporanController::class, 'download'])
+            ->name('laporan.download');
 
         // LMS: Materi & Modul Belajar
         Route::resource('materi', \App\Http\Controllers\Admin\MateriController::class);

@@ -334,6 +334,30 @@ class PythonApiService
     }
 
     /**
+     * Download Laporan (Excel / PDF) dari microservice Python
+     */
+    public function downloadLaporan(string $filename)
+    {
+        try {
+            $response = $this->client()->get("/api/v1/laporan/download/{$filename}");
+            if ($response->successful()) {
+                $contentType = str_ends_with($filename, '.pdf') 
+                    ? 'application/pdf' 
+                    : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+
+                return response($response->body(), 200, [
+                    'Content-Type'        => $contentType,
+                    'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Download Laporan error: ' . $e->getMessage());
+        }
+
+        abort(404, 'File laporan tidak ditemukan di server.');
+    }
+
+    /**
      * Health check Python API
      */
     public function isAvailable(): bool
