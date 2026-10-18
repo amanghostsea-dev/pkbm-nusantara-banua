@@ -53,46 +53,48 @@ const deleteTutor = (item) => {
                 </button>
             </div>
 
-            <!-- Table -->
+            <!-- Table with Responsive Overflow -->
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
-                        <tr>
-                            <th class="py-3 px-4">Nama Lengkap & NIP</th>
-                            <th class="py-3 px-4">Email Login</th>
-                            <th class="py-3 px-4">Spesialisasi Mapel</th>
-                            <th class="py-3 px-4">Kontak Telepon</th>
-                            <th class="py-3 px-4">Kelas Diampu</th>
-                            <th class="py-3 px-4">Total Sesi Jadwal</th>
-                            <th class="py-3 px-4 text-right">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 text-gray-700">
-                        <tr v-for="item in tutors" :key="item.id" class="hover:bg-gray-50/80 transition">
-                            <td class="py-3 px-4">
-                                <div class="font-bold text-gray-900">{{ item.nama_lengkap }}</div>
-                                <div class="text-xs text-gray-400 font-mono">{{ item.nip || 'NIP: -' }}</div>
-                            </td>
-                            <td class="py-3 px-4 font-mono text-gray-600">{{ item.user?.email || '-' }}</td>
-                            <td class="py-3 px-4">
-                                <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-md text-xs font-semibold">
-                                    {{ item.spesialisasi || 'Umum' }}
-                                </span>
-                            </td>
-                            <td class="py-3 px-4 text-gray-600">{{ item.no_telepon || '-' }}</td>
-                            <td class="py-3 px-4 font-bold text-gray-800">{{ item.kelas_count || 0 }} Kelas</td>
-                            <td class="py-3 px-4">{{ item.jadwals_count || 0 }} Sesi</td>
-                            <td class="py-3 px-4 text-right">
-                                <button @click="deleteTutor(item)" class="text-xs text-rose-600 hover:underline font-semibold">
-                                    Hapus
-                                </button>
-                            </td>
-                        </tr>
-                        <tr v-if="!tutors || tutors.length === 0">
-                            <td colspan="7" class="py-8 text-center text-gray-400">Belum ada data tutor terdaftar.</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm min-w-[750px]">
+                        <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
+                            <tr>
+                                <th class="py-3 px-4">Nama Lengkap & NIP</th>
+                                <th class="py-3 px-4">Email Login</th>
+                                <th class="py-3 px-4">Spesialisasi Mapel</th>
+                                <th class="py-3 px-4">Kontak Telepon</th>
+                                <th class="py-3 px-4">Kelas Diampu</th>
+                                <th class="py-3 px-4">Total Sesi Jadwal</th>
+                                <th class="py-3 px-4 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-gray-700">
+                            <tr v-for="item in tutors" :key="item.id" class="hover:bg-gray-50/80 transition">
+                                <td class="py-3 px-4">
+                                    <div class="font-bold text-gray-900">{{ item.nama_lengkap }}</div>
+                                    <div class="text-xs text-gray-400 font-mono">{{ item.nip || 'NIP: -' }}</div>
+                                </td>
+                                <td class="py-3 px-4 font-mono text-gray-600">{{ item.user?.email || '-' }}</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-md text-xs font-semibold">
+                                        {{ item.spesialisasi || 'Umum' }}
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4 text-gray-600">{{ item.no_telepon || '-' }}</td>
+                                <td class="py-3 px-4 font-bold text-gray-800">{{ item.kelas_count || 0 }} Kelas</td>
+                                <td class="py-3 px-4">{{ item.jadwals_count || 0 }} Sesi</td>
+                                <td class="py-3 px-4 text-right">
+                                    <button @click="deleteTutor(item)" class="text-xs text-rose-600 hover:underline font-semibold p-1">
+                                        Hapus
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr v-if="!tutors || tutors.length === 0">
+                                <td colspan="7" class="py-8 text-center text-gray-400">Belum ada data tutor terdaftar.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 

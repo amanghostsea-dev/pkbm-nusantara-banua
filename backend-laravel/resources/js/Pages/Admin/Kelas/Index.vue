@@ -40,52 +40,54 @@ const submit = () => {
                 </div>
                 <button
                     @click="showModal = true"
-                    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg text-sm shadow transition flex items-center gap-2"
+                    class="w-full sm:w-auto justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-semibold rounded-lg text-sm shadow transition flex items-center gap-2"
                 >
                     <span>+</span>
                     <span>Tambah Kelas Baru</span>
                 </button>
             </div>
 
-            <!-- Table -->
+            <!-- Table with Responsive Overflow -->
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
-                        <tr>
-                            <th class="py-3 px-4">Nama Kelas</th>
-                            <th class="py-3 px-4">Program & Angkatan</th>
-                            <th class="py-3 px-4">Semester</th>
-                            <th class="py-3 px-4">Tutor Pendamping</th>
-                            <th class="py-3 px-4">Kapasitas Siswa</th>
-                            <th class="py-3 px-4 text-right">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 text-gray-700">
-                        <tr v-for="item in kelasList" :key="item.id" class="hover:bg-gray-50/80 transition">
-                            <td class="py-3 px-4 font-semibold text-gray-900">{{ item.nama_kelas }}</td>
-                            <td class="py-3 px-4">
-                                <div class="font-medium text-gray-800">{{ item.angkatan?.program?.nama_program || 'Paket' }}</div>
-                                <div class="text-xs text-gray-400">{{ item.angkatan?.nama_angkatan }}</div>
-                            </td>
-                            <td class="py-3 px-4 font-mono font-bold text-indigo-600">Semester {{ item.semester }}</td>
-                            <td class="py-3 px-4 text-gray-800">{{ item.tutor?.nama_lengkap || 'Belum Ditentukan' }}</td>
-                            <td class="py-3 px-4">
-                                <div class="flex items-center gap-2">
-                                    <span class="font-bold text-gray-800">{{ item.siswas_count || 0 }}</span>
-                                    <span class="text-gray-400 text-xs">/ {{ item.kapasitas }} Siswa</span>
-                                </div>
-                            </td>
-                            <td class="py-3 px-4 text-right">
-                                <Link :href="`/admin/kelas/${item.id}`" class="px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg text-xs font-semibold transition">
-                                    Kelola Siswa &rarr;
-                                </Link>
-                            </td>
-                        </tr>
-                        <tr v-if="!kelasList || kelasList.length === 0">
-                            <td colspan="6" class="py-8 text-center text-gray-400">Belum ada kelas terdaftar.</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm min-w-[700px]">
+                        <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
+                            <tr>
+                                <th class="py-3 px-4">Nama Kelas</th>
+                                <th class="py-3 px-4">Program & Angkatan</th>
+                                <th class="py-3 px-4">Semester</th>
+                                <th class="py-3 px-4">Tutor Pendamping</th>
+                                <th class="py-3 px-4">Kapasitas Siswa</th>
+                                <th class="py-3 px-4 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-gray-700">
+                            <tr v-for="item in kelasList" :key="item.id" class="hover:bg-gray-50/80 transition">
+                                <td class="py-3 px-4 font-semibold text-gray-900">{{ item.nama_kelas }}</td>
+                                <td class="py-3 px-4">
+                                    <div class="font-medium text-gray-800">{{ item.angkatan?.program?.nama_program || 'Paket' }}</div>
+                                    <div class="text-xs text-gray-400">{{ item.angkatan?.nama_angkatan }}</div>
+                                </td>
+                                <td class="py-3 px-4 font-mono font-bold text-indigo-600">Semester {{ item.semester }}</td>
+                                <td class="py-3 px-4 text-gray-800">{{ item.tutor?.nama_lengkap || 'Belum Ditentukan' }}</td>
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-gray-800">{{ item.siswas_count || 0 }}</span>
+                                        <span class="text-gray-400 text-xs">/ {{ item.kapasitas }} Siswa</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4 text-right">
+                                    <Link :href="`/admin/kelas/${item.id}`" class="px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg text-xs font-semibold transition">
+                                        Kelola Siswa &rarr;
+                                    </Link>
+                                </td>
+                            </tr>
+                            <tr v-if="!kelasList || kelasList.length === 0">
+                                <td colspan="6" class="py-8 text-center text-gray-400">Belum ada kelas terdaftar.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 

@@ -40,47 +40,49 @@ const submit = () => {
                 </div>
                 <button
                     @click="showModal = true"
-                    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg text-sm shadow transition flex items-center gap-2"
+                    class="w-full sm:w-auto justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-semibold rounded-lg text-sm shadow transition flex items-center gap-2"
                 >
                     <span>+</span>
                     <span>Catat Pembayaran Baru</span>
                 </button>
             </div>
 
-            <!-- Table -->
+            <!-- Table with Responsive Overflow -->
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
-                        <tr>
-                            <th class="py-3 px-4">Nama Siswa</th>
-                            <th class="py-3 px-4">Periode</th>
-                            <th class="py-3 px-4">Jenis</th>
-                            <th class="py-3 px-4">Nominal</th>
-                            <th class="py-3 px-4">Status</th>
-                            <th class="py-3 px-4">Tgl Pembayaran</th>
-                            <th class="py-3 px-4">Diterima Oleh</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 text-gray-700">
-                        <tr v-for="item in (pembayarans.data || pembayarans)" :key="item.id" class="hover:bg-gray-50/80 transition">
-                            <td class="py-3 px-4 font-semibold text-gray-900">{{ item.siswa?.nama_lengkap || 'Siswa' }}</td>
-                            <td class="py-3 px-4 font-medium">{{ item.bulan }} {{ item.tahun }}</td>
-                            <td class="py-3 px-4 uppercase text-xs font-bold text-gray-600">{{ item.jenis }}</td>
-                            <td class="py-3 px-4 font-mono font-bold text-gray-800">Rp {{ Number(item.nominal).toLocaleString('id-ID') }}</td>
-                            <td class="py-3 px-4">
-                                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold capitalize"
-                                    :class="item.status === 'lunas' ? 'bg-emerald-100 text-emerald-800' : (item.status === 'cicil' ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800')">
-                                    {{ item.status }}
-                                </span>
-                            </td>
-                            <td class="py-3 px-4 text-gray-500">{{ item.tanggal_bayar || '-' }}</td>
-                            <td class="py-3 px-4 text-gray-600">{{ item.penerima?.name || 'Petugas' }}</td>
-                        </tr>
-                        <tr v-if="!(pembayarans.data?.length || pembayarans?.length)">
-                            <td colspan="7" class="py-8 text-center text-gray-400">Belum ada riwayat transaksi pembayaran.</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm min-w-[750px]">
+                        <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
+                            <tr>
+                                <th class="py-3 px-4">Nama Siswa</th>
+                                <th class="py-3 px-4">Periode</th>
+                                <th class="py-3 px-4">Jenis</th>
+                                <th class="py-3 px-4">Nominal</th>
+                                <th class="py-3 px-4">Status</th>
+                                <th class="py-3 px-4">Tgl Pembayaran</th>
+                                <th class="py-3 px-4">Diterima Oleh</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-gray-700">
+                            <tr v-for="item in (pembayarans.data || pembayarans)" :key="item.id" class="hover:bg-gray-50/80 transition">
+                                <td class="py-3 px-4 font-semibold text-gray-900">{{ item.siswa?.nama_lengkap || 'Siswa' }}</td>
+                                <td class="py-3 px-4 font-medium">{{ item.bulan }} {{ item.tahun }}</td>
+                                <td class="py-3 px-4 uppercase text-xs font-bold text-gray-600">{{ item.jenis }}</td>
+                                <td class="py-3 px-4 font-mono font-bold text-gray-800">Rp {{ Number(item.nominal).toLocaleString('id-ID') }}</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold capitalize"
+                                        :class="item.status === 'lunas' ? 'bg-emerald-100 text-emerald-800' : (item.status === 'cicil' ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800')">
+                                        {{ item.status }}
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4 text-gray-500">{{ item.tanggal_bayar || '-' }}</td>
+                                <td class="py-3 px-4 text-gray-600">{{ item.penerima?.name || 'Petugas' }}</td>
+                            </tr>
+                            <tr v-if="!(pembayarans.data?.length || pembayarans?.length)">
+                                <td colspan="7" class="py-8 text-center text-gray-400">Belum ada riwayat transaksi pembayaran.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 

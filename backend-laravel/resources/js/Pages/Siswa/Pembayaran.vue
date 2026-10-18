@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { Head, Link, usePage } from '@inertiajs/vue3'
+import SiswaLayout from '@/Layouts/SiswaLayout.vue'
 
 const page = usePage()
 const user = computed(() => page.props.auth?.user)
@@ -16,86 +17,63 @@ const paymentHistory = [
 <template>
     <Head title="Informasi Pembayaran — Portal Siswa" />
 
-    <div class="min-h-screen bg-slate-50 font-sans">
-        <!-- Top Navigation -->
-        <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xl shadow-md shadow-indigo-500/20">
-                        💰
-                    </div>
-                    <div>
-                        <h1 class="text-base font-bold text-gray-900 leading-tight">Keuangan & Pembayaran</h1>
-                        <p class="text-xs text-gray-500">Iuran SPP & Administrasi Siswa</p>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-3">
-                    <Link href="/siswa-portal/dashboard" class="px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-100 text-xs font-semibold text-gray-700 transition">
-                        &larr; Dashboard
-                    </Link>
-                    <Link href="/logout" method="post" as="button" class="px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-xs font-semibold text-gray-700 transition">
-                        Keluar
-                    </Link>
-                </div>
-            </div>
-        </header>
-
-        <!-- Main Content -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <SiswaLayout>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
             <div>
-                <h2 class="text-2xl font-extrabold text-gray-900">Riwayat Pembayaran & Tagihan</h2>
-                <p class="text-sm text-gray-500">Informasi pembayaran SPP bulanan, modul pembelajaran, dan bukti kwitansi</p>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-gray-900">Riwayat Pembayaran & Tagihan</h2>
+                <p class="text-xs sm:text-sm text-gray-500">Informasi pembayaran SPP bulanan, modul pembelajaran, dan bukti kwitansi</p>
             </div>
 
             <!-- Summary Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
                     <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Status Pembayaran SPP</span>
-                    <div class="text-2xl font-black text-emerald-600 mt-2">Lancar / Lunas</div>
+                    <div class="text-xl sm:text-2xl font-black text-emerald-600 mt-2">Lancar / Lunas</div>
                     <div class="text-xs text-gray-500 mt-1">Sampai bulan berjalan (Oktober 2024)</div>
                 </div>
                 <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
                     <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Total Terbayar Semester Ini</span>
-                    <div class="text-2xl font-black text-gray-900 mt-2 font-mono">Rp 800.000</div>
+                    <div class="text-xl sm:text-2xl font-black text-gray-900 mt-2 font-mono">Rp 800.000</div>
                     <div class="text-xs text-emerald-600 font-semibold mt-1">✓ Bebas Tunggakan</div>
                 </div>
-                <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+                <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm sm:col-span-2 md:col-span-1">
                     <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Tagihan Bulan Depan</span>
-                    <div class="text-2xl font-black text-indigo-600 mt-2 font-mono">Rp 150.000</div>
+                    <div class="text-xl sm:text-2xl font-black text-indigo-600 mt-2 font-mono">Rp 150.000</div>
                     <div class="text-xs text-gray-500 mt-1">Jatuh tempo 10 November 2024</div>
                 </div>
             </div>
 
-            <!-- Table -->
+            <!-- Table with Responsive Overflow -->
             <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
-                        <tr>
-                            <th class="py-4 px-6">No. Referensi</th>
-                            <th class="py-4 px-6">Periode</th>
-                            <th class="py-4 px-6">Jenis Pembayaran</th>
-                            <th class="py-4 px-6">Nominal</th>
-                            <th class="py-4 px-6">Tanggal Pembayaran</th>
-                            <th class="py-4 px-6">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 text-gray-700">
-                        <tr v-for="(p, i) in paymentHistory" :key="i" class="hover:bg-gray-50/80 transition">
-                            <td class="py-4 px-6 font-mono font-medium text-xs text-gray-500">{{ p.ref }}</td>
-                            <td class="py-4 px-6 font-bold text-gray-900">{{ p.periode }}</td>
-                            <td class="py-4 px-6">{{ p.jenis }}</td>
-                            <td class="py-4 px-6 font-mono font-bold text-gray-800">Rp {{ p.nominal.toLocaleString('id-ID') }}</td>
-                            <td class="py-4 px-6 text-gray-600">{{ p.tgl }}</td>
-                            <td class="py-4 px-6">
-                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
-                                    {{ p.status }}
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm min-w-[650px]">
+                        <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
+                            <tr>
+                                <th class="py-4 px-6">No. Referensi</th>
+                                <th class="py-4 px-6">Periode</th>
+                                <th class="py-4 px-6">Jenis Pembayaran</th>
+                                <th class="py-4 px-6">Nominal</th>
+                                <th class="py-4 px-6">Tanggal Pembayaran</th>
+                                <th class="py-4 px-6">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-gray-700">
+                            <tr v-for="(p, i) in paymentHistory" :key="i" class="hover:bg-gray-50/80 transition">
+                                <td class="py-4 px-6 font-mono font-medium text-xs text-gray-500">{{ p.ref }}</td>
+                                <td class="py-4 px-6 font-bold text-gray-900">{{ p.periode }}</td>
+                                <td class="py-4 px-6">{{ p.jenis }}</td>
+                                <td class="py-4 px-6 font-mono font-bold text-gray-800">Rp {{ p.nominal.toLocaleString('id-ID') }}</td>
+                                <td class="py-4 px-6 text-gray-600">{{ p.tgl }}</td>
+                                <td class="py-4 px-6">
+                                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                                        {{ p.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </main>
-    </div>
+        </div>
+    </SiswaLayout>
 </template>

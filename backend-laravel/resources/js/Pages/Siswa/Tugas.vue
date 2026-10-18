@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { Head, Link, router } from '@inertiajs/vue3'
+import SiswaLayout from '@/Layouts/SiswaLayout.vue'
 
 const props = defineProps({
     tugasList: Object,
@@ -43,49 +44,8 @@ function sendSubmission() {
 <template>
     <Head title="Pusat Tugas & Penugasan Mandiri — Portal Siswa" />
 
-    <div class="min-h-screen bg-slate-50 font-sans">
-        <!-- Top Navigation -->
-        <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xl shadow-md shadow-indigo-500/20">
-                        👨‍🎓
-                    </div>
-                    <div>
-                        <h1 class="text-base font-bold text-gray-900 leading-tight">Portal Siswa PKBM</h1>
-                        <p class="text-xs text-gray-500">Pusat Tugas & Evaluasi Belajar</p>
-                    </div>
-                </div>
-
-                <!-- Nav Links -->
-                <nav class="hidden md:flex items-center gap-1">
-                    <Link href="/siswa-portal/dashboard" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-600 hover:bg-gray-100 transition">
-                        Dashboard
-                    </Link>
-                    <Link href="/siswa-portal/jadwal" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-600 hover:bg-gray-100 transition">
-                        Jadwal
-                    </Link>
-                    <Link href="/siswa-portal/nilai" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-600 hover:bg-gray-100 transition">
-                        Nilai
-                    </Link>
-                    <Link href="/siswa-portal/materi" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-600 hover:bg-gray-100 transition">
-                        Modul Belajar
-                    </Link>
-                    <Link href="/siswa-portal/tugas" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 transition">
-                        Tugas Siswa
-                    </Link>
-                </nav>
-
-                <div class="flex items-center gap-3">
-                    <Link href="/logout" method="post" as="button" class="px-3.5 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-100 text-xs font-semibold text-gray-700 transition">
-                        Keluar
-                    </Link>
-                </div>
-            </div>
-        </header>
-
-        <!-- Main Content -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <SiswaLayout>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
             <!-- Header Banner -->
             <div class="bg-gradient-to-r from-indigo-700 via-blue-700 to-indigo-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl shadow-indigo-600/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div>
@@ -197,7 +157,6 @@ function sendSubmission() {
                 <div class="text-4xl mb-2">🎉</div>
                 <p class="text-sm font-semibold text-gray-700">Tidak ada tugas aktif saat ini. Anda telah menyelesaikan semua penugasan!</p>
             </div>
-        </main>
 
         <!-- Modal Submit Tugas -->
         <div v-if="submitModal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
@@ -249,5 +208,6 @@ function sendSubmission() {
                 </form>
             </div>
         </div>
-    </div>
+        </div>
+    </SiswaLayout>
 </template>

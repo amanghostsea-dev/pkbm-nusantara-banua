@@ -180,51 +180,53 @@ const deleteSiswa = (item) => {
                 </div>
             </div>
 
-            <!-- Data Table -->
+            <!-- Data Table with Responsive Overflow -->
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <table class="w-full text-left border-collapse text-sm">
-                    <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
-                        <tr>
-                            <th class="py-3 px-4">NISN</th>
-                            <th class="py-3 px-4">Nama Lengkap</th>
-                            <th class="py-3 px-4">Program / Angkatan</th>
-                            <th class="py-3 px-4">L/P</th>
-                            <th class="py-3 px-4">Status</th>
-                            <th class="py-3 px-4 text-right">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 text-gray-700">
-                        <tr v-for="item in siswa.data" :key="item.id" class="hover:bg-gray-50/80 transition">
-                            <td class="py-3 px-4 font-mono font-medium">{{ item.nisn }}</td>
-                            <td class="py-3 px-4 font-semibold text-gray-800">{{ item.nama_lengkap }}</td>
-                            <td class="py-3 px-4 text-gray-600">
-                                {{ item.angkatan?.program?.nama_program || 'Paket C' }}
-                            </td>
-                            <td class="py-3 px-4">{{ item.jenis_kelamin }}</td>
-                            <td class="py-3 px-4">
-                                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
-                                    {{ item.status }}
-                                </span>
-                            </td>
-                            <td class="py-3 px-4 text-right space-x-2">
-                                <button
-                                    @click="runPrediction(item)"
-                                    class="px-2.5 py-1 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded text-xs font-semibold transition"
-                                >
-                                    🤖 AI Prediksi
-                                </button>
-                                <Link :href="`/admin/siswa/${item.id}`" class="text-blue-600 hover:underline text-xs font-medium">Detail</Link>
-                                <Link :href="`/admin/siswa/${item.id}/edit`" class="text-amber-600 hover:underline text-xs font-medium">Edit</Link>
-                                <button @click="deleteSiswa(item)" class="text-red-500 hover:underline text-xs font-medium">Hapus</button>
-                            </td>
-                        </tr>
-                        <tr v-if="!siswa.data || siswa.data.length === 0">
-                            <td colspan="6" class="py-8 text-center text-gray-400">
-                                Belum ada data siswa terdaftar. Gunakan tombol Tambah Siswa atau Import CSV Kolektif.
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm min-w-[700px]">
+                        <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
+                            <tr>
+                                <th class="py-3 px-4">NISN</th>
+                                <th class="py-3 px-4">Nama Lengkap</th>
+                                <th class="py-3 px-4">Program / Angkatan</th>
+                                <th class="py-3 px-4">L/P</th>
+                                <th class="py-3 px-4">Status</th>
+                                <th class="py-3 px-4 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-gray-700">
+                            <tr v-for="item in siswa.data" :key="item.id" class="hover:bg-gray-50/80 transition">
+                                <td class="py-3 px-4 font-mono font-medium">{{ item.nisn }}</td>
+                                <td class="py-3 px-4 font-semibold text-gray-800">{{ item.nama_lengkap }}</td>
+                                <td class="py-3 px-4 text-gray-600">
+                                    {{ item.angkatan?.program?.nama_program || 'Paket C' }}
+                                </td>
+                                <td class="py-3 px-4">{{ item.jenis_kelamin }}</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
+                                        {{ item.status }}
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4 text-right space-x-2 whitespace-nowrap">
+                                    <button
+                                        @click="runPrediction(item)"
+                                        class="px-2.5 py-1 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 active:scale-95 rounded text-xs font-semibold transition"
+                                    >
+                                        🤖 AI Prediksi
+                                    </button>
+                                    <Link :href="`/admin/siswa/${item.id}`" class="text-blue-600 hover:underline text-xs font-medium">Detail</Link>
+                                    <Link :href="`/admin/siswa/${item.id}/edit`" class="text-amber-600 hover:underline text-xs font-medium">Edit</Link>
+                                    <button @click="deleteSiswa(item)" class="text-red-500 hover:underline text-xs font-medium">Hapus</button>
+                                </td>
+                            </tr>
+                            <tr v-if="!siswa.data || siswa.data.length === 0">
+                                <td colspan="6" class="py-8 text-center text-gray-400">
+                                    Belum ada data siswa terdaftar. Gunakan tombol Tambah Siswa atau Import CSV Kolektif.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -330,9 +332,9 @@ const deleteSiswa = (item) => {
                     </button>
                 </div>
 
-                <!-- Table Rows -->
-                <div class="flex-1 overflow-y-auto border border-gray-100 rounded-2xl">
-                    <table class="w-full text-left text-xs">
+                <!-- Table Rows with Responsive Overflow -->
+                <div class="flex-1 overflow-auto border border-gray-100 rounded-2xl">
+                    <table class="w-full text-left text-xs min-w-[700px]">
                         <thead class="bg-gray-50 text-gray-500 uppercase sticky top-0 border-b">
                             <tr>
                                 <th class="py-2.5 px-3 w-10">No</th>

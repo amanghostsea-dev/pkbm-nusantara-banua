@@ -126,45 +126,47 @@ const submitBulkNilai = () => {
 
             <!-- TAB 1: REKAPITULASI TABLE -->
             <div v-if="activeTab === 'rekap'" class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
-                        <tr>
-                            <th class="py-3.5 px-4">Nama Siswa</th>
-                            <th class="py-3.5 px-4">Kelas</th>
-                            <th class="py-3.5 px-4">Mata Pelajaran</th>
-                            <th class="py-3.5 px-4">Tugas</th>
-                            <th class="py-3.5 px-4">UTS</th>
-                            <th class="py-3.5 px-4">UAS</th>
-                            <th class="py-3.5 px-4">Nilai Akhir</th>
-                            <th class="py-3.5 px-4">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 text-gray-700">
-                        <tr v-for="item in (nilais.data || nilais)" :key="item.id" class="hover:bg-gray-50/80 transition">
-                            <td class="py-3.5 px-4">
-                                <div class="font-semibold text-gray-900">{{ item.siswa?.nama_lengkap || 'Siswa' }}</div>
-                                <div class="text-xs text-gray-400 font-mono">{{ item.siswa?.nisn }}</div>
-                            </td>
-                            <td class="py-3.5 px-4 font-medium">{{ item.kelas?.nama_kelas || '-' }}</td>
-                            <td class="py-3.5 px-4">{{ item.mata_pelajaran?.nama_mapel || '-' }}</td>
-                            <td class="py-3.5 px-4">{{ item.nilai_tugas ?? '-' }}</td>
-                            <td class="py-3.5 px-4">{{ item.nilai_uts ?? '-' }}</td>
-                            <td class="py-3.5 px-4">{{ item.nilai_uas ?? '-' }}</td>
-                            <td class="py-3.5 px-4 font-black text-indigo-600">{{ item.nilai_akhir ?? '-' }}</td>
-                            <td class="py-3.5 px-4">
-                                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold"
-                                    :class="(item.nilai_akhir || 0) >= (item.mata_pelajaran?.kkm || 65) ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'">
-                                    {{ (item.nilai_akhir || 0) >= (item.mata_pelajaran?.kkm || 65) ? 'Tuntas' : 'Remedial' }}
-                                </span>
-                            </td>
-                        </tr>
-                        <tr v-if="!(nilais.data?.length || nilais?.length)">
-                            <td colspan="8" class="py-12 text-center text-gray-400">
-                                Belum ada rekap nilai. Gunakan tab "Input Nilai Kolektif Satu Rombel" di atas untuk memasukkan nilai seluruh kelas sekaligus.
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm min-w-[750px]">
+                        <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
+                            <tr>
+                                <th class="py-3.5 px-4">Nama Siswa</th>
+                                <th class="py-3.5 px-4">Kelas</th>
+                                <th class="py-3.5 px-4">Mata Pelajaran</th>
+                                <th class="py-3.5 px-4">Tugas</th>
+                                <th class="py-3.5 px-4">UTS</th>
+                                <th class="py-3.5 px-4">UAS</th>
+                                <th class="py-3.5 px-4">Nilai Akhir</th>
+                                <th class="py-3.5 px-4">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-gray-700">
+                            <tr v-for="item in (nilais.data || nilais)" :key="item.id" class="hover:bg-gray-50/80 transition">
+                                <td class="py-3.5 px-4">
+                                    <div class="font-semibold text-gray-900">{{ item.siswa?.nama_lengkap || 'Siswa' }}</div>
+                                    <div class="text-xs text-gray-400 font-mono">{{ item.siswa?.nisn }}</div>
+                                </td>
+                                <td class="py-3.5 px-4 font-medium">{{ item.kelas?.nama_kelas || '-' }}</td>
+                                <td class="py-3.5 px-4">{{ item.mata_pelajaran?.nama_mapel || '-' }}</td>
+                                <td class="py-3.5 px-4">{{ item.nilai_tugas ?? '-' }}</td>
+                                <td class="py-3.5 px-4">{{ item.nilai_uts ?? '-' }}</td>
+                                <td class="py-3.5 px-4">{{ item.nilai_uas ?? '-' }}</td>
+                                <td class="py-3.5 px-4 font-black text-indigo-600">{{ item.nilai_akhir ?? '-' }}</td>
+                                <td class="py-3.5 px-4">
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold"
+                                        :class="(item.nilai_akhir || 0) >= (item.mata_pelajaran?.kkm || 65) ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'">
+                                        {{ (item.nilai_akhir || 0) >= (item.mata_pelajaran?.kkm || 65) ? 'Tuntas' : 'Remedial' }}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr v-if="!(nilais.data?.length || nilais?.length)">
+                                <td colspan="8" class="py-12 text-center text-gray-400">
+                                    Belum ada rekap nilai. Gunakan tab "Input Nilai Kolektif Satu Rombel" di atas untuk memasukkan nilai seluruh kelas sekaligus.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- TAB 2: BULK INPUT SATU ROMBEL -->
@@ -229,60 +231,62 @@ const submitBulkNilai = () => {
 
                 <!-- Input Grid -->
                 <div v-if="bulkForm.nilais.length > 0" class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                    <div class="p-4 border-b flex items-center justify-between">
+                    <div class="p-4 border-b flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                         <div class="text-sm font-bold text-gray-800">
                             Daftar Siswa Kelas {{ currentKelas?.nama_kelas }} ({{ bulkForm.nilais.length }} Siswa)
                         </div>
                         <div class="text-xs text-gray-500">Bobot: 30% Tugas + 30% UTS + 40% UAS</div>
                     </div>
 
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-gray-50 border-b text-gray-500 uppercase text-xs">
-                            <tr>
-                                <th class="py-3 px-4 w-12">No</th>
-                                <th class="py-3 px-4">Nama Siswa</th>
-                                <th class="py-3 px-4 w-32">Nilai Tugas (30%)</th>
-                                <th class="py-3 px-4 w-32">Nilai UTS (30%)</th>
-                                <th class="py-3 px-4 w-32">Nilai UAS (40%)</th>
-                                <th class="py-3 px-4 w-28 text-center">Nilai Akhir</th>
-                                <th class="py-3 px-4 w-28 text-center">Predikat</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-100">
-                            <tr v-for="(row, idx) in bulkForm.nilais" :key="row.siswa_id" class="hover:bg-gray-50/50">
-                                <td class="py-2.5 px-4 text-gray-400 font-mono text-xs">{{ idx + 1 }}</td>
-                                <td class="py-2.5 px-4">
-                                    <div class="font-bold text-gray-900 text-sm">{{ row.siswa_nama }}</div>
-                                    <div class="text-xs text-gray-400 font-mono">{{ row.siswa_nisn }}</div>
-                                </td>
-                                <td class="py-2.5 px-4">
-                                    <input v-model.number="row.nilai_tugas" type="number" min="0" max="100" class="w-full px-2.5 py-1.5 border rounded-lg text-sm text-center font-bold" />
-                                </td>
-                                <td class="py-2.5 px-4">
-                                    <input v-model.number="row.nilai_uts" type="number" min="0" max="100" class="w-full px-2.5 py-1.5 border rounded-lg text-sm text-center font-bold" />
-                                </td>
-                                <td class="py-2.5 px-4">
-                                    <input v-model.number="row.nilai_uas" type="number" min="0" max="100" class="w-full px-2.5 py-1.5 border rounded-lg text-sm text-center font-bold" />
-                                </td>
-                                <td class="py-2.5 px-4 text-center font-black text-indigo-700 text-base">
-                                    {{ calculateAkhir(row) }}
-                                </td>
-                                <td class="py-2.5 px-4 text-center">
-                                    <span class="px-2.5 py-1 rounded-full text-xs font-bold"
-                                        :class="calculateAkhir(row) >= (currentMapel?.kkm || 65) ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'">
-                                        {{ calculateAkhir(row) >= (currentMapel?.kkm || 65) ? 'Tuntas' : 'Remedial' }}
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm min-w-[800px]">
+                            <thead class="bg-gray-50 border-b text-gray-500 uppercase text-xs">
+                                <tr>
+                                    <th class="py-3 px-4 w-12">No</th>
+                                    <th class="py-3 px-4">Nama Siswa</th>
+                                    <th class="py-3 px-4 w-32">Nilai Tugas (30%)</th>
+                                    <th class="py-3 px-4 w-32">Nilai UTS (30%)</th>
+                                    <th class="py-3 px-4 w-32">Nilai UAS (40%)</th>
+                                    <th class="py-3 px-4 w-28 text-center">Nilai Akhir</th>
+                                    <th class="py-3 px-4 w-28 text-center">Predikat</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr v-for="(row, idx) in bulkForm.nilais" :key="row.siswa_id" class="hover:bg-gray-50/50">
+                                    <td class="py-2.5 px-4 text-gray-400 font-mono text-xs">{{ idx + 1 }}</td>
+                                    <td class="py-2.5 px-4">
+                                        <div class="font-bold text-gray-900 text-sm">{{ row.siswa_nama }}</div>
+                                        <div class="text-xs text-gray-400 font-mono">{{ row.siswa_nisn }}</div>
+                                    </td>
+                                    <td class="py-2.5 px-4">
+                                        <input v-model.number="row.nilai_tugas" type="number" min="0" max="100" class="w-full px-2.5 py-1.5 border rounded-lg text-sm text-center font-bold" />
+                                    </td>
+                                    <td class="py-2.5 px-4">
+                                        <input v-model.number="row.nilai_uts" type="number" min="0" max="100" class="w-full px-2.5 py-1.5 border rounded-lg text-sm text-center font-bold" />
+                                    </td>
+                                    <td class="py-2.5 px-4">
+                                        <input v-model.number="row.nilai_uas" type="number" min="0" max="100" class="w-full px-2.5 py-1.5 border rounded-lg text-sm text-center font-bold" />
+                                    </td>
+                                    <td class="py-2.5 px-4 text-center font-black text-indigo-700 text-base">
+                                        {{ calculateAkhir(row) }}
+                                    </td>
+                                    <td class="py-2.5 px-4 text-center">
+                                        <span class="px-2.5 py-1 rounded-full text-xs font-bold"
+                                            :class="calculateAkhir(row) >= (currentMapel?.kkm || 65) ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'">
+                                            {{ calculateAkhir(row) >= (currentMapel?.kkm || 65) ? 'Tuntas' : 'Remedial' }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-                    <div class="p-6 border-t flex justify-end gap-3 bg-gray-50">
+                    <div class="p-4 sm:p-6 border-t flex justify-end gap-3 bg-gray-50">
                         <button
                             type="button"
                             @click="submitBulkNilai"
                             :disabled="bulkForm.processing"
-                            class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-extrabold rounded-2xl shadow-lg shadow-indigo-600/20 text-sm transition flex items-center gap-2"
+                            class="w-full sm:w-auto justify-center px-8 py-3 bg-indigo-600 hover:bg-indigo-700 active:scale-95 disabled:opacity-50 text-white font-extrabold rounded-2xl shadow-lg shadow-indigo-600/20 text-sm transition flex items-center gap-2"
                         >
                             <span>💾</span>
                             <span>{{ bulkForm.processing ? 'Menyimpan Seluruh Nilai...' : 'Simpan Semua Nilai Rombel Ini' }}</span>

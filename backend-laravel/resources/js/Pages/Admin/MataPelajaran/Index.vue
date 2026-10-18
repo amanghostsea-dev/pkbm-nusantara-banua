@@ -40,44 +40,46 @@ const submit = () => {
                 </div>
                 <button
                     @click="showModal = true"
-                    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg text-sm shadow transition flex items-center gap-2"
+                    class="w-full sm:w-auto justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-semibold rounded-lg text-sm shadow transition flex items-center gap-2"
                 >
                     <span>+</span>
                     <span>Tambah Mata Pelajaran</span>
                 </button>
             </div>
 
-            <!-- Table -->
+            <!-- Table with Responsive Overflow -->
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
-                        <tr>
-                            <th class="py-3 px-4">Kode</th>
-                            <th class="py-3 px-4">Mata Pelajaran</th>
-                            <th class="py-3 px-4">Program</th>
-                            <th class="py-3 px-4">Semester</th>
-                            <th class="py-3 px-4">KKM</th>
-                            <th class="py-3 px-4">Jam/Minggu</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 text-gray-700">
-                        <tr v-for="item in mapelList" :key="item.id" class="hover:bg-gray-50/80 transition">
-                            <td class="py-3 px-4 font-mono font-bold text-indigo-600">{{ item.kode_mapel }}</td>
-                            <td class="py-3 px-4 font-semibold text-gray-900">{{ item.nama_mapel }}</td>
-                            <td class="py-3 px-4">
-                                <span class="px-2.5 py-1 bg-blue-50 text-blue-700 rounded-md text-xs font-semibold">
-                                    {{ item.program?.nama_program || 'Umum' }}
-                                </span>
-                            </td>
-                            <td class="py-3 px-4">Semester {{ item.semester }}</td>
-                            <td class="py-3 px-4 font-bold text-emerald-600">{{ item.kkm }}</td>
-                            <td class="py-3 px-4">{{ item.jam_per_minggu }} Jam</td>
-                        </tr>
-                        <tr v-if="!mapelList || mapelList.length === 0">
-                            <td colspan="6" class="py-8 text-center text-gray-400">Belum ada mata pelajaran terdaftar.</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm min-w-[650px]">
+                        <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
+                            <tr>
+                                <th class="py-3 px-4">Kode</th>
+                                <th class="py-3 px-4">Mata Pelajaran</th>
+                                <th class="py-3 px-4">Program</th>
+                                <th class="py-3 px-4">Semester</th>
+                                <th class="py-3 px-4">KKM</th>
+                                <th class="py-3 px-4">Jam/Minggu</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-gray-700">
+                            <tr v-for="item in mapelList" :key="item.id" class="hover:bg-gray-50/80 transition">
+                                <td class="py-3 px-4 font-mono font-bold text-indigo-600">{{ item.kode_mapel }}</td>
+                                <td class="py-3 px-4 font-semibold text-gray-900">{{ item.nama_mapel }}</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2.5 py-1 bg-blue-50 text-blue-700 rounded-md text-xs font-semibold">
+                                        {{ item.program?.nama_program || 'Umum' }}
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4">Semester {{ item.semester }}</td>
+                                <td class="py-3 px-4 font-bold text-emerald-600">{{ item.kkm }}</td>
+                                <td class="py-3 px-4">{{ item.jam_per_minggu }} Jam</td>
+                            </tr>
+                            <tr v-if="!mapelList || mapelList.length === 0">
+                                <td colspan="6" class="py-8 text-center text-gray-400">Belum ada mata pelajaran terdaftar.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 

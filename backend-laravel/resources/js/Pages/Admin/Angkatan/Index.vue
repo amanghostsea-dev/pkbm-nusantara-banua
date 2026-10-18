@@ -46,55 +46,57 @@ const deleteAngkatan = (item) => {
                 </div>
                 <button
                     @click="showModal = true"
-                    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg text-sm shadow transition flex items-center gap-2"
+                    class="w-full sm:w-auto justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-semibold rounded-lg text-sm shadow transition flex items-center gap-2"
                 >
                     <span>+</span>
                     <span>Tambah Angkatan Baru</span>
                 </button>
             </div>
 
-            <!-- Table -->
+            <!-- Table with Responsive Overflow -->
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
-                        <tr>
-                            <th class="py-3 px-4">Nama Angkatan</th>
-                            <th class="py-3 px-4">Program</th>
-                            <th class="py-3 px-4">Tahun Ajaran</th>
-                            <th class="py-3 px-4">Jumlah Siswa</th>
-                            <th class="py-3 px-4">Jumlah Kelas</th>
-                            <th class="py-3 px-4">Status</th>
-                            <th class="py-3 px-4 text-right">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 text-gray-700">
-                        <tr v-for="item in angkatans" :key="item.id" class="hover:bg-gray-50/80 transition">
-                            <td class="py-3 px-4 font-semibold text-gray-800">{{ item.nama_angkatan }}</td>
-                            <td class="py-3 px-4">
-                                <span class="px-2.5 py-1 bg-blue-50 text-blue-700 rounded-md text-xs font-semibold">
-                                    {{ item.program?.nama_program || 'Program' }}
-                                </span>
-                            </td>
-                            <td class="py-3 px-4 font-medium">{{ item.tahun_ajaran }}</td>
-                            <td class="py-3 px-4 font-bold text-gray-800">{{ item.siswas_count || 0 }} Siswa</td>
-                            <td class="py-3 px-4">{{ item.kelas_count || 0 }} Kelas</td>
-                            <td class="py-3 px-4">
-                                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold capitalize"
-                                    :class="item.status === 'aktif' ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-100 text-gray-700'">
-                                    {{ item.status }}
-                                </span>
-                            </td>
-                            <td class="py-3 px-4 text-right">
-                                <button @click="deleteAngkatan(item)" class="text-xs text-rose-600 hover:underline font-semibold">
-                                    Hapus
-                                </button>
-                            </td>
-                        </tr>
-                        <tr v-if="!angkatans || angkatans.length === 0">
-                            <td colspan="7" class="py-8 text-center text-gray-400">Belum ada angkatan terdaftar.</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm min-w-[750px]">
+                        <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
+                            <tr>
+                                <th class="py-3 px-4">Nama Angkatan</th>
+                                <th class="py-3 px-4">Program</th>
+                                <th class="py-3 px-4">Tahun Ajaran</th>
+                                <th class="py-3 px-4">Jumlah Siswa</th>
+                                <th class="py-3 px-4">Jumlah Kelas</th>
+                                <th class="py-3 px-4">Status</th>
+                                <th class="py-3 px-4 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-gray-700">
+                            <tr v-for="item in angkatans" :key="item.id" class="hover:bg-gray-50/80 transition">
+                                <td class="py-3 px-4 font-semibold text-gray-800">{{ item.nama_angkatan }}</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2.5 py-1 bg-blue-50 text-blue-700 rounded-md text-xs font-semibold">
+                                        {{ item.program?.nama_program || 'Program' }}
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4 font-medium">{{ item.tahun_ajaran }}</td>
+                                <td class="py-3 px-4 font-bold text-gray-800">{{ item.siswas_count || 0 }} Siswa</td>
+                                <td class="py-3 px-4">{{ item.kelas_count || 0 }} Kelas</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold capitalize"
+                                        :class="item.status === 'aktif' ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-100 text-gray-700'">
+                                        {{ item.status }}
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4 text-right">
+                                    <button @click="deleteAngkatan(item)" class="text-xs text-rose-600 hover:underline font-semibold p-1">
+                                        Hapus
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr v-if="!angkatans || angkatans.length === 0">
+                                <td colspan="7" class="py-8 text-center text-gray-400">Belum ada angkatan terdaftar.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 

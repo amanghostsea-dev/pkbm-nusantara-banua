@@ -283,7 +283,7 @@ const submit = () => {
         <!-- =================================================================== -->
         <div class="w-full max-w-md relative z-10 perspective-container">
             <!-- Animated 3D Glow Border Backing -->
-            <div class="absolute -inset-1 bg-gradient-to-r from-blue-500/40 via-amber-400/40 to-indigo-500/40 rounded-[2.5rem] blur-xl opacity-75 group-hover:opacity-100 transition duration-500 animate-border-glow"></div>
+            <div class="absolute -inset-1 bg-gradient-to-r from-blue-500/40 via-amber-400/40 to-indigo-500/40 rounded-3xl sm:rounded-[2.5rem] blur-xl opacity-75 group-hover:opacity-100 transition duration-500 animate-border-glow"></div>
 
             <!-- Main Interactive 3D Card -->
             <div
@@ -291,11 +291,11 @@ const submit = () => {
                 :style="cardTransformStyle"
                 @mouseenter="handleMouseEnter"
                 @mouseleave="handleMouseLeave"
-                class="relative w-full bg-slate-900/80 backdrop-blur-3xl border border-white/20 p-8 sm:p-10 rounded-[2.25rem] shadow-[0_30px_70px_-15px_rgba(0,0,0,0.85),0_0_45px_rgba(59,130,246,0.18)] text-white preserve-3d overflow-hidden"
+                class="relative w-full bg-slate-900/80 backdrop-blur-3xl border border-white/20 p-5 sm:p-10 rounded-3xl sm:rounded-[2.25rem] shadow-[0_30px_70px_-15px_rgba(0,0,0,0.85),0_0_45px_rgba(59,130,246,0.18)] text-white preserve-3d overflow-hidden"
             >
                 <!-- Specular Dynamic Glare Overlay -->
                 <div
-                    class="absolute inset-0 pointer-events-none transition-opacity duration-300 rounded-[2.25rem]"
+                    class="absolute inset-0 pointer-events-none transition-opacity duration-300 rounded-3xl sm:rounded-[2.25rem]"
                     :style="shineStyle"
                 ></div>
 
@@ -303,13 +303,13 @@ const submit = () => {
                 <div class="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-white/50 to-transparent pointer-events-none"></div>
 
                 <!-- 3D Layer: Central Floating Official Emblem -->
-                <div class="text-center mb-6 transform-layer-logo">
-                    <div class="relative inline-block mb-3 group">
+                <div class="text-center mb-5 sm:mb-6 transform-layer-logo">
+                    <div class="relative inline-block mb-2 sm:mb-3 group">
                         <!-- Holographic 3D Halo -->
                         <div class="absolute -inset-2.5 bg-gradient-to-tr from-amber-400/70 via-yellow-300/50 to-blue-500/70 rounded-full blur-lg opacity-85 group-hover:opacity-100 animate-spin-slow pointer-events-none"></div>
 
                         <!-- 3D Floating Plaque -->
-                        <div class="relative w-28 h-28 sm:w-32 sm:h-32 mx-auto rounded-full p-1.5 bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 shadow-[0_20px_40px_rgba(0,0,0,0.7),0_0_30px_rgba(245,158,11,0.4)]">
+                        <div class="relative w-24 h-24 sm:w-32 sm:h-32 mx-auto rounded-full p-1 sm:p-1.5 bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 shadow-[0_20px_40px_rgba(0,0,0,0.7),0_0_30px_rgba(245,158,11,0.4)]">
                             <img
                                 src="/images/logo.png"
                                 alt="Logo Yayasan Banua Insan Nusantara - BASARA"
@@ -318,38 +318,38 @@ const submit = () => {
                         </div>
 
                         <!-- Floating 3D Depth Shadow under Logo -->
-                        <div class="w-24 h-3 bg-black/80 mx-auto rounded-full blur-sm mt-1 transform translate-z-[-10px]"></div>
+                        <div class="w-20 sm:w-24 h-2.5 sm:h-3 bg-black/80 mx-auto rounded-full blur-sm mt-1 transform translate-z-[-10px]"></div>
                     </div>
 
                     <!-- Institution Headers -->
                     <div class="transform-layer-title mt-1">
-                        <h1 class="text-3xl font-black tracking-tight bg-gradient-to-r from-white via-amber-200 to-blue-200 bg-clip-text text-transparent drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                        <h1 class="text-2xl sm:text-3xl font-black tracking-tight bg-gradient-to-r from-white via-amber-200 to-blue-200 bg-clip-text text-transparent drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
                             PKBM BASARA
                         </h1>
-                        <p class="text-amber-300/95 text-xs sm:text-sm font-bold tracking-wider uppercase mt-1 drop-shadow-sm">
+                        <p class="text-amber-300/95 text-xs sm:text-sm font-bold tracking-wider uppercase mt-0.5 sm:mt-1 drop-shadow-sm">
                             Yayasan Banua Insan Nusantara
                         </p>
-                        <p class="text-blue-200/80 text-xs font-medium tracking-wide">
+                        <p class="text-blue-200/80 text-[11px] sm:text-xs font-medium tracking-wide">
                             Kalimantan Selatan • Indonesia
                         </p>
                     </div>
 
                     <!-- Package Badges with 3D Depth -->
-                    <div class="flex items-center justify-center gap-2 mt-3 text-[11px] font-semibold transform-layer-badges">
-                        <span class="px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/40 text-blue-200 shadow-sm backdrop-blur-sm">Paket A (SD)</span>
-                        <span class="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 shadow-sm backdrop-blur-sm">Paket B (SMP)</span>
-                        <span class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-200 shadow-sm backdrop-blur-sm">Paket C (SMA)</span>
+                    <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mt-3 text-[10px] sm:text-[11px] font-semibold transform-layer-badges">
+                        <span class="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-blue-500/20 border border-blue-400/40 text-blue-200 shadow-sm backdrop-blur-sm">Paket A (SD)</span>
+                        <span class="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 shadow-sm backdrop-blur-sm">Paket B (SMP)</span>
+                        <span class="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-200 shadow-sm backdrop-blur-sm">Paket C (SMA)</span>
                     </div>
                 </div>
 
                 <!-- 3D Public Verification CTA Banner -->
-                <div class="mb-5 transform-layer-cta">
+                <div class="mb-4 sm:mb-5 transform-layer-cta">
                     <a
                         href="/verifikasi"
-                        class="group/btn relative w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-teal-500/20 via-emerald-500/20 to-teal-500/20 hover:from-teal-500/30 hover:to-emerald-500/30 border border-teal-400/30 text-teal-200 hover:text-white font-bold text-xs transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-teal-950/40 active:scale-[0.98]"
+                        class="group/btn relative w-full py-2 sm:py-2.5 px-3 sm:px-4 rounded-xl bg-gradient-to-r from-teal-500/20 via-emerald-500/20 to-teal-500/20 hover:from-teal-500/30 hover:to-emerald-500/30 border border-teal-400/30 text-teal-200 hover:text-white font-bold text-[11px] sm:text-xs transition-all duration-300 flex items-center justify-center gap-1.5 sm:gap-2 shadow-lg shadow-teal-950/40 active:scale-[0.98]"
                     >
-                        <span class="text-base group-hover/btn:scale-125 transition-transform duration-200">🔍</span>
-                        <span>Verifikasi Keaslian Ijazah & Raport Publik</span>
+                        <span class="text-sm sm:text-base group-hover/btn:scale-125 transition-transform duration-200">🔍</span>
+                        <span class="text-center">Verifikasi Keaslian Ijazah & Raport Publik</span>
                         <span class="group-hover/btn:translate-x-1 transition-transform duration-200">&rarr;</span>
                     </a>
                 </div>

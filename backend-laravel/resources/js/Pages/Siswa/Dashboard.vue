@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { Head, Link, usePage } from '@inertiajs/vue3'
+import SiswaLayout from '@/Layouts/SiswaLayout.vue'
 
 const page = usePage()
 const user = computed(() => page.props.auth?.user)
@@ -29,78 +30,34 @@ const upcomingSessions = [
 <template>
     <Head title="Portal Siswa — Sistem PKBM" />
 
-    <div class="min-h-screen bg-slate-50 font-sans">
-        <!-- Top Navigation -->
-        <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xl shadow-md shadow-indigo-500/20">
-                        👨‍🎓
-                    </div>
-                    <div>
-                        <h1 class="text-base font-bold text-gray-900 leading-tight">Portal Siswa PKBM</h1>
-                        <p class="text-xs text-gray-500">Ruang Warga Belajar Mandiri</p>
-                    </div>
-                </div>
-
-                <!-- Nav Links -->
-                <nav class="hidden md:flex items-center gap-1">
-                    <Link href="/siswa-portal/dashboard" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 transition">
-                        Dashboard
-                    </Link>
-                    <Link href="/siswa-portal/jadwal" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-600 hover:bg-gray-100 transition">
-                        Jadwal
-                    </Link>
-                    <Link href="/siswa-portal/nilai" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-600 hover:bg-gray-100 transition">
-                        Nilai
-                    </Link>
-                    <Link href="/siswa-portal/materi" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-600 hover:bg-gray-100 transition">
-                        Modul Belajar
-                    </Link>
-                    <Link href="/siswa-portal/tugas" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-600 hover:bg-gray-100 transition">
-                        Tugas Siswa
-                    </Link>
-                </nav>
-
-                <div class="flex items-center gap-4">
-                    <div class="text-right hidden sm:block">
-                        <div class="text-sm font-semibold text-gray-800">{{ user?.name || 'Ahmad Rizki' }}</div>
-                        <div class="text-xs text-indigo-600 font-medium">{{ myProgram.jenjang }}</div>
-                    </div>
-                    <Link
-                        href="/logout"
-                        method="post"
-                        as="button"
-                        class="px-3.5 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-100 text-xs font-semibold text-gray-700 transition"
-                    >
-                        Keluar
-                    </Link>
-                </div>
-            </div>
-        </header>
-
-        <!-- Main Content -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <SiswaLayout>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 sm:space-y-8">
             <!-- Student Hero Card -->
-            <div class="bg-gradient-to-r from-indigo-700 via-blue-700 to-indigo-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl shadow-indigo-600/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div class="bg-gradient-to-r from-indigo-700 via-blue-700 to-indigo-900 rounded-3xl p-5 sm:p-8 text-white shadow-xl shadow-indigo-600/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div>
-                    <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur rounded-full text-xs font-semibold uppercase tracking-wider mb-3">
+                    <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur rounded-full text-[11px] sm:text-xs font-semibold uppercase tracking-wider mb-2">
                         NISN: {{ myProgram.nisn }} • {{ myProgram.status }}
                     </span>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Halo, {{ user?.name || 'Warga Belajar' }}!</h2>
-                    <p class="text-blue-100 text-sm mt-1 max-w-xl">
+                    <h2 class="text-xl sm:text-3xl font-extrabold tracking-tight">Halo, {{ user?.name || 'Warga Belajar' }}! 👋</h2>
+                    <p class="text-blue-100 text-xs sm:text-sm mt-1 max-w-xl">
                         {{ myProgram.jenjang }} • {{ myProgram.kelas }} ({{ myProgram.semester }})
                     </p>
                 </div>
-                <div class="flex flex-wrap gap-3">
-                    <button class="px-5 py-2.5 bg-white text-indigo-700 hover:bg-blue-50 rounded-xl font-bold text-sm shadow-lg transition flex items-center gap-2">
+                <div class="flex flex-wrap gap-2.5 w-full sm:w-auto">
+                    <Link
+                        href="/siswa-portal/absensi"
+                        class="flex-1 sm:flex-initial px-4 py-2.5 bg-white text-indigo-700 hover:bg-blue-50 active:scale-95 rounded-xl font-bold text-xs sm:text-sm shadow-lg transition flex items-center justify-center gap-2"
+                    >
                         <span>📲</span>
-                        <span>Scan Presensi QR</span>
-                    </button>
-                    <button class="px-5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white rounded-xl font-bold text-sm transition flex items-center gap-2">
+                        <span>Scan Presensi</span>
+                    </Link>
+                    <Link
+                        href="/siswa-portal/raport"
+                        class="flex-1 sm:flex-initial px-4 py-2.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white rounded-xl font-bold text-xs sm:text-sm transition flex items-center justify-center gap-2"
+                    >
                         <span>📄</span>
                         <span>Lihat Raport</span>
-                    </button>
+                    </Link>
                 </div>
             </div>
 
@@ -187,6 +144,6 @@ const upcomingSessions = [
                     </div>
                 </div>
             </div>
-        </main>
-    </div>
+        </div>
+    </SiswaLayout>
 </template>

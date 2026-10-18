@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { Head, Link, router } from '@inertiajs/vue3'
+import TutorLayout from '@/Layouts/TutorLayout.vue'
 
 const props = defineProps({
     tugasList: Object,
@@ -45,115 +46,79 @@ function submitTugas() {
 <template>
     <Head title="Tugas & Evaluasi — Portal Tutor" />
 
-    <div class="min-h-screen bg-slate-50 font-sans">
-        <!-- Top Navigation -->
-        <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-xl shadow-md shadow-emerald-500/20">
-                        👨‍🏫
-                    </div>
-                    <div>
-                        <h1 class="text-base font-bold text-gray-900 leading-tight">Portal Tutor PKBM</h1>
-                        <p class="text-xs text-gray-500">Evaluasi & Penugasan Mandiri</p>
-                    </div>
-                </div>
-
-                <!-- Nav Links -->
-                <nav class="hidden md:flex items-center gap-1">
-                    <Link href="/tutor/dashboard" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-600 hover:bg-gray-100 transition">
-                        Dashboard
-                    </Link>
-                    <Link href="/tutor/kelas" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-600 hover:bg-gray-100 transition">
-                        Daftar Kelas
-                    </Link>
-                    <Link href="/tutor/materi" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-600 hover:bg-gray-100 transition">
-                        Modul Belajar
-                    </Link>
-                    <Link href="/tutor/tugas" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-700 transition">
-                        Tugas & Evaluasi
-                    </Link>
-                </nav>
-
-                <div class="flex items-center gap-3">
-                    <Link href="/logout" method="post" as="button" class="px-3.5 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-100 text-xs font-semibold text-gray-700 transition">
-                        Keluar
-                    </Link>
-                </div>
-            </div>
-        </header>
-
-        <!-- Main Content -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+    <TutorLayout>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-5 sm:p-6 rounded-3xl border border-gray-100 shadow-sm">
                 <div>
-                    <h2 class="text-2xl font-extrabold text-gray-900">Kelola Tugas & Penilaian</h2>
-                    <p class="text-sm text-gray-500 mt-1">Berikan penugasan mandiri terstruktur dan nilai hasil pengerjaan warga belajar.</p>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-gray-900">Kelola Tugas & Penilaian</h2>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-1">Berikan penugasan mandiri terstruktur dan nilai hasil pengerjaan warga belajar.</p>
                 </div>
                 <button
                     @click="showModal = true"
-                    class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl shadow-lg shadow-indigo-600/20 transition flex items-center gap-2"
+                    class="w-full sm:w-auto justify-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs sm:text-sm rounded-xl shadow-lg shadow-indigo-600/20 transition flex items-center gap-2"
                 >
                     <span>+</span>
                     <span>Buat Tugas Baru</span>
                 </button>
             </div>
 
-            <!-- List Table -->
+            <!-- List Table with Responsive Overflow -->
             <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
-                        <tr>
-                            <th class="py-4 px-6">Judul Tugas</th>
-                            <th class="py-4 px-6">Kelas & Mapel</th>
-                            <th class="py-4 px-6">Deadline</th>
-                            <th class="py-4 px-6">Pengumpulan</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr v-for="tugas in tugasList.data" :key="tugas.id" class="hover:bg-gray-50/70 transition">
-                            <td class="py-4 px-6">
-                                <div class="font-bold text-gray-900">{{ tugas.judul }}</div>
-                                <div class="text-xs text-gray-500 line-clamp-1 max-w-sm mt-0.5">{{ tugas.deskripsi }}</div>
-                            </td>
-                            <td class="py-4 px-6">
-                                <div class="font-semibold text-gray-800">{{ tugas.mata_pelajaran?.nama_mapel }}</div>
-                                <div class="text-xs text-indigo-600 font-medium">{{ tugas.kelas?.nama_kelas }}</div>
-                            </td>
-                            <td class="py-4 px-6">
-                                <div class="text-xs font-bold text-gray-800">
-                                    {{ new Date(tugas.deadline).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) }}
-                                </div>
-                                <span
-                                    :class="[
-                                        'text-[10px] font-bold px-2 py-0.5 rounded uppercase mt-0.5 inline-block',
-                                        new Date() > new Date(tugas.deadline) ? 'bg-rose-50 text-rose-600' : 'bg-emerald-50 text-emerald-600'
-                                    ]"
-                                >
-                                    {{ new Date() > new Date(tugas.deadline) ? 'Tenggat Lewat' : 'Aktif' }}
-                                </span>
-                            </td>
-                            <td class="py-4 px-6">
-                                <span class="px-3 py-1 bg-indigo-50 text-indigo-700 text-xs font-bold rounded-xl border border-indigo-100">
-                                    📥 {{ tugas.pengumpulans_count }} Siswa Mengumpulkan
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm min-w-[650px]">
+                        <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
+                            <tr>
+                                <th class="py-4 px-6">Judul Tugas</th>
+                                <th class="py-4 px-6">Kelas & Mapel</th>
+                                <th class="py-4 px-6">Deadline</th>
+                                <th class="py-4 px-6">Pengumpulan</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr v-for="tugas in tugasList.data" :key="tugas.id" class="hover:bg-gray-50/70 transition">
+                                <td class="py-4 px-6">
+                                    <div class="font-bold text-gray-900">{{ tugas.judul }}</div>
+                                    <div class="text-xs text-gray-500 line-clamp-1 max-w-sm mt-0.5">{{ tugas.deskripsi }}</div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="font-semibold text-gray-800">{{ tugas.mata_pelajaran?.nama_mapel }}</div>
+                                    <div class="text-xs text-indigo-600 font-medium">{{ tugas.kelas?.nama_kelas }}</div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="text-xs font-bold text-gray-800">
+                                        {{ new Date(tugas.deadline).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) }}
+                                    </div>
+                                    <span
+                                        :class="[
+                                            'text-[10px] font-bold px-2 py-0.5 rounded uppercase mt-0.5 inline-block',
+                                            new Date() > new Date(tugas.deadline) ? 'bg-rose-50 text-rose-600' : 'bg-emerald-50 text-emerald-600'
+                                        ]"
+                                    >
+                                        {{ new Date() > new Date(tugas.deadline) ? 'Tenggat Lewat' : 'Aktif' }}
+                                    </span>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <span class="px-3 py-1 bg-indigo-50 text-indigo-700 text-xs font-bold rounded-xl border border-indigo-100">
+                                        📥 {{ tugas.pengumpulans_count }} Siswa Mengumpulkan
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <div v-if="tugasList.data.length === 0" class="p-12 text-center text-gray-400">
                     <p class="text-sm font-semibold">Belum ada tugas yang dibuat.</p>
                 </div>
             </div>
-        </main>
+        </div>
 
-        <!-- Modal Buat Tugas -->
-        <div v-if="showModal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-            <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl">
+        <!-- Modal Buat Tugas (Responsive) -->
+        <div v-if="showModal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-7 space-y-5 shadow-2xl my-8 max-h-[90vh] overflow-y-auto">
                 <div class="flex items-center justify-between border-b border-gray-100 pb-3">
-                    <h2 class="text-lg font-bold text-gray-900">Buat Penugasan Baru</h2>
-                    <button @click="showModal = false" class="text-gray-400 hover:text-gray-600 text-xl font-bold">&times;</button>
+                    <h2 class="text-base sm:text-lg font-bold text-gray-900">Buat Penugasan Baru</h2>
+                    <button @click="showModal = false" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 text-xl font-bold">&times;</button>
                 </div>
 
                 <form @submit.prevent="submitTugas" class="space-y-4">
@@ -164,17 +129,17 @@ function submitTugas() {
                             type="text"
                             required
                             placeholder="Contoh: Latihan Soal Persiapan Ujian Akhir"
-                            class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none"
+                            class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none"
                         />
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Kelas Target</label>
                             <select
                                 v-model="form.kelas_id"
                                 required
-                                class="w-full text-xs px-3 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none"
+                                class="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none"
                             >
                                 <option value="" disabled>Pilih Kelas</option>
                                 <option v-for="k in kelasList" :key="k.id" :value="k.id">{{ k.nama_kelas }}</option>
@@ -185,7 +150,7 @@ function submitTugas() {
                             <select
                                 v-model="form.mata_pelajaran_id"
                                 required
-                                class="w-full text-xs px-3 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none"
+                                class="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none"
                             >
                                 <option value="" disabled>Pilih Mapel</option>
                                 <option v-for="m in mapelList" :key="m.id" :value="m.id">{{ m.nama_mapel }}</option>
@@ -193,14 +158,14 @@ function submitTugas() {
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Tenggat Waktu</label>
                             <input
                                 v-model="form.deadline"
                                 type="datetime-local"
                                 required
-                                class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none"
+                                class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none"
                             />
                         </div>
                         <div>
@@ -211,7 +176,7 @@ function submitTugas() {
                                 min="10"
                                 max="100"
                                 required
-                                class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none"
+                                class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none"
                             />
                         </div>
                     </div>
@@ -223,7 +188,7 @@ function submitTugas() {
                             rows="4"
                             required
                             placeholder="Petunjuk pengerjaan tugas secara rinci..."
-                            class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none"
+                            class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none"
                         ></textarea>
                     </div>
 
@@ -231,13 +196,13 @@ function submitTugas() {
                         <button
                             type="button"
                             @click="showModal = false"
-                            class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 hover:bg-gray-100 transition"
+                            class="px-4 py-2.5 rounded-xl text-xs font-semibold text-gray-600 hover:bg-gray-100 transition"
                         >
                             Batal
                         </button>
                         <button
                             type="submit"
-                            class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-md transition"
+                            class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs rounded-xl shadow-md transition"
                         >
                             Simpan Tugas
                         </button>
@@ -245,5 +210,5 @@ function submitTugas() {
                 </form>
             </div>
         </div>
-    </div>
+    </TutorLayout>
 </template>

@@ -43,44 +43,46 @@ const submit = () => {
                 </div>
                 <button
                     @click="showModal = true"
-                    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg text-sm shadow transition flex items-center gap-2"
+                    class="w-full sm:w-auto justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-semibold rounded-lg text-sm shadow transition flex items-center gap-2"
                 >
                     <span>+</span>
                     <span>Tambah Jadwal Sesi</span>
                 </button>
             </div>
 
-            <!-- Table -->
+            <!-- Table with Responsive Overflow -->
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
-                        <tr>
-                            <th class="py-3 px-4">Hari</th>
-                            <th class="py-3 px-4">Waktu</th>
-                            <th class="py-3 px-4">Kelas / Rombel</th>
-                            <th class="py-3 px-4">Mata Pelajaran</th>
-                            <th class="py-3 px-4">Tutor Pengampu</th>
-                            <th class="py-3 px-4">Ruangan</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 text-gray-700">
-                        <tr v-for="item in jadwals" :key="item.id" class="hover:bg-gray-50/80 transition">
-                            <td class="py-3 px-4 font-bold capitalize text-indigo-700">{{ item.hari }}</td>
-                            <td class="py-3 px-4 font-mono font-medium">{{ item.jam_mulai }} - {{ item.jam_selesai }}</td>
-                            <td class="py-3 px-4 font-semibold text-gray-900">{{ item.kelas?.nama_kelas || '-' }}</td>
-                            <td class="py-3 px-4 font-medium text-gray-800">{{ item.mata_pelajaran?.nama_mapel || '-' }}</td>
-                            <td class="py-3 px-4">{{ item.tutor?.nama_lengkap || '-' }}</td>
-                            <td class="py-3 px-4">
-                                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
-                                    {{ item.ruangan || 'Daring / Lab' }}
-                                </span>
-                            </td>
-                        </tr>
-                        <tr v-if="!jadwals || jadwals.length === 0">
-                            <td colspan="6" class="py-8 text-center text-gray-400">Belum ada sesi jadwal belajar terdaftar.</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm min-w-[700px]">
+                        <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
+                            <tr>
+                                <th class="py-3 px-4">Hari</th>
+                                <th class="py-3 px-4">Waktu</th>
+                                <th class="py-3 px-4">Kelas / Rombel</th>
+                                <th class="py-3 px-4">Mata Pelajaran</th>
+                                <th class="py-3 px-4">Tutor Pengampu</th>
+                                <th class="py-3 px-4">Ruangan</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-gray-700">
+                            <tr v-for="item in jadwals" :key="item.id" class="hover:bg-gray-50/80 transition">
+                                <td class="py-3 px-4 font-bold capitalize text-indigo-700">{{ item.hari }}</td>
+                                <td class="py-3 px-4 font-mono font-medium">{{ item.jam_mulai }} - {{ item.jam_selesai }}</td>
+                                <td class="py-3 px-4 font-semibold text-gray-900">{{ item.kelas?.nama_kelas || '-' }}</td>
+                                <td class="py-3 px-4 font-medium text-gray-800">{{ item.mata_pelajaran?.nama_mapel || '-' }}</td>
+                                <td class="py-3 px-4">{{ item.tutor?.nama_lengkap || '-' }}</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
+                                        {{ item.ruangan || 'Daring / Lab' }}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr v-if="!jadwals || jadwals.length === 0">
+                                <td colspan="6" class="py-8 text-center text-gray-400">Belum ada sesi jadwal belajar terdaftar.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 

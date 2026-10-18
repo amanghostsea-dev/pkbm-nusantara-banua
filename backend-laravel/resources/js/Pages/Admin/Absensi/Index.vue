@@ -497,11 +497,11 @@ onUnmounted(() => {
             </div>
 
             <!-- Schedule Selector -->
-            <div>
+            <div class="w-full lg:w-auto">
                 <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Sesi Pelajaran Aktif:</label>
                 <select
                     v-model="selectedJadwalId"
-                    class="px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 text-xs font-bold focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
+                    class="w-full lg:w-auto max-w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 text-xs font-bold focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none truncate"
                 >
                     <option v-for="j in jadwals" :key="j.id" :value="j.id">
                         {{ j.kelas?.nama_kelas }} • {{ j.mata_pelajaran?.nama_mapel }} ({{ j.hari }}, {{ j.jam_mulai }})
@@ -511,7 +511,7 @@ onUnmounted(() => {
         </div>
 
         <!-- Mode Switcher Tabs -->
-        <div class="flex border-b border-slate-200 gap-2 sm:gap-4 text-xs font-bold overflow-x-auto">
+        <div class="flex border-b border-slate-200 gap-2 sm:gap-4 text-xs font-bold overflow-x-auto pb-1 scrollbar-none">
             <button
                 @click="activeTab = 'face'"
                 :class="[
@@ -570,7 +570,7 @@ onUnmounted(() => {
         <!-- ======================================================== -->
         <div v-show="activeTab === 'face'" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             <!-- Face Viewfinder View -->
-            <div class="lg:col-span-7 bg-slate-950 rounded-3xl p-6 border border-slate-800 shadow-2xl relative overflow-hidden flex flex-col items-center justify-center min-h-[500px]">
+            <div class="lg:col-span-7 bg-slate-950 rounded-3xl p-4 sm:p-6 border border-slate-800 shadow-2xl relative overflow-hidden flex flex-col items-center justify-center min-h-[420px] sm:min-h-[500px]">
                 <!-- Top Status Bar -->
                 <div class="w-full flex items-center justify-between text-xs text-slate-400 mb-3 px-2 z-20 gap-2 flex-wrap">
                     <div class="flex items-center gap-2">
@@ -596,7 +596,7 @@ onUnmounted(() => {
 
                         <button
                             @click="cameraActive ? stopCamera() : startCamera()"
-                            class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[11px] font-semibold transition whitespace-nowrap"
+                            class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[11px] font-semibold transition whitespace-nowrap active:scale-95"
                         >
                             {{ cameraActive ? 'Matikan Kamera' : 'Nyalakan Kamera' }}
                         </button>
@@ -626,13 +626,13 @@ onUnmounted(() => {
                         <div class="flex items-center gap-2">
                             <button
                                 @click="startCamera()"
-                                class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-md"
+                                class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-md"
                             >
                                 <span>▶️</span> Nyalakan Kamera
                             </button>
                             <button
                                 @click="fileInputRef?.click()"
-                                class="px-3.5 py-2 bg-white/10 hover:bg-white/20 text-slate-200 rounded-xl text-xs font-semibold transition"
+                                class="px-3.5 py-2 bg-white/10 hover:bg-white/20 active:scale-95 text-slate-200 rounded-xl text-xs font-semibold transition"
                             >
                                 📁 Unggah Foto
                             </button>
@@ -642,7 +642,7 @@ onUnmounted(() => {
                     <!-- Oval Face Targeting Reticle -->
                     <div v-if="cameraActive" class="absolute inset-0 pointer-events-none flex flex-col items-center justify-center p-4">
                         <!-- Oval Outline -->
-                        <div class="w-56 h-72 border-2 border-dashed border-cyan-400/80 rounded-[50%] relative flex items-center justify-center shadow-[0_0_20px_rgba(34,211,238,0.25)]">
+                        <div class="w-44 sm:w-56 h-56 sm:h-72 border-2 border-dashed border-cyan-400/80 rounded-[50%] relative flex items-center justify-center shadow-[0_0_20px_rgba(34,211,238,0.25)]">
                             <!-- Reticle Crosshairs -->
                             <div class="absolute -top-3 w-4 h-1 bg-cyan-400"></div>
                             <div class="absolute -bottom-3 w-4 h-1 bg-cyan-400"></div>
