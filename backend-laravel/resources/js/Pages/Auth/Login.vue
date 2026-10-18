@@ -1,5 +1,9 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+/**
+ * Halaman Login PKBM BASARA
+ * Tampilan Tenang, Elegan, dan Eksekutif (Stationary Luxury Glassmorphism)
+ */
+import { ref } from 'vue'
 import { Head, useForm } from '@inertiajs/vue3'
 
 defineProps({
@@ -14,156 +18,6 @@ const form = useForm({
 
 const showPassword = ref(false)
 
-// 3D Parallax Tilt Logic
-const cardRef = ref(null)
-const rotateX = ref(0)
-const rotateY = ref(0)
-const shineX = ref(50)
-const shineY = ref(50)
-const isHovered = ref(false)
-
-// Mouse Parallax for Floating Background & Foreground Elements
-const mouseOffsetX = ref(0)
-const mouseOffsetY = ref(0)
-
-const handleMouseMove = (e) => {
-    const windowWidth = window.innerWidth
-    const windowHeight = window.innerHeight
-
-    // Normalized -1 to 1 for global parallax
-    mouseOffsetX.value = ((e.clientX - windowWidth / 2) / (windowWidth / 2))
-    mouseOffsetY.value = ((e.clientY - windowHeight / 2) / (windowHeight / 2))
-
-    if (!cardRef.value) return
-    const rect = cardRef.value.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    const centerX = rect.width / 2
-    const centerY = rect.height / 2
-
-    // Max 12 deg tilt for sophisticated 3D feel
-    rotateX.value = -((y - centerY) / centerY) * 12
-    rotateY.value = ((x - centerX) / centerX) * 12
-
-    shineX.value = (x / rect.width) * 100
-    shineY.value = (y / rect.height) * 100
-}
-
-const handleMouseEnter = () => {
-    isHovered.value = true
-}
-
-const handleMouseLeave = () => {
-    isHovered.value = false
-    rotateX.value = 0
-    rotateY.value = 0
-    shineX.value = 50
-    shineY.value = 50
-}
-
-const cardTransformStyle = computed(() => {
-    return {
-        transform: isHovered.value
-            ? `perspective(1100px) rotateX(${rotateX.value.toFixed(2)}deg) rotateY(${rotateY.value.toFixed(2)}deg) translateZ(10px)`
-            : 'perspective(1100px) rotateX(0deg) rotateY(0deg) translateZ(0px)',
-        transition: isHovered.value ? 'transform 0.08s ease-out' : 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)',
-    }
-})
-
-const shineStyle = computed(() => {
-    return {
-        background: `radial-gradient(circle 380px at ${shineX.value}% ${shineY.value}%, rgba(255, 255, 255, 0.2), transparent 70%)`,
-    }
-})
-
-// ===================================================================
-// DYNAMIC 20-SECOND ANIMATION CYCLE FOR FLOATING EMBLEMS
-// ===================================================================
-const currentModeIndex = ref(0)
-const timerProgress = ref(0)
-let cycleInterval = null
-let progressInterval = null
-
-const animationModes = [
-    {
-        id: 'cosmic',
-        name: 'Orbit Kosmik 3D',
-        icon: '🪐',
-        desc: 'Menjelajah orbit luas melintasi ruang angkasa',
-        containerClass: 'mode-cosmic',
-        glowColor: 'from-amber-400/50 via-yellow-300/30 to-blue-500/50',
-    },
-    {
-        id: 'pulse',
-        name: 'Cyber Wave Drift',
-        icon: '⚡',
-        desc: 'Bergerak meliuk angka 8 dengan gelombang neon',
-        containerClass: 'mode-pulse',
-        glowColor: 'from-cyan-400/50 via-blue-500/30 to-amber-400/50',
-    },
-    {
-        id: 'antigravity',
-        name: 'Anti-Gravitasi Bebas',
-        icon: '✨',
-        desc: 'Melayang mengapung bebas tanpa bobot kesana kemari',
-        containerClass: 'mode-antigravity',
-        glowColor: 'from-emerald-400/40 via-amber-300/40 to-indigo-500/40',
-    },
-    {
-        id: 'shimmer',
-        name: 'Vortex Spiral & Intan',
-        icon: '💎',
-        desc: 'Pusaran spiral dinamis dengan kemilau intan Banjar',
-        containerClass: 'mode-shimmer',
-        glowColor: 'from-amber-300/60 via-yellow-200/50 to-amber-500/60',
-    },
-]
-
-const currentMode = computed(() => animationModes[currentModeIndex.value])
-
-const nextModeManually = () => {
-    currentModeIndex.value = (currentModeIndex.value + 1) % animationModes.length
-    timerProgress.value = 0
-}
-
-onMounted(() => {
-    // Mode switcher every 20 seconds (20,000 ms)
-    cycleInterval = setInterval(() => {
-        nextModeManually()
-    }, 20000)
-
-    // Smooth visual progress indicator (updated every 100ms)
-    progressInterval = setInterval(() => {
-        timerProgress.value = Math.min(100, timerProgress.value + (100 / 200))
-    }, 100)
-})
-
-onUnmounted(() => {
-    if (cycleInterval) clearInterval(cycleInterval)
-    if (progressInterval) clearInterval(progressInterval)
-})
-
-// Precisely Scaled & Positioned Floating Emblems with Dynamic Wandering Tracks
-const floatingLogos = [
-    // Left Wing (Wide roving orbits on left side)
-    { id: 'left-1', top: '10%', left: '3%', sizePx: 84, depth: 45, delay: '0s', opacity: 'opacity-95', tilt: -10, track: 'track-a' },
-    { id: 'left-2', top: '34%', left: '6%', sizePx: 64, depth: 28, delay: '1.2s', opacity: 'opacity-85', tilt: 8, track: 'track-b' },
-    { id: 'left-3', top: '62%', left: '3%', sizePx: 78, depth: 38, delay: '2.5s', opacity: 'opacity-90', tilt: -6, track: 'track-c' },
-    { id: 'left-4', top: '84%', left: '8%', sizePx: 56, depth: 20, delay: '1.8s', opacity: 'opacity-75', tilt: 14, track: 'track-d' },
-
-    // Right Wing (Wide roving orbits on right side)
-    { id: 'right-1', top: '12%', right: '3%', sizePx: 80, depth: 42, delay: '0.6s', opacity: 'opacity-95', tilt: 12, track: 'track-c' },
-    { id: 'right-2', top: '36%', right: '7%', sizePx: 68, depth: 32, delay: '2.1s', opacity: 'opacity-85', tilt: -9, track: 'track-d' },
-    { id: 'right-3', top: '64%', right: '4%', sizePx: 82, depth: 48, delay: '1.0s', opacity: 'opacity-90', tilt: 7, track: 'track-a' },
-    { id: 'right-4', top: '86%', right: '8%', sizePx: 58, depth: 22, delay: '3.0s', opacity: 'opacity-75', tilt: -15, track: 'track-b' },
-]
-
-const getParallaxTransform = (depth) => {
-    const px = (mouseOffsetX.value * depth * 0.75).toFixed(1)
-    const py = (mouseOffsetY.value * depth * 0.75).toFixed(1)
-    return `translate3d(${px}px, ${py}px, 0px)`
-}
-
 const submit = () => {
     form.post('/login', {
         onFinish: () => form.reset('password'),
@@ -174,195 +28,82 @@ const submit = () => {
 <template>
     <Head title="Masuk ke Sistem PKBM Basara" />
 
-    <div
-        class="min-h-screen flex items-center justify-center bg-slate-950 px-4 py-8 relative overflow-hidden font-sans select-none"
-        @mousemove="handleMouseMove"
-    >
-        <!-- 3D Space Horizon -->
-        <div class="absolute inset-0 bg-radial-gradient pointer-events-none"></div>
+    <div class="min-h-screen flex items-center justify-center bg-slate-950 px-4 py-8 relative overflow-hidden font-sans select-none">
+        <!-- Calm Ambient Gradient Lighting (Stationary, Non-Moving) -->
+        <div class="absolute inset-0 bg-radial-vignette pointer-events-none"></div>
+        <div class="absolute -top-32 -left-32 w-[34rem] h-[34rem] bg-blue-900/20 rounded-full blur-[140px] pointer-events-none"></div>
+        <div class="absolute -bottom-32 -right-32 w-[34rem] h-[34rem] bg-indigo-900/20 rounded-full blur-[150px] pointer-events-none"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-amber-500/5 rounded-full blur-[160px] pointer-events-none"></div>
 
-        <!-- 3D Perspective Cyber Floor Grid -->
-        <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-25">
-            <div class="perspective-grid"></div>
-        </div>
+        <!-- Main Stationary Luxury Login Card -->
+        <div class="w-full max-w-md relative z-10">
+            <!-- Subtle Ambient Halo Border -->
+            <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-500/20 via-amber-400/20 to-indigo-500/20 rounded-3xl blur-md opacity-60"></div>
 
-        <!-- Dynamic Ambient Glows -->
-        <div class="absolute -top-32 -left-32 w-[32rem] h-[32rem] bg-blue-600/20 rounded-full blur-[140px] pointer-events-none animate-pulse-slow"></div>
-        <div class="absolute -bottom-32 -right-32 w-[34rem] h-[34rem] bg-amber-500/15 rounded-full blur-[150px] pointer-events-none animate-pulse-slow delay-1000"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[48rem] h-[48rem] bg-indigo-600/10 rounded-full blur-[170px] pointer-events-none"></div>
+            <!-- Solid, Elegant Frosted Glass Container -->
+            <div class="relative w-full bg-slate-900/85 backdrop-blur-2xl border border-white/10 p-6 sm:p-10 rounded-3xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85)] text-white overflow-hidden">
+                <!-- Top Subtle Reflection Line -->
+                <div class="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none"></div>
 
-        <!-- Floating 3D Geometric Accents -->
-        <div class="floating-cube cube-1 pointer-events-none hidden 2xl:block"></div>
-        <div class="floating-cube cube-2 pointer-events-none hidden 2xl:block"></div>
-        <div class="floating-cube cube-3 pointer-events-none hidden 2xl:block"></div>
+                <!-- Central Official Emblem & Branding -->
+                <div class="text-center mb-6">
+                    <div class="relative inline-block mb-3">
+                        <!-- Refined Golden Halo -->
+                        <div class="absolute -inset-2 bg-gradient-to-tr from-amber-400/40 via-yellow-300/20 to-blue-500/30 rounded-full blur-md opacity-70 pointer-events-none"></div>
 
-        <!-- =================================================================== -->
-        <!-- FLOATING 3D EMBLEMS (CYCLIC WANDERING ANIMATIONS EVERY 20 SECONDS) -->
-        <!-- =================================================================== -->
-        <div
-            v-for="item in floatingLogos"
-            :key="item.id"
-            class="absolute pointer-events-none hidden md:block z-0 transition-transform duration-100 ease-out"
-            :style="{
-                top: item.top,
-                left: item.left,
-                right: item.right,
-                transform: getParallaxTransform(item.depth)
-            }"
-        >
-            <div
-                :class="[currentMode.containerClass, item.track, 'transition-all duration-1000 transform-gpu']"
-                :style="{ animationDelay: item.delay }"
-            >
-                <div
-                    class="relative group/orbit transition-all duration-700"
-                    :style="{
-                        width: `${item.sizePx}px`,
-                        height: `${item.sizePx}px`,
-                        transform: `rotate(${item.tilt}deg)`
-                    }"
-                >
-                    <!-- Morphing Holographic Glow (Changes with 20s mode) -->
-                    <div
-                        :class="[
-                            'absolute -inset-2 rounded-full blur-md opacity-80 bg-gradient-to-tr transition-all duration-1000',
-                            currentMode.glowColor
-                        ]"
-                    ></div>
-
-                    <!-- 3D Beveled Plaque Container -->
-                    <div
-                        :class="[
-                            item.opacity,
-                            'relative w-full h-full rounded-full p-1 bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 shadow-[0_12px_30px_rgba(0,0,0,0.7),0_0_20px_rgba(245,158,11,0.35)] backdrop-blur-sm overflow-hidden border border-amber-200/50'
-                        ]"
-                    >
-                        <img
-                            src="/images/logo.png"
-                            alt="Logo Yayasan Banua Insan Nusantara BASARA"
-                            class="w-full h-full rounded-full object-cover shadow-inner"
-                        />
-                        <!-- Dynamic Shimmer Reflection Bar (Activated in shimmer mode) -->
-                        <div class="shimmer-sweep"></div>
-                    </div>
-
-                    <!-- Floating Soft 3D Ground Shadow -->
-                    <div class="w-3/4 h-2 bg-black/80 mx-auto rounded-full blur-sm mt-1.5 transform scale-x-90"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- =================================================================== -->
-        <!-- 20-SECOND ANIMATION MODE STATUS BADGE                               -->
-        <!-- =================================================================== -->
-        <div
-            class="fixed bottom-4 left-4 z-20 hidden sm:flex items-center gap-3 px-3.5 py-2.5 rounded-2xl bg-slate-900/85 backdrop-blur-xl border border-white/15 shadow-2xl text-xs text-white cursor-pointer hover:border-amber-400/50 hover:bg-slate-900 transition-all duration-300 group"
-            @click="nextModeManually"
-            title="Klik untuk langsung ganti mode animasi berikutnya"
-        >
-            <span class="text-base transition-transform duration-300 group-hover:scale-125">{{ currentMode.icon }}</span>
-            <div>
-                <div class="flex items-center gap-2">
-                    <span class="font-bold text-amber-300 group-hover:text-amber-200 transition-colors">{{ currentMode.name }}</span>
-                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-200 border border-blue-400/30 font-mono group-hover:bg-amber-500/20 group-hover:text-amber-300 group-hover:border-amber-400/40 transition-colors">20s Siklus</span>
-                    <span class="text-[10px] text-gray-500 group-hover:text-gray-300 transition-colors hidden md:inline">⇄ Klik ganti</span>
-                </div>
-                <div class="text-[10px] text-gray-400">{{ currentMode.desc }}</div>
-                <!-- 20-Second Progress Bar -->
-                <div class="w-full h-1 bg-slate-800 rounded-full mt-1.5 overflow-hidden">
-                    <div
-                        class="h-full bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 transition-all duration-100 ease-linear rounded-full"
-                        :style="{ width: `${timerProgress}%` }"
-                    ></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- =================================================================== -->
-        <!-- MAIN 3D PERSPECTIVE LOGIN CARD                                      -->
-        <!-- =================================================================== -->
-        <div class="w-full max-w-md relative z-10 perspective-container">
-            <!-- Animated 3D Glow Border Backing -->
-            <div class="absolute -inset-1 bg-gradient-to-r from-blue-500/40 via-amber-400/40 to-indigo-500/40 rounded-3xl sm:rounded-[2.5rem] blur-xl opacity-75 group-hover:opacity-100 transition duration-500 animate-border-glow"></div>
-
-            <!-- Main Interactive 3D Card -->
-            <div
-                ref="cardRef"
-                :style="cardTransformStyle"
-                @mouseenter="handleMouseEnter"
-                @mouseleave="handleMouseLeave"
-                class="relative w-full bg-slate-900/80 backdrop-blur-3xl border border-white/20 p-5 sm:p-10 rounded-3xl sm:rounded-[2.25rem] shadow-[0_30px_70px_-15px_rgba(0,0,0,0.85),0_0_45px_rgba(59,130,246,0.18)] text-white preserve-3d overflow-hidden"
-            >
-                <!-- Specular Dynamic Glare Overlay -->
-                <div
-                    class="absolute inset-0 pointer-events-none transition-opacity duration-300 rounded-3xl sm:rounded-[2.25rem]"
-                    :style="shineStyle"
-                ></div>
-
-                <!-- Top Edge Light Reflection -->
-                <div class="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-white/50 to-transparent pointer-events-none"></div>
-
-                <!-- 3D Layer: Central Floating Official Emblem -->
-                <div class="text-center mb-5 sm:mb-6 transform-layer-logo">
-                    <div class="relative inline-block mb-2 sm:mb-3 group">
-                        <!-- Holographic 3D Halo -->
-                        <div class="absolute -inset-2.5 bg-gradient-to-tr from-amber-400/70 via-yellow-300/50 to-blue-500/70 rounded-full blur-lg opacity-85 group-hover:opacity-100 animate-spin-slow pointer-events-none"></div>
-
-                        <!-- 3D Floating Plaque -->
-                        <div class="relative w-24 h-24 sm:w-32 sm:h-32 mx-auto rounded-full p-1 sm:p-1.5 bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 shadow-[0_20px_40px_rgba(0,0,0,0.7),0_0_30px_rgba(245,158,11,0.4)]">
+                        <!-- Stationary Plaque -->
+                        <div class="relative w-24 h-24 sm:w-28 sm:h-28 mx-auto rounded-full p-1 bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 shadow-[0_12px_28px_rgba(0,0,0,0.6)]">
                             <img
                                 src="/images/logo.png"
                                 alt="Logo Yayasan Banua Insan Nusantara - BASARA"
-                                class="w-full h-full rounded-full object-cover shadow-inner transform transition-transform duration-500 group-hover:scale-105"
+                                class="w-full h-full rounded-full object-cover shadow-inner"
                             />
                         </div>
-
-                        <!-- Floating 3D Depth Shadow under Logo -->
-                        <div class="w-20 sm:w-24 h-2.5 sm:h-3 bg-black/80 mx-auto rounded-full blur-sm mt-1 transform translate-z-[-10px]"></div>
                     </div>
 
                     <!-- Institution Headers -->
-                    <div class="transform-layer-title mt-1">
-                        <h1 class="text-2xl sm:text-3xl font-black tracking-tight bg-gradient-to-r from-white via-amber-200 to-blue-200 bg-clip-text text-transparent drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                    <div class="mt-1">
+                        <h1 class="text-2xl sm:text-3xl font-black tracking-tight bg-gradient-to-r from-white via-slate-100 to-amber-100 bg-clip-text text-transparent">
                             PKBM BASARA
                         </h1>
-                        <p class="text-amber-300/95 text-xs sm:text-sm font-bold tracking-wider uppercase mt-0.5 sm:mt-1 drop-shadow-sm">
+                        <p class="text-amber-300/90 text-xs sm:text-sm font-bold tracking-wider uppercase mt-1">
                             Yayasan Banua Insan Nusantara
                         </p>
-                        <p class="text-blue-200/80 text-[11px] sm:text-xs font-medium tracking-wide">
+                        <p class="text-slate-400 text-[11px] sm:text-xs font-medium tracking-wide mt-0.5">
                             Kalimantan Selatan • Indonesia
                         </p>
                     </div>
 
-                    <!-- Package Badges with 3D Depth -->
-                    <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mt-3 text-[10px] sm:text-[11px] font-semibold transform-layer-badges">
-                        <span class="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-blue-500/20 border border-blue-400/40 text-blue-200 shadow-sm backdrop-blur-sm">Paket A (SD)</span>
-                        <span class="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 shadow-sm backdrop-blur-sm">Paket B (SMP)</span>
-                        <span class="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-200 shadow-sm backdrop-blur-sm">Paket C (SMA)</span>
+                    <!-- Package Badges -->
+                    <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mt-3.5 text-[10px] sm:text-[11px] font-semibold">
+                        <span class="px-2.5 py-0.5 rounded-full bg-blue-500/15 border border-blue-400/30 text-blue-200">Paket A (SD)</span>
+                        <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-200">Paket B (SMP)</span>
+                        <span class="px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-400/30 text-amber-200">Paket C (SMA)</span>
                     </div>
                 </div>
 
-                <!-- 3D Public Verification CTA Banner -->
-                <div class="mb-4 sm:mb-5 transform-layer-cta">
+                <!-- Public Verification CTA Banner -->
+                <div class="mb-5">
                     <a
                         href="/verifikasi"
-                        class="group/btn relative w-full py-2 sm:py-2.5 px-3 sm:px-4 rounded-xl bg-gradient-to-r from-teal-500/20 via-emerald-500/20 to-teal-500/20 hover:from-teal-500/30 hover:to-emerald-500/30 border border-teal-400/30 text-teal-200 hover:text-white font-bold text-[11px] sm:text-xs transition-all duration-300 flex items-center justify-center gap-1.5 sm:gap-2 shadow-lg shadow-teal-950/40 active:scale-[0.98]"
+                        class="group relative w-full py-2.5 px-3 sm:px-4 rounded-xl bg-teal-500/15 hover:bg-teal-500/25 border border-teal-400/30 text-teal-200 hover:text-white font-bold text-xs transition-colors duration-200 flex items-center justify-center gap-2 shadow-sm"
                     >
-                        <span class="text-sm sm:text-base group-hover/btn:scale-125 transition-transform duration-200">🔍</span>
-                        <span class="text-center">Verifikasi Keaslian Ijazah & Raport Publik</span>
-                        <span class="group-hover/btn:translate-x-1 transition-transform duration-200">&rarr;</span>
+                        <span class="text-sm">🔍</span>
+                        <span>Verifikasi Keaslian Ijazah & Raport Publik</span>
+                        <span class="group-hover:translate-x-0.5 transition-transform duration-150">&rarr;</span>
                     </a>
                 </div>
 
-                <div v-if="status" class="mb-4 p-3 rounded-xl bg-emerald-500/20 border border-emerald-400/40 font-medium text-xs text-emerald-300 text-center shadow-lg">
+                <!-- Session Status Message -->
+                <div v-if="status" class="mb-4 p-3 rounded-xl bg-emerald-500/20 border border-emerald-400/30 font-medium text-xs text-emerald-300 text-center shadow-sm">
                     {{ status }}
                 </div>
 
-                <!-- 3D Interactive Form -->
-                <form @submit.prevent="submit" class="space-y-4 transform-layer-form">
+                <!-- Form Login -->
+                <form @submit.prevent="submit" class="space-y-4">
                     <!-- Email Field -->
-                    <div class="relative group/input">
-                        <label class="block text-xs font-bold uppercase tracking-wider text-blue-200/90 mb-1.5 flex items-center gap-1.5">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center gap-1.5">
                             <span>📧</span>
                             <span>Alamat Email</span>
                         </label>
@@ -373,16 +114,16 @@ const submit = () => {
                                 required
                                 autofocus
                                 autocomplete="email"
-                                class="w-full pl-4 pr-4 py-3 rounded-xl bg-slate-950/60 border border-white/20 focus:border-blue-400 focus:ring-4 focus:ring-blue-500/20 text-white placeholder-gray-500 outline-none transition-all duration-300 text-sm shadow-inner"
+                                class="w-full pl-4 pr-4 py-3 rounded-xl bg-slate-950/70 border border-slate-700/80 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/20 text-white placeholder-slate-500 outline-none transition-colors duration-200 text-sm"
                                 placeholder="contoh@pkbm.sch.id"
                             />
                         </div>
                         <p v-if="form.errors.email" class="text-rose-400 text-xs mt-1.5 font-medium">{{ form.errors.email }}</p>
                     </div>
 
-                    <!-- Password Field with 3D Eye Toggle -->
-                    <div class="relative group/input">
-                        <label class="block text-xs font-bold uppercase tracking-wider text-blue-200/90 mb-1.5 flex items-center gap-1.5">
+                    <!-- Password Field with Toggle -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center gap-1.5">
                             <span>🔒</span>
                             <span>Kata Sandi / Password</span>
                         </label>
@@ -392,13 +133,13 @@ const submit = () => {
                                 v-model="form.password"
                                 required
                                 autocomplete="current-password"
-                                class="w-full pl-4 pr-11 py-3 rounded-xl bg-slate-950/60 border border-white/20 focus:border-blue-400 focus:ring-4 focus:ring-blue-500/20 text-white placeholder-gray-500 outline-none transition-all duration-300 text-sm shadow-inner"
+                                class="w-full pl-4 pr-11 py-3 rounded-xl bg-slate-950/70 border border-slate-700/80 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/20 text-white placeholder-slate-500 outline-none transition-colors duration-200 text-sm"
                                 placeholder="Masukkan password akun Anda"
                             />
                             <button
                                 type="button"
                                 @click="showPassword = !showPassword"
-                                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white p-1 rounded-lg transition-colors focus:outline-none"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white p-1 rounded-lg transition-colors focus:outline-none"
                                 :title="showPassword ? 'Sembunyikan password' : 'Lihat password'"
                             >
                                 <span class="text-base">{{ showPassword ? '👁️' : '🙈' }}</span>
@@ -408,23 +149,23 @@ const submit = () => {
                     </div>
 
                     <!-- Remember Session Checkbox -->
-                    <div class="flex items-center justify-between text-xs pt-1">
-                        <label class="flex items-center space-x-2.5 cursor-pointer select-none group/check">
+                    <div class="flex items-center justify-between text-xs pt-0.5">
+                        <label class="flex items-center space-x-2.5 cursor-pointer select-none">
                             <input
                                 type="checkbox"
                                 v-model="form.remember"
-                                class="w-4 h-4 rounded bg-slate-950/60 border-white/30 text-blue-500 focus:ring-0 focus:ring-offset-0 cursor-pointer transition"
+                                class="w-4 h-4 rounded bg-slate-950/80 border-slate-700 text-indigo-600 focus:ring-0 focus:ring-offset-0 cursor-pointer transition"
                             />
-                            <span class="text-blue-200/90 group-hover/check:text-white transition">Ingat sesi login saya</span>
+                            <span class="text-slate-300 hover:text-white transition-colors">Ingat sesi login saya</span>
                         </label>
                     </div>
 
-                    <!-- 3D Tactile Action Button -->
+                    <!-- Submit Button (Calm, High-End Solid Gradient) -->
                     <div class="pt-2">
                         <button
                             type="submit"
                             :disabled="form.processing"
-                            class="relative w-full py-3.5 px-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 hover:from-blue-500 hover:to-indigo-500 active:translate-y-0.5 font-extrabold text-sm rounded-xl text-white shadow-[0_8px_0_rgb(30,58,138),0_15px_25px_rgba(37,99,235,0.4)] active:shadow-[0_2px_0_rgb(30,58,138),0_5px_10px_rgba(37,99,235,0.3)] transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-blue-400/40"
+                            class="relative w-full py-3.5 px-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 hover:from-blue-500 hover:to-indigo-500 font-extrabold text-sm rounded-xl text-white shadow-lg shadow-indigo-950/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-blue-400/30"
                         >
                             <span v-if="form.processing" class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
                             <span class="tracking-wide">{{ form.processing ? 'Memverifikasi Kredensial...' : 'Masuk ke Sistem PKBM' }}</span>
@@ -433,19 +174,17 @@ const submit = () => {
                     </div>
                 </form>
 
-                <!-- 3D Footer Diagnostics -->
-                <div class="mt-8 pt-5 border-t border-white/10 flex items-center justify-between text-[11px] text-blue-300/70 transform-layer-footer">
+                <!-- Footer System Diagnostics -->
+                <div class="mt-8 pt-5 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-400">
                     <div class="flex items-center gap-2">
                         <span class="relative flex h-2 w-2">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
                         </span>
                         <span>Laravel 11 Engine</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="relative flex h-2 w-2">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-400"></span>
                         </span>
                         <span>Python ML Engine</span>
                     </div>
@@ -456,515 +195,7 @@ const submit = () => {
 </template>
 
 <style scoped>
-/* 3D Transform Contexts */
-.preserve-3d {
-    transform-style: preserve-3d;
-}
-
-.perspective-container {
-    perspective: 1200px;
-}
-
-/* Layered 3D Depth Offsets */
-.transform-layer-logo {
-    transform: translateZ(50px);
-}
-
-.transform-layer-title {
-    transform: translateZ(40px);
-}
-
-.transform-layer-badges {
-    transform: translateZ(32px);
-}
-
-.transform-layer-cta {
-    transform: translateZ(28px);
-}
-
-.transform-layer-form {
-    transform: translateZ(35px);
-}
-
-.transform-layer-footer {
-    transform: translateZ(20px);
-}
-
-/* 3D Cyber Perspective Grid in Background */
-.bg-radial-gradient {
-    background: radial-gradient(circle at 50% 40%, rgba(30, 58, 138, 0.25) 0%, rgba(2, 6, 23, 0.95) 75%);
-}
-
-.perspective-grid {
-    position: absolute;
-    bottom: -150px;
-    left: -50%;
-    right: -50%;
-    height: 600px;
-    background-image: 
-        linear-gradient(to right, rgba(59, 130, 246, 0.25) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(59, 130, 246, 0.25) 1px, transparent 1px);
-    background-size: 50px 50px;
-    transform: perspective(400px) rotateX(65deg);
-    transform-origin: bottom center;
-    mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, transparent 80%);
-    animation: grid-slide 20s linear infinite;
-}
-
-@keyframes grid-slide {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: 0 50px;
-    }
-}
-
-/* Keyframe Animations */
-@keyframes spinSlow {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.animate-spin-slow {
-    animation: spinSlow 12s linear infinite;
-}
-
-.animate-pulse-slow {
-    animation: pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* =================================================================== */
-/* 4 CYCLIC 20-SECOND DYNAMIC WANDERING MODES (KESANA KEMARI)          */
-/* =================================================================== */
-
-/* --- MODE 1: ORBIT KOSMIK 3D (Cosmic Planetary Orbiting) --- */
-.mode-cosmic.track-a {
-    animation: cosmicOrbitA 9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-}
-.mode-cosmic.track-b {
-    animation: cosmicOrbitB 11s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-}
-.mode-cosmic.track-c {
-    animation: cosmicOrbitC 10s ease-in-out infinite;
-}
-.mode-cosmic.track-d {
-    animation: cosmicOrbitD 8.5s ease-in-out infinite;
-}
-
-@keyframes cosmicOrbitA {
-    0% {
-        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
-    }
-    25% {
-        transform: translate3d(45px, -50px, 20px) rotate(12deg) scale(1.06);
-    }
-    50% {
-        transform: translate3d(60px, 25px, 35px) rotate(4deg) scale(1.08);
-    }
-    75% {
-        transform: translate3d(-35px, 45px, -10px) rotate(-10deg) scale(0.95);
-    }
-    100% {
-        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
-    }
-}
-
-@keyframes cosmicOrbitB {
-    0% {
-        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
-    }
-    25% {
-        transform: translate3d(-45px, 40px, -15px) rotate(-14deg) scale(0.94);
-    }
-    50% {
-        transform: translate3d(-55px, -35px, 15px) rotate(6deg) scale(1.04);
-    }
-    75% {
-        transform: translate3d(40px, -45px, 30px) rotate(15deg) scale(1.08);
-    }
-    100% {
-        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
-    }
-}
-
-@keyframes cosmicOrbitC {
-    0% {
-        transform: translate3d(0px, 0px, 0px) rotate(-5deg) scale(0.98);
-    }
-    30% {
-        transform: translate3d(50px, 35px, 25px) rotate(10deg) scale(1.07);
-    }
-    70% {
-        transform: translate3d(-45px, -45px, -10px) rotate(-12deg) scale(0.95);
-    }
-    100% {
-        transform: translate3d(0px, 0px, 0px) rotate(-5deg) scale(0.98);
-    }
-}
-
-@keyframes cosmicOrbitD {
-    0% {
-        transform: translate3d(0px, 0px, 0px) rotate(8deg) scale(1);
-    }
-    40% {
-        transform: translate3d(-50px, 45px, 20px) rotate(-10deg) scale(1.05);
-    }
-    80% {
-        transform: translate3d(40px, -40px, -15px) rotate(14deg) scale(0.96);
-    }
-    100% {
-        transform: translate3d(0px, 0px, 0px) rotate(8deg) scale(1);
-    }
-}
-
-
-/* --- MODE 2: CYBER WAVE DRIFT (Fluid Figure-8 & Sinusoidal Wandering) --- */
-.mode-pulse.track-a {
-    animation: cyberWaveA 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-.mode-pulse.track-b {
-    animation: cyberWaveB 8.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-.mode-pulse.track-c {
-    animation: cyberWaveC 6.5s ease-in-out infinite;
-}
-.mode-pulse.track-d {
-    animation: cyberWaveD 7.5s ease-in-out infinite;
-}
-
-@keyframes cyberWaveA {
-    0% {
-        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
-        filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.4));
-    }
-    20% {
-        transform: translate3d(55px, -35px, 15px) rotate(15deg) scale(1.08);
-        filter: drop-shadow(0 0 25px rgba(56, 189, 248, 0.8));
-    }
-    40% {
-        transform: translate3d(20px, 45px, -10px) rotate(-8deg) scale(0.96);
-        filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5));
-    }
-    60% {
-        transform: translate3d(-50px, -30px, 20px) rotate(-16deg) scale(1.06);
-        filter: drop-shadow(0 0 28px rgba(56, 189, 248, 0.9));
-    }
-    80% {
-        transform: translate3d(-25px, 40px, -5px) rotate(8deg) scale(0.98);
-        filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.6));
-    }
-    100% {
-        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
-        filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.4));
-    }
-}
-
-@keyframes cyberWaveB {
-    0% {
-        transform: translate3d(0px, 0px, 0px) rotate(-8deg) scale(0.96);
-    }
-    25% {
-        transform: translate3d(-60px, 30px, 20px) rotate(14deg) scale(1.08);
-    }
-    50% {
-        transform: translate3d(15px, -55px, -15px) rotate(-12deg) scale(0.94);
-    }
-    75% {
-        transform: translate3d(60px, 25px, 25px) rotate(10deg) scale(1.06);
-    }
-    100% {
-        transform: translate3d(0px, 0px, 0px) rotate(-8deg) scale(0.96);
-    }
-}
-
-@keyframes cyberWaveC {
-    0% {
-        transform: translate3d(0px, 0px, 0px) rotate(5deg);
-    }
-    30% {
-        transform: translate3d(45px, 55px, 15px) rotate(-12deg) scale(1.07);
-    }
-    60% {
-        transform: translate3d(-45px, -50px, -10px) rotate(16deg) scale(0.95);
-    }
-    100% {
-        transform: translate3d(0px, 0px, 0px) rotate(5deg);
-    }
-}
-
-@keyframes cyberWaveD {
-    0% {
-        transform: translate3d(0px, 0px, 0px) rotate(-10deg);
-    }
-    35% {
-        transform: translate3d(-55px, -45px, 25px) rotate(15deg) scale(1.1);
-    }
-    70% {
-        transform: translate3d(50px, 40px, -20px) rotate(-8deg) scale(0.93);
-    }
-    100% {
-        transform: translate3d(0px, 0px, 0px) rotate(-10deg);
-    }
-}
-
-
-/* --- MODE 3: ANTI-GRAVITASI BEBAS (Weightless Free-Floating Drift) --- */
-.mode-antigravity.track-a {
-    animation: antigravityFloatA 10s cubic-bezier(0.35, 0.1, 0.25, 1) infinite;
-}
-.mode-antigravity.track-b {
-    animation: antigravityFloatB 12s cubic-bezier(0.35, 0.1, 0.25, 1) infinite;
-}
-.mode-antigravity.track-c {
-    animation: antigravityFloatC 11s ease-in-out infinite;
-}
-.mode-antigravity.track-d {
-    animation: antigravityFloatD 9.5s ease-in-out infinite;
-}
-
-@keyframes antigravityFloatA {
-    0% {
-        transform: translate3d(0px, 0px, 0px) rotate(0deg);
-    }
-    30% {
-        transform: translate3d(40px, -70px, 30px) rotate(-15deg) scale(1.06);
-    }
-    60% {
-        transform: translate3d(-40px, -20px, 10px) rotate(12deg) scale(1.02);
-    }
-    85% {
-        transform: translate3d(20px, 35px, -15px) rotate(-6deg) scale(0.95);
-    }
-    100% {
-        transform: translate3d(0px, 0px, 0px) rotate(0deg);
-    }
-}
-
-@keyframes antigravityFloatB {
-    0% {
-        transform: translate3d(0px, 0px, 0px) rotate(8deg);
-    }
-    25% {
-        transform: translate3d(-45px, 50px, -20px) rotate(-14deg) scale(0.94);
-    }
-    55% {
-        transform: translate3d(50px, -65px, 35px) rotate(18deg) scale(1.08);
-    }
-    80% {
-        transform: translate3d(-20px, -15px, 15px) rotate(-5deg) scale(1.01);
-    }
-    100% {
-        transform: translate3d(0px, 0px, 0px) rotate(8deg);
-    }
-}
-
-@keyframes antigravityFloatC {
-    0% {
-        transform: translate3d(0px, 0px, 0px) rotate(-12deg);
-    }
-    40% {
-        transform: translate3d(-55px, -60px, 25px) rotate(16deg) scale(1.07);
-    }
-    75% {
-        transform: translate3d(45px, 45px, -10px) rotate(-8deg) scale(0.96);
-    }
-    100% {
-        transform: translate3d(0px, 0px, 0px) rotate(-12deg);
-    }
-}
-
-@keyframes antigravityFloatD {
-    0% {
-        transform: translate3d(0px, 0px, 0px) rotate(10deg);
-    }
-    35% {
-        transform: translate3d(55px, 40px, -15px) rotate(-12deg) scale(0.95);
-    }
-    70% {
-        transform: translate3d(-40px, -60px, 30px) rotate(14deg) scale(1.09);
-    }
-    100% {
-        transform: translate3d(0px, 0px, 0px) rotate(10deg);
-    }
-}
-
-
-/* --- MODE 4: VORTEX SPIRAL & INTAN (Vortex Roaming & Diamond Glints) --- */
-.mode-shimmer.track-a {
-    animation: vortexSpiralA 8s ease-in-out infinite;
-}
-.mode-shimmer.track-b {
-    animation: vortexSpiralB 9.5s ease-in-out infinite;
-}
-.mode-shimmer.track-c {
-    animation: vortexSpiralC 7.5s ease-in-out infinite;
-}
-.mode-shimmer.track-d {
-    animation: vortexSpiralD 8.5s ease-in-out infinite;
-}
-
-@keyframes vortexSpiralA {
-    0% {
-        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
-        filter: drop-shadow(0 0 14px rgba(251, 191, 36, 0.4));
-    }
-    25% {
-        transform: translate3d(45px, 20px, 15px) rotate(35deg) scale(1.05);
-        filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.7));
-    }
-    50% {
-        transform: translate3d(15px, -55px, 30px) rotate(70deg) scale(1.12);
-        filter: brightness(1.25) drop-shadow(0 0 35px rgba(251, 191, 36, 1));
-    }
-    75% {
-        transform: translate3d(-45px, -20px, -10px) rotate(35deg) scale(0.96);
-        filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.5));
-    }
-    100% {
-        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
-        filter: drop-shadow(0 0 14px rgba(251, 191, 36, 0.4));
-    }
-}
-
-@keyframes vortexSpiralB {
-    0% {
-        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
-    }
-    25% {
-        transform: translate3d(-40px, -35px, 20px) rotate(-40deg) scale(1.08);
-        filter: brightness(1.2) drop-shadow(0 0 30px rgba(251, 191, 36, 0.9));
-    }
-    50% {
-        transform: translate3d(45px, -45px, -15px) rotate(-75deg) scale(0.95);
-    }
-    75% {
-        transform: translate3d(35px, 45px, 25px) rotate(-35deg) scale(1.06);
-        filter: brightness(1.15) drop-shadow(0 0 25px rgba(251, 191, 36, 0.8));
-    }
-    100% {
-        transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
-    }
-}
-
-@keyframes vortexSpiralC {
-    0% {
-        transform: translate3d(0px, 0px, 0px) rotate(-15deg);
-    }
-    35% {
-        transform: translate3d(50px, -50px, 30px) rotate(35deg) scale(1.1);
-        filter: brightness(1.3) drop-shadow(0 0 32px rgba(251, 191, 36, 0.95));
-    }
-    70% {
-        transform: translate3d(-45px, 35px, -10px) rotate(-25deg) scale(0.94);
-    }
-    100% {
-        transform: translate3d(0px, 0px, 0px) rotate(-15deg);
-    }
-}
-
-@keyframes vortexSpiralD {
-    0% {
-        transform: translate3d(0px, 0px, 0px) rotate(15deg);
-    }
-    35% {
-        transform: translate3d(-45px, 45px, 25px) rotate(-30deg) scale(1.09);
-        filter: brightness(1.25) drop-shadow(0 0 28px rgba(251, 191, 36, 0.85));
-    }
-    70% {
-        transform: translate3d(40px, -40px, -15px) rotate(20deg) scale(0.95);
-    }
-    100% {
-        transform: translate3d(0px, 0px, 0px) rotate(15deg);
-    }
-}
-
-/* Shimmer Sweep Effect */
-.shimmer-sweep {
-    position: absolute;
-    inset: -100%;
-    background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.6) 50%, transparent 65%);
-    transform: rotate(25deg);
-    animation: shimmerSlide 4s ease-in-out infinite;
-    pointer-events: none;
-}
-
-@keyframes shimmerSlide {
-    0% {
-        transform: translateX(-150%) rotate(25deg);
-    }
-    40%, 100% {
-        transform: translateX(150%) rotate(25deg);
-    }
-}
-
-/* Floating 3D Geometric Accents */
-.floating-cube {
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    border-radius: 12px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(59, 130, 246, 0.1));
-    backdrop-filter: blur(8px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-.cube-1 {
-    top: 15%;
-    left: 18%;
-    transform: rotate(25deg) skew(-10deg);
-    animation: float1 8s ease-in-out infinite;
-}
-
-.cube-2 {
-    bottom: 18%;
-    left: 14%;
-    width: 45px;
-    height: 45px;
-    border-color: rgba(245, 158, 11, 0.3);
-    transform: rotate(-15deg);
-    animation: float2 9s ease-in-out infinite 1s;
-}
-
-.cube-3 {
-    top: 20%;
-    right: 18%;
-    width: 70px;
-    height: 70px;
-    border-color: rgba(99, 102, 241, 0.35);
-    transform: rotate(45deg);
-    animation: float3 10s ease-in-out infinite 2s;
-}
-
-@keyframes float1 {
-    0%, 100% {
-        transform: translateY(0px) rotate(25deg);
-    }
-    50% {
-        transform: translateY(-20px) rotate(35deg);
-    }
-}
-
-@keyframes float2 {
-    0%, 100% {
-        transform: translateY(0px) rotate(-15deg);
-    }
-    50% {
-        transform: translateY(-15px) rotate(-5deg);
-    }
-}
-
-@keyframes float3 {
-    0%, 100% {
-        transform: translateY(0px) rotate(45deg);
-    }
-    50% {
-        transform: translateY(-25px) rotate(55deg);
-    }
+.bg-radial-vignette {
+    background: radial-gradient(circle at 50% 40%, rgba(30, 41, 59, 0.5) 0%, rgba(2, 6, 23, 0.98) 85%);
 }
 </style>
