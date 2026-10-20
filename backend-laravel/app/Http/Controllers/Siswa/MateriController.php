@@ -16,7 +16,7 @@ class MateriController extends Controller
         $user = auth()->user();
         $siswa = $user->siswa ?? Siswa::first();
 
-        $kelasIds = $siswa ? $siswa->kelas()->pluck('kelas.id')->toArray() : [];
+        $kelasIds = $siswa ? $siswa->kelas()->pluck('kelas_id')->toArray() : [];
 
         $query = Materi::with(['kelas', 'mataPelajaran', 'tutor'])
             ->where('is_published', true);

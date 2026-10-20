@@ -3,7 +3,7 @@ Laporan Service — Export Format Dinas PKBM (Excel & PDF)
 """
 
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from app.core.config import settings
 
@@ -17,7 +17,7 @@ class LaporanService:
     async def generate(self, request):
         """Generate file laporan dan kembalikan URL download"""
         os.makedirs(settings.TEMP_PATH, exist_ok=True)
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
         ext = "xlsx" if request.format == "excel" else "pdf"
         filename = f"laporan_{request.jenis}_{request.tahun}_{timestamp}.{ext}"
         file_path = os.path.join(settings.TEMP_PATH, filename)
@@ -66,5 +66,5 @@ class LaporanService:
             "message": f"Laporan {request.jenis} berhasil dibuat",
             "filename": filename,
             "download_url": f"/api/v1/laporan/download/{filename}",
-            "generated_at": datetime.now().isoformat(),
+            "generated_at": datetime.now(timezone.utc).isoformat(),
         }

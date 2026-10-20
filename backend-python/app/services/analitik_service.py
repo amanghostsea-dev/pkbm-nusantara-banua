@@ -4,7 +4,7 @@ Menyediakan agregasi data analitik, statistik nilai, dan tren kelulusan
 """
 
 from typing import Optional, Dict, Any, List
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class AnalitikService:
@@ -25,7 +25,7 @@ class AnalitikService:
             "persentase_kelulusan": 96.2,
             "tutor_aktif": 24,
             "kelas_aktif": 12,
-            "updated_at": datetime.now().isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat(),
         }
 
     async def get_distribusi_siswa(self, tahun_ajaran: Optional[str] = None) -> Dict[str, Any]:

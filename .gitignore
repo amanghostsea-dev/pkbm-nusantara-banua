@@ -60,7 +60,7 @@ backend-python/build/
 backend-python/dist/
 .pytest_cache/
 .coverage
-htmlcov/
+backend-python/storage/
 *.egg-info/
 
 # Scratch & Temporary

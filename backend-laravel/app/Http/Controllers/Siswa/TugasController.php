@@ -18,7 +18,7 @@ class TugasController extends Controller
         $siswa = $user->siswa ?? Siswa::first();
         $siswaId = $siswa?->id ?? 1;
 
-        $kelasIds = $siswa ? $siswa->kelas()->pluck('kelas.id')->toArray() : [];
+        $kelasIds = $siswa ? $siswa->kelas()->pluck('kelas_id')->toArray() : [];
 
         $query = Tugas::with(['kelas', 'mataPelajaran', 'tutor'])
             ->with(['pengumpulans' => function ($q) use ($siswaId) {

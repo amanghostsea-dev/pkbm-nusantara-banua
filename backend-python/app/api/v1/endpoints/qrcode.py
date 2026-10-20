@@ -2,14 +2,17 @@
 QR Code Generator untuk Absensi
 """
 
+# pyrefly: ignore [missing-import]
 from fastapi import APIRouter, HTTPException
+# pyrefly: ignore [missing-import]
 from fastapi.responses import StreamingResponse
+# pyrefly: ignore [missing-import]
 from pydantic import BaseModel
 import qrcode
 from io import BytesIO
 import json
 import base64
-from datetime import datetime
+from datetime import datetime, timezone
 
 router = APIRouter()
 
@@ -35,7 +38,7 @@ async def generate_qr_absensi(request: QRAbsensiRequest):
             "tanggal": request.tanggal,
             "kelas": request.kelas,
             "mata_pelajaran": request.mata_pelajaran,
-            "generated_at": datetime.now().isoformat(),
+            "generated_at": datetime.now(timezone.utc).isoformat(),
             "expired_at": request.expired_minutes,
         }
         
@@ -77,7 +80,7 @@ async def get_qr_image(jadwal_id: int, tanggal: str):
     payload = {
         "jadwal_id": jadwal_id,
         "tanggal": tanggal,
-        "generated_at": datetime.now().isoformat(),
+        "generated_at": datetime.now(timezone.utc).isoformat(),
     }
     
     token = base64.b64encode(json.dumps(payload).encode()).decode()

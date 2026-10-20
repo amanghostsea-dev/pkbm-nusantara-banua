@@ -3,9 +3,10 @@ Analitik & Dashboard Data Service
 Menyediakan data statistik untuk dashboard PKBM
 """
 
+# pyrefly: ignore [missing-import]
 from fastapi import APIRouter, HTTPException, Query
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.services.analitik_service import AnalitikService
 
@@ -44,7 +45,7 @@ async def get_statistik_nilai(
 
 @router.get("/absensi/bulanan")
 async def get_absensi_bulanan(
-    tahun: int = Query(default=datetime.now().year),
+    tahun: int = Query(default=datetime.now(timezone.utc).year),
     program: Optional[str] = None,
 ):
     """Rekap absensi per bulan dalam setahun"""
